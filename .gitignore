@@ -1,0 +1,16 @@
+# 秘密情報（APIキーなど）
+.env
+
+# Python / Node の環境（uv sync・npm install で再作成できる）
+.venv/
+.venv-yomitoku/
+__pycache__/
+node_modules/
+
+# OS
+.DS_Store
+
+# 再生成できるテストの出力（core_tests.js / ui_tests.js を実行すると作られる）
+data/edited/tests/
+data/edited/ui_tests/
+data/edited/step1_roundtrip.json

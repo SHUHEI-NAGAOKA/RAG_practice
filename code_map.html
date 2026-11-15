@@ -1,0 +1,1163 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RAG_practice コードマップ</title>
+<style>
+  :root {
+    --bg: #ffffff;
+    --text: #222222;
+    --muted: #666666;
+    --border: #dddddd;
+    --soft: #f6f6f6;
+    --accent: #2b6cb0;
+    --mac: #2f855a;
+    --docker: #2b6cb0;
+    --unused: #999999;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 32px 16px 64px;
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Noto Sans JP", sans-serif;
+    line-height: 1.7;
+  }
+  main { max-width: 1040px; margin: 0 auto; }
+  h1 { font-size: 1.6rem; margin: 0 0 4px; }
+  h2 {
+    font-size: 1.25rem;
+    margin: 48px 0 12px;
+    padding-bottom: 4px;
+    border-bottom: 2px solid var(--accent);
+  }
+  h3 { font-size: 1.08rem; margin: 28px 0 8px; }
+  h4 { font-size: 0.98rem; margin: 0 0 6px; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+  p { margin: 6px 0; }
+  .updated, .note { color: var(--muted); font-size: 0.86rem; }
+  code { background: var(--soft); padding: 1px 5px; border-radius: 3px; font-size: 0.88em; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+  nav ul { margin: 8px 0; padding-left: 1.3em; }
+  nav a { color: var(--accent); text-decoration: none; }
+  nav a:hover { text-decoration: underline; }
+
+  .diagram {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 16px;
+    overflow-x: auto;
+    background: #fff;
+  }
+  .diagram .mermaid { min-width: 640px; }
+
+  .table-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+  th, td { border: 1px solid var(--border); padding: 6px 10px; text-align: left; vertical-align: top; }
+  th { background: var(--soft); white-space: nowrap; }
+
+  .file {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    margin: 18px 0;
+    overflow: hidden;
+  }
+  .file-head {
+    background: var(--soft);
+    padding: 8px 14px;
+    border-bottom: 1px solid var(--border);
+    display: flex; flex-wrap: wrap; gap: 6px 12px; align-items: baseline;
+  }
+  .file-head .path { font-weight: bold; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+  .file-head .desc { color: var(--muted); font-size: 0.88rem; }
+  .tag { font-size: 0.75rem; padding: 0 6px; border-radius: 3px; color: #fff; }
+  .tag.mac { background: var(--mac); }
+  .tag.docker { background: var(--docker); }
+  .tag.unused { background: var(--unused); }
+  .file-body { padding: 10px 14px; }
+
+  .fn { border-left: 3px solid var(--accent); padding: 6px 12px; margin: 12px 0; }
+  .fn dl { display: grid; grid-template-columns: 5.5em 1fr; gap: 2px 10px; margin: 4px 0 0; font-size: 0.9rem; }
+  .fn dt { color: var(--muted); }
+  .fn dd { margin: 0; }
+  .fn ul, .fn ol { margin: 0; padding-left: 1.2em; }
+
+  @media (max-width: 600px) {
+    .fn dl { grid-template-columns: 1fr; }
+    .fn dt { margin-top: 6px; }
+  }
+</style>
+</head>
+<body>
+<main>
+  <h1>RAG_practice コードマップ</h1>
+  <p class="updated">最終更新: 2026-11-15 ／ 対象: 那須烏山市総合計画.pdf（122ページ）での実行結果をもとに数値を記載</p>
+
+  <nav>
+    <ul>
+      <li><a href="#features">0. 機能別ビュー（F1〜F9）</a>
+        <ul>
+          <li><a href="#f1">F1 PDF → DoclingDocument 変換</a></li>
+          <li><a href="#f2">F2 DoclingDocument の保存・読み込み</a></li>
+          <li><a href="#f3">F3 チャンク化</a></li>
+          <li><a href="#f4">F4 文書の Embedding</a></li>
+          <li><a href="#f5">F5 Qdrant への登録</a></li>
+          <li><a href="#f6">F6 質問の Embedding</a></li>
+          <li><a href="#f7">F7 ベクトル検索</a></li>
+          <li><a href="#f8">F8 LLM への受け渡し・回答生成</a></li>
+          <li><a href="#f9">F9 API・UI</a></li>
+        </ul>
+      </li>
+      <li><a href="#overview">1. 全体構成図</a></li>
+      <li><a href="#ingest">2. データ登録フロー（関数単位）</a></li>
+      <li><a href="#qa">3. 質問応答フロー（関数単位）</a></li>
+      <li><a href="#cli">4. CLI検索フロー（search.py）</a></li>
+      <li><a href="#files">5. ファイル・関数の詳細</a></li>
+      <li><a href="#config">6. 設定・インフラファイル</a></li>
+    </ul>
+  </nav>
+
+  <!-- ===================================================== -->
+  <!-- 0. 機能別ビュー                                        -->
+  <!-- ===================================================== -->
+  <h2 id="features">0. 機能別ビュー（F1〜F9）</h2>
+  <p>RAG を構成する機能ごとに、どのファイルのどの関数（およびライブラリ呼び出し）で動いているかをまとめたもの。矢印のラベルは受け渡されるデータと今回の実行での値。</p>
+
+  <h3>機能のつながり</h3>
+  <div class="diagram">
+<pre class="mermaid">
+flowchart LR
+  subgraph ING["データ登録（macOS）"]
+    direction LR
+    F1["F1<br/>PDF → DoclingDocument<br/>convert_pdf.py"]
+    F2["F2<br/>保存・読み込み<br/>convert_pdf.py / chunk_doc.py"]
+    F3["F3<br/>チャンク化<br/>chunk_doc.py"]
+    F4["F4<br/>文書Embedding<br/>embed_and_register.py"]
+    F5["F5<br/>Qdrant登録<br/>embed_and_register.py"]
+    F1 -->|"DoclingDocument"| F2
+    F2 -->|"DoclingDocument"| F3
+    F3 -->|"chunks.jsonl 445件"| F4
+    F4 -->|"vectors (445, 768)"| F5
+  end
+
+  QD[("Qdrant<br/>445 points")]
+
+  subgraph QA["質問応答（Docker / rag-api）"]
+    direction LR
+    F9a["F9<br/>API・UI（受付）<br/>index.html / ask()"]
+    F6["F6<br/>質問Embedding<br/>search_chunks()"]
+    F7["F7<br/>ベクトル検索<br/>search_chunks()"]
+    F8["F8<br/>LLMへ受け渡し・回答生成<br/>build_context() / generate_answer()"]
+    F9b["F9<br/>API・UI（表示）<br/>AskResponse / renderSources()"]
+    F9a -->|"question, top_k"| F6
+    F6 -->|"query_vector 768次元"| F7
+    F7 -->|"list[Source]"| F8
+    F8 -->|"answer + sources"| F9b
+  end
+
+  F5 -->|"upsert"| QD
+  QD -->|"query_points"| F7
+</pre>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>機能</th><th>ファイル</th><th>主な関数</th><th>入力</th><th>出力</th><th>次の機能</th></tr></thead>
+      <tbody>
+        <tr><td>F1 変換</td><td>src/convert_pdf.py</td><td><code>build_converter()</code>, <code>converter.convert()</code></td><td>PDF</td><td>DoclingDocument</td><td>F2</td></tr>
+        <tr><td>F2 保存・読込</td><td>src/convert_pdf.py, src/chunk_doc.py</td><td><code>save_as_json()</code>, <code>save_as_markdown()</code>, <code>save_page_images()</code>, <code>load_from_json()</code></td><td>DoclingDocument</td><td>json / md / png → DoclingDocument</td><td>F3</td></tr>
+        <tr><td>F3 チャンク化</td><td>src/chunk_doc.py</td><td><code>build_chunker()</code>, <code>to_records()</code>, <code>write_jsonl()</code>, <code>write_csv()</code></td><td>DoclingDocument</td><td>records 445件（jsonl / csv）</td><td>F4</td></tr>
+        <tr><td>F4 文書Embedding</td><td>src/embed_and_register.py</td><td><code>load_records()</code>, <code>model.encode()</code></td><td>chunks.jsonl</td><td>ndarray (445, 768)</td><td>F5</td></tr>
+        <tr><td>F5 登録</td><td>src/embed_and_register.py</td><td><code>create_collection()</code>, <code>make_point_id()</code>, <code>PointStruct</code>, <code>upsert()</code></td><td>records + vectors</td><td>Qdrant 445 points</td><td>F7（検索時）</td></tr>
+        <tr><td>F6 質問Embedding</td><td>rag_api/main.py（src/search.py も同処理）</td><td><code>lifespan()</code>, <code>search_chunks()</code> 内 <code>model.encode()</code></td><td>question</td><td>query_vector 768次元</td><td>F7</td></tr>
+        <tr><td>F7 検索</td><td>rag_api/main.py</td><td><code>search_chunks()</code> 内 <code>query_points()</code></td><td>query_vector, top_k</td><td>list[Source]</td><td>F8 / F9</td></tr>
+        <tr><td>F8 回答生成</td><td>rag_api/main.py</td><td><code>build_context()</code>, <code>generate_answer()</code></td><td>question, list[Source]</td><td>answer: str</td><td>F9</td></tr>
+        <tr><td>F9 API・UI</td><td>rag_api/main.py, rag_api/static/index.html</td><td><code>ask()</code>, <code>search()</code>, <code>index()</code>, <code>submit()</code>, <code>renderSources()</code></td><td>ユーザー入力</td><td>画面表示</td><td>—</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ---------- F1 ---------- -->
+  <h3 id="f1">F1 PDF → DoclingDocument 変換</h3>
+  <p class="note">ファイル: <code>src/convert_pdf.py</code> ／ 関数: <code>build_converter()</code>, <code>main()</code></p>
+  <div class="diagram">
+<pre class="mermaid">
+flowchart TD
+  IN[("data/input/那須烏山市総合計画.pdf<br/>122ページ / 12MB")]
+  M["main()<br/>INPUT_DIR.glob で PDF を列挙"]
+  B["build_converter()"]
+  PO["PdfPipelineOptions<br/>do_ocr=True / RapidOcrOptions(lang=iso:ja)<br/>do_table_structure=True / TableFormerMode.ACCURATE<br/>images_scale=1.0<br/>generate_page_images / generate_picture_images"]
+  DC["DocumentConverter<br/>PdfFormatOption(pipeline_options)<br/>backend: ThreadedDoclingParseDocumentBackend（標準）"]
+  CV["converter.convert(pdf_path)"]
+
+  subgraph PIPE["Docling 内部パイプライン（ページごと）"]
+    direction TB
+    P1["ページ解析<br/>docling-parse で文字・座標を取得"]
+    P2["OCR<br/>RapidOCR + onnxruntime<br/>画像内の日本語を読み取り"]
+    P3["レイアウト解析<br/>見出し・本文・表・図・ヘッダー等を判定"]
+    P4["表構造認識<br/>TableFormer ACCURATE で行・列・セル結合"]
+    P5["画像生成<br/>ページ画像・図の切り出し（72dpi相当）"]
+    P6["組み立て<br/>読み順を決めて文書ツリーを構築"]
+    P1 --> P2 --> P3 --> P4 --> P5 --> P6
+  end
+
+  DOC[("DoclingDocument<br/>pages 122 / texts 3302<br/>tables 112 / pictures 93 / groups 194")]
+
+  IN -->|"Path"| M
+  M --> B
+  B --> PO
+  PO -->|"pipeline_options"| DC
+  DC -->|"converter"| CV
+  M -->|"pdf_path"| CV
+  CV --> P1
+  P6 -->|"ConversionResult.document"| DOC
+  DOC -->|"F2 へ"| NEXT(["F2 保存"])
+</pre>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>関数・呼び出し</th><th>入力</th><th>処理</th><th>出力</th></tr></thead>
+      <tbody>
+        <tr><td><code>build_converter()</code></td><td>定数 OCR_LANG, IMAGES_SCALE</td><td>OCR・表・画像の設定を <code>PdfPipelineOptions</code> にまとめ、PDF 用の <code>DocumentConverter</code> を作る</td><td>DocumentConverter</td></tr>
+        <tr><td><code>converter.convert(pdf_path)</code></td><td>PDF のパス</td><td>ページ解析 → OCR → レイアウト解析 → 表構造認識 → 画像生成 → 読み順の組み立て</td><td>ConversionResult（<code>.document</code> が DoclingDocument）</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ---------- F2 ---------- -->
+  <h3 id="f2">F2 DoclingDocument の保存・読み込み</h3>
+  <p class="note">ファイル: <code>src/convert_pdf.py</code>（保存）, <code>src/chunk_doc.py</code>（読み込み）</p>
+  <div class="diagram">
+<pre class="mermaid">
+flowchart LR
+  DOC[("DoclingDocument<br/>（F1 の出力）")]
+
+  subgraph SAVE["保存：convert_pdf.py / main()"]
+    direction TB
+    SJ["doc.save_as_json()<br/>image_mode=REFERENCED<br/>ensure_ascii=False"]
+    SM["doc.save_as_markdown()<br/>image_mode=REFERENCED"]
+    SP["save_page_images(doc, pages_dir)<br/>doc.pages を順に回し<br/>page.image.pil_image.save()"]
+  end
+
+  J[("&lt;名&gt;.json<br/>約7.4MB")]
+  MD[("&lt;名&gt;.md<br/>約366KB")]
+  AR[("&lt;名&gt;_artifacts/<br/>画像216個")]
+  PG[("pages/page_001〜122.png")]
+
+  subgraph LOAD["読み込み：chunk_doc.py / main()"]
+    direction TB
+    GL["INPUT_DIR.glob('*/*.json')"]
+    LJ["DoclingDocument.load_from_json(json_path)"]
+    GL -->|"json_path"| LJ
+  end
+
+  DOC2[("DoclingDocument<br/>（メモリ上に復元）")]
+
+  DOC --> SJ --> J
+  SJ --> AR
+  DOC --> SM --> MD
+  SM --> AR
+  DOC --> SP --> PG
+  J --> GL
+  LJ --> DOC2
+  DOC2 -->|"F3 へ"| NEXT(["F3 チャンク化"])
+</pre>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>関数・呼び出し</th><th>入力</th><th>処理</th><th>出力</th></tr></thead>
+      <tbody>
+        <tr><td><code>doc.save_as_json()</code></td><td>DoclingDocument, 保存先, artifacts_dir</td><td>文書ツリー（body / texts / tables / pictures / pages）を JSON 化。画像はファイルに書き出してパスで参照、日本語はエスケープしない</td><td><code>&lt;名&gt;.json</code>, 画像ファイル</td></tr>
+        <tr><td><code>doc.save_as_markdown()</code></td><td>DoclingDocument, 保存先, artifacts_dir</td><td>読み順に Markdown 化（見出し <code>##</code>、表は Markdown 表、図は画像リンク）</td><td><code>&lt;名&gt;.md</code></td></tr>
+        <tr><td><code>save_page_images()</code></td><td>DoclingDocument, pages_dir</td><td>各ページの PIL 画像を PNG 保存</td><td>保存枚数 122</td></tr>
+        <tr><td><code>DoclingDocument.load_from_json()</code></td><td>JSON のパス</td><td>JSON から DoclingDocument オブジェクトを復元（再変換不要）</td><td>DoclingDocument</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ---------- F3 ---------- -->
+  <h3 id="f3">F3 チャンク化</h3>
+  <p class="note">ファイル: <code>src/chunk_doc.py</code> ／ 関数: <code>build_chunker()</code>, <code>to_records()</code>, <code>write_jsonl()</code>, <code>write_csv()</code>, <code>print_summary()</code></p>
+  <div class="diagram">
+<pre class="mermaid">
+flowchart TD
+  DOC[("DoclingDocument<br/>（F2 から）")]
+
+  subgraph BC["build_chunker()"]
+    direction TB
+    T1["AutoTokenizer.from_pretrained<br/>cl-nagoya/ruri-v3-310m"]
+    T2["HuggingFaceTokenizer<br/>max_tokens=512"]
+    T3["HybridChunker<br/>merge_peers=True"]
+    T1 -->|"hf_tokenizer"| T2 -->|"tokenizer"| T3
+  end
+
+  subgraph TR["to_records(doc, chunker, hf_tokenizer)"]
+    direction TB
+    C1["chunker.chunk(doc)"]
+    subgraph HC["HybridChunker 内部"]
+      direction TB
+      H1["見出し構造に沿って要素単位に分割"]
+      H2["512トークンを超える要素を分割"]
+      H3["merge_peers：同じ見出しの小さいチャンクを結合"]
+      H1 --> H2 --> H3
+    end
+    C2["各 DocChunk について"]
+    X1["chunk.text → text"]
+    X2["chunker.contextualize(chunk)<br/>見出し + 本文 → embedding_text"]
+    X3["chunk.meta.headings → headings"]
+    X4["chunk.meta.doc_items<br/>self_ref → source_refs<br/>prov.page_no → page_numbers"]
+    X5["hf_tokenizer.encode(embedding_text,<br/>add_special_tokens=True) → token_count"]
+    R["record dict<br/>chunk_id = chunk_0000〜0444"]
+    C1 --> H1
+    H3 -->|"DocChunk の列"| C2
+    C2 --> X1 & X2 & X3 & X4
+    X2 --> X5
+    X1 & X3 & X4 & X5 --> R
+  end
+
+  W1["write_jsonl(records, path)"]
+  W2["write_csv(records, path)<br/>utf-8-sig"]
+  W3["print_summary()<br/>445件 / 最大513 / 平均186.6"]
+  O1[("data/chunks/&lt;名&gt;/chunks.jsonl")]
+  O2[("data/chunks/&lt;名&gt;/chunks.csv")]
+
+  DOC --> C1
+  T3 -->|"chunker"| C1
+  T1 -.->|"hf_tokenizer"| X5
+  R -->|"records: list[dict] 445件"| W1 & W2 & W3
+  W1 --> O1
+  W2 --> O2
+  O1 -->|"F4 へ"| NEXT(["F4 文書Embedding"])
+</pre>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>関数・呼び出し</th><th>入力</th><th>処理</th><th>出力</th></tr></thead>
+      <tbody>
+        <tr><td><code>build_chunker()</code></td><td>MODEL_ID, MAX_TOKENS</td><td>Ruri のトークナイザーを Docling 用に包み HybridChunker を作る</td><td>(hf_tokenizer, chunker)</td></tr>
+        <tr><td><code>chunker.chunk(doc)</code></td><td>DoclingDocument</td><td>見出し単位に分割 → 512 超過分を分割 → 同じ見出しの小さいチャンクを結合</td><td>DocChunk の列</td></tr>
+        <tr><td><code>chunker.contextualize(chunk)</code></td><td>DocChunk</td><td>見出し階層を本文の前に付ける</td><td>embedding_text</td></tr>
+        <tr><td><code>to_records()</code></td><td>doc, chunker, hf_tokenizer</td><td>上記をチャンクごとに実行し、見出し・出典・ページ・トークン数をまとめる</td><td>records 445件</td></tr>
+        <tr><td><code>write_jsonl()</code> / <code>write_csv()</code></td><td>records, path</td><td>JSONL（1行1チャンク）と CSV（目視確認用）で保存</td><td>chunks.jsonl / chunks.csv</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ---------- F4 ---------- -->
+  <h3 id="f4">F4 文書の Embedding</h3>
+  <p class="note">ファイル: <code>src/embed_and_register.py</code> ／ 関数: <code>load_records()</code>, <code>main()</code></p>
+  <div class="diagram">
+<pre class="mermaid">
+flowchart TD
+  IN[("data/chunks/*/chunks.jsonl")]
+  L["load_records()<br/>全 jsonl を読み json.loads"]
+  D["デバイス選択<br/>torch.backends.mps.is_available() → mps"]
+  M["SentenceTransformer<br/>cl-nagoya/ruri-v3-310m（mps）<br/>max_seq_length=8192"]
+  P["プレフィックス付与<br/>texts = 検索文書: + embedding_text"]
+  E["model.encode(texts,<br/>batch_size=16,<br/>normalize_embeddings=True)"]
+  V[("vectors: ndarray<br/>(445, 768)<br/>L2正規化済み")]
+
+  IN --> L
+  L -->|"records: list[dict] 445件"| P
+  D -->|"device"| M
+  P -->|"texts: list[str] 445件"| E
+  M -->|"model"| E
+  E --> V
+  V -->|"F5 へ（records と組で）"| NEXT(["F5 Qdrant登録"])
+</pre>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>関数・呼び出し</th><th>入力</th><th>処理</th><th>出力</th></tr></thead>
+      <tbody>
+        <tr><td><code>load_records()</code></td><td>chunks.jsonl</td><td>全ファイルを読み込み</td><td>records 445件</td></tr>
+        <tr><td><code>SentenceTransformer(MODEL_ID, device)</code></td><td>モデルID, mps</td><td>Ruri v3 を Mac の GPU（MPS）に読み込み</td><td>model</td></tr>
+        <tr><td>プレフィックス付与</td><td>embedding_text</td><td>Ruri v3 の文書用形式「検索文書: 」を先頭に付与</td><td>texts</td></tr>
+        <tr><td><code>model.encode()</code></td><td>texts</td><td>16件ずつベクトル化し、長さ1に正規化（コサイン類似度用）</td><td>(445, 768)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ---------- F5 ---------- -->
+  <h3 id="f5">F5 Qdrant への登録</h3>
+  <p class="note">ファイル: <code>src/embed_and_register.py</code> ／ 関数: <code>make_point_id()</code>, <code>main()</code></p>
+  <div class="diagram">
+<pre class="mermaid">
+flowchart TD
+  V[("vectors (445, 768)<br/>（F4 から）")]
+  R[("records 445件<br/>（F4 から）")]
+  C["QdrantClient<br/>url=http://localhost:6333"]
+  EX{"collection_exists<br/>rag_ruri_v3_310m ?"}
+  CC["create_collection()<br/>VectorParams(size=768,<br/>distance=COSINE)"]
+  LOOP["zip(records, vectors) でループ"]
+  ID["make_point_id(record)<br/>uuid5(NAMESPACE_URL,<br/>document_id:chunk_id)"]
+  PL["payload 作成<br/>chunk_id / document_id / text / headings<br/>embedding_text / source_refs<br/>page_numbers / token_count / parent_id"]
+  PS["models.PointStruct<br/>(id, vector.tolist(), payload)"]
+  UP["client.upsert(batch, wait=True)<br/>16件ずつ × 28回"]
+  CT["client.count(exact=True)"]
+  Q[("Qdrant<br/>rag_ruri_v3_310m<br/>445 points")]
+
+  C --> EX
+  EX -->|"なし"| CC --> LOOP
+  EX -->|"あり"| LOOP
+  V --> LOOP
+  R --> LOOP
+  LOOP -->|"record"| ID
+  LOOP -->|"record"| PL
+  ID -->|"UUID"| PS
+  PL -->|"payload"| PS
+  LOOP -->|"vector"| PS
+  PS -->|"points: list[PointStruct] 445件"| UP
+  UP --> Q
+  Q --> CT
+  CT -->|"445"| DONE(["登録完了"])
+</pre>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>関数・呼び出し</th><th>入力</th><th>処理</th><th>出力</th></tr></thead>
+      <tbody>
+        <tr><td><code>create_collection()</code></td><td>ベクトル次元 768</td><td>コレクションが無ければコサイン距離で作成</td><td>コレクション</td></tr>
+        <tr><td><code>make_point_id()</code></td><td>record</td><td>文書IDとチャンクIDから毎回同じ UUID を生成（再実行で上書き更新）</td><td>UUID 文字列</td></tr>
+        <tr><td><code>PointStruct</code></td><td>id, vector, payload</td><td>ベクトルと元チャンク情報を1つのポイントにまとめる</td><td>PointStruct</td></tr>
+        <tr><td><code>client.upsert()</code></td><td>points（16件ずつ）</td><td>Qdrant へ送信し、反映完了まで待つ</td><td>445 points</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ---------- F6 ---------- -->
+  <h3 id="f6">F6 質問の Embedding</h3>
+  <p class="note">ファイル: <code>rag_api/main.py</code>（Docker・CPU）／ <code>src/search.py</code>（macOS・MPS）も同じ処理 ／ 関数: <code>lifespan()</code>, <code>search_chunks()</code></p>
+  <div class="diagram">
+<pre class="mermaid">
+flowchart TD
+  subgraph START["起動時：lifespan(app)"]
+    direction TB
+    LM["SentenceTransformer<br/>EMBEDDING_MODEL=ruri-v3-310m<br/>device=cpu"]
+    ST[("app.state.embedding_model")]
+    LM --> ST
+  end
+
+  Q[("question: str<br/>例: 子育て支援としてどのような取組を…")]
+  SC["search_chunks(request, question, top_k)"]
+  PF["プレフィックス付与<br/>検索クエリ: + question"]
+  EN["model.encode(…,<br/>normalize_embeddings=True)"]
+  TL[".tolist()"]
+  QV[("query_vector: list[float]<br/>768次元 / L2正規化済み")]
+
+  Q --> SC --> PF
+  ST -->|"request.app.state から取得"| EN
+  PF -->|"str"| EN
+  EN -->|"ndarray (768,)"| TL --> QV
+  QV -->|"F7 へ"| NEXT(["F7 ベクトル検索"])
+</pre>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>関数・呼び出し</th><th>入力</th><th>処理</th><th>出力</th></tr></thead>
+      <tbody>
+        <tr><td><code>lifespan()</code></td><td>環境変数</td><td>API 起動時に Ruri を1回だけ読み込み、<code>app.state</code> に保持</td><td>embedding_model, qdrant</td></tr>
+        <tr><td>プレフィックス付与</td><td>question</td><td>Ruri v3 の質問用形式「検索クエリ: 」を付与（文書側の「検索文書: 」と対）</td><td>str</td></tr>
+        <tr><td><code>model.encode()</code></td><td>str</td><td>F4 と同じモデル・同じ正規化でベクトル化</td><td>768次元ベクトル</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ---------- F7 ---------- -->
+  <h3 id="f7">F7 ベクトル検索</h3>
+  <p class="note">ファイル: <code>rag_api/main.py</code> ／ 関数: <code>search_chunks()</code> の後半</p>
+  <div class="diagram">
+<pre class="mermaid">
+flowchart TD
+  QV[("query_vector 768次元<br/>（F6 から）")]
+  QP["client.query_points(<br/>collection_name=rag_ruri_v3_310m,<br/>query=query_vector,<br/>limit=top_k, with_payload=True)"]
+  subgraph QDRANT["Qdrant（rag-qdrant コンテナ）"]
+    direction TB
+    S1["登録済み 445 ベクトルと<br/>コサイン類似度を計算"]
+    S2["スコア上位 top_k 件を選択"]
+    S1 --> S2
+  end
+  ERR["例外 → HTTPException 502<br/>Qdrant検索エラー"]
+  RES[("response.points<br/>ScoredPoint（id / score / payload）× top_k")]
+  CV["enumerate(points, start=1) でループ<br/>payload から取り出し"]
+  SRC["Source(<br/>source_number, score, document_id,<br/>headings, page_numbers, text)"]
+  OUT[("list[Source]")]
+
+  QV --> QP --> S1
+  QP -.->|"失敗時"| ERR
+  S2 --> RES --> CV --> SRC --> OUT
+  OUT -->|"/ask の場合 F8 へ"| N1(["F8 回答生成"])
+  OUT -->|"/search の場合 F9 へ"| N2(["F9 SearchResponse"])
+</pre>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>関数・呼び出し</th><th>入力</th><th>処理</th><th>出力</th></tr></thead>
+      <tbody>
+        <tr><td><code>client.query_points()</code></td><td>query_vector, limit=top_k</td><td>Qdrant が登録済みベクトルとのコサイン類似度で上位を返す</td><td>ScoredPoint × top_k</td></tr>
+        <tr><td><code>Source(...)</code></td><td>ScoredPoint の score と payload</td><td>API で返す形に整形し 1 始まりの番号を付与</td><td>list[Source]</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ---------- F8 ---------- -->
+  <h3 id="f8">F8 LLM への受け渡し・回答生成</h3>
+  <p class="note">ファイル: <code>rag_api/main.py</code> ／ 関数: <code>build_context()</code>, <code>generate_answer()</code></p>
+  <div class="diagram">
+<pre class="mermaid">
+flowchart TD
+  SRC[("list[Source]<br/>（F7 から / 例 top_k=3）")]
+  QN[("question: str")]
+
+  subgraph BCX["build_context(sources)"]
+    direction TB
+    B1["各 Source について<br/>見出しを ＞ で連結（無ければ 見出しなし）"]
+    B2["［資料N］見出し: … / ページ: [49]<br/>改行 + 本文"]
+    B3["空行で連結"]
+    B1 --> B2 --> B3
+  end
+
+  subgraph GA["generate_answer(question, sources)"]
+    direction TB
+    U["user_prompt<br/>【資料】+ context<br/>【質問】+ question"]
+    SP["SYSTEM_PROMPT<br/>資料だけを根拠に日本語で回答<br/>［資料N］で出典を示す<br/>無ければ 資料からは分かりません"]
+    MSG["messages<br/>system + user"]
+    REQ["requests.post<br/>OLLAMA_URL/api/chat<br/>model=qwen2.5:3b / stream=false<br/>timeout=600"]
+    PARSE["res.json() の message.content"]
+    U --> MSG
+    SP --> MSG
+    MSG --> REQ
+  end
+
+  OL["Ollama（rag-ollama）<br/>qwen2.5:3b で生成（CPU・約35秒）"]
+  ERR["RequestException → HTTPException 502"]
+  ANS[("answer: str")]
+
+  SRC --> B1
+  B3 -->|"context: str"| U
+  QN --> U
+  REQ -->|"JSON"| OL
+  OL -->|"応答 JSON"| PARSE
+  REQ -.->|"失敗時"| ERR
+  PARSE --> ANS
+  ANS -->|"F9 へ"| NEXT(["F9 AskResponse"])
+</pre>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>関数・呼び出し</th><th>入力</th><th>処理</th><th>出力</th></tr></thead>
+      <tbody>
+        <tr><td><code>build_context()</code></td><td>list[Source]</td><td>出典ごとに番号・見出し・ページ・本文を整形して1つのテキストに</td><td>context: str</td></tr>
+        <tr><td><code>generate_answer()</code></td><td>question, list[Source]</td><td>system と user のプロンプトを作り Ollama の <code>/api/chat</code> に送信</td><td>answer: str</td></tr>
+        <tr><td>Ollama <code>/api/chat</code></td><td>model, messages</td><td>qwen2.5:3b が資料を根拠に回答を生成</td><td>message.content</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ---------- F9 ---------- -->
+  <h3 id="f9">F9 API・UI</h3>
+  <p class="note">ファイル: <code>rag_api/main.py</code>（<code>index()</code>, <code>search()</code>, <code>ask()</code>）, <code>rag_api/static/index.html</code>（<code>submit()</code>, <code>renderSources()</code>, <code>el()</code>）</p>
+  <div class="diagram">
+<pre class="mermaid">
+sequenceDiagram
+  autonumber
+  actor U as ユーザー
+  participant JS as index.html<br/>submit()
+  participant API as FastAPI<br/>ask() / search()
+  participant F67 as search_chunks()<br/>F6 + F7
+  participant F8 as generate_answer()<br/>F8
+  participant RS as index.html<br/>renderSources()
+
+  U->>JS: ブラウザで GET / を開く
+  Note over JS: index() が static/index.html を返す
+  U->>JS: 質問・モード・top_k を入力して Enter
+  JS->>API: fetch POST /ask または /search<br/>JSON {question, top_k}
+  Note over API: QuestionRequest で検証<br/>不正なら 422
+  API->>F67: (request, question, top_k)
+  F67-->>API: list[Source]
+  alt モード = /ask
+    API->>F8: (question, sources)
+    F8-->>API: answer
+    API-->>JS: AskResponse {question, answer, sources}
+    JS->>JS: el() で answer を表示
+  else モード = /search
+    API-->>JS: SearchResponse {question, sources}
+  end
+  JS->>RS: (container, sources)
+  RS-->>U: 出典を details で表示<br/>見出し・ページ・スコア / 本文は開閉
+  JS-->>U: 所要時間を表示
+</pre>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>関数・呼び出し</th><th>入力</th><th>処理</th><th>出力</th></tr></thead>
+      <tbody>
+        <tr><td><code>index()</code>（GET /）</td><td>—</td><td>画面の HTML を返す</td><td>index.html</td></tr>
+        <tr><td><code>ask()</code>（POST /ask）</td><td>QuestionRequest</td><td>F6・F7 → F8 を順に呼ぶ</td><td>AskResponse</td></tr>
+        <tr><td><code>search()</code>（POST /search）</td><td>QuestionRequest</td><td>F6・F7 のみ呼ぶ</td><td>SearchResponse</td></tr>
+        <tr><td><code>submit()</code></td><td>入力欄・モード・top_k</td><td>API を呼び、待ち時間を表示し、結果を描画</td><td>画面表示</td></tr>
+        <tr><td><code>renderSources()</code></td><td>sources</td><td>出典を折りたたみ要素で表示</td><td>画面表示</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ===================================================== -->
+  <h2 id="overview">1. 全体構成図</h2>
+  <p>macOS 側でデータを作って Qdrant に登録し、Docker 側で質問を受けて検索・回答する 2 系統の構成。</p>
+  <div class="diagram">
+<pre class="mermaid">
+flowchart LR
+  subgraph MAC["macOS（.venv / uv）— データ登録"]
+    direction TB
+    PDF[("data/input/<br/>那須烏山市総合計画.pdf")]
+    CONV["src/convert_pdf.py<br/>Docling変換"]
+    DOCJSON[("data/output/&lt;名&gt;/<br/>.json / .md / 画像")]
+    CHUNK["src/chunk_doc.py<br/>HybridChunker"]
+    JSONL[("data/chunks/&lt;名&gt;/<br/>chunks.jsonl / .csv")]
+    EMB["src/embed_and_register.py<br/>Ruri v3（MPS）"]
+    CLI["src/search.py<br/>CLI検索（MPS）"]
+    PDF --> CONV --> DOCJSON --> CHUNK --> JSONL --> EMB
+  end
+
+  subgraph DOCKER["Docker Compose — 質問応答"]
+    direction TB
+    QD[("rag-qdrant :6333<br/>collection: rag_ruri_v3_310m<br/>445 points / 768次元")]
+    API["rag-api :8000<br/>rag_api/main.py<br/>FastAPI + Ruri（CPU）"]
+    OL["rag-ollama :11434<br/>qwen2.5:3b"]
+    API -->|"query_points"| QD
+    API -->|"/api/chat"| OL
+  end
+
+  USER(["ブラウザ<br/>rag_api/static/index.html"])
+
+  EMB -->|"upsert（localhost:6333）"| QD
+  CLI -->|"query_points（localhost:6333）"| QD
+  USER -->|"POST /ask・/search"| API
+  API -->|"answer + sources"| USER
+</pre>
+  </div>
+
+  <!-- ===================================================== -->
+  <h2 id="ingest">2. データ登録フロー（関数単位）</h2>
+  <p>各矢印のラベルが「前の関数が出力し、次の関数が受け取るデータ」。数値は今回の実行結果。</p>
+  <div class="diagram">
+<pre class="mermaid">
+flowchart TD
+  P[("PDF 1ファイル<br/>122ページ / 12MB")]
+
+  subgraph S1["src/convert_pdf.py"]
+    C1["build_converter()<br/>OCR=RapidOCR(iso:ja)<br/>表=ACCURATE / images_scale=1.0"]
+    C2["main() → converter.convert(pdf)<br/>レイアウト解析・OCR・表構造認識"]
+    C3["doc.save_as_json()<br/>ensure_ascii=False / 画像はREFERENCED"]
+    C4["doc.save_as_markdown()<br/>画像はREFERENCED"]
+    C5["save_page_images(doc, pages_dir)<br/>page.image.pil_image → PNG"]
+    C1 -->|"DocumentConverter"| C2
+    C2 -->|"DoclingDocument<br/>texts 3302 / tables 112 / pictures 93"| C3
+    C2 -->|"DoclingDocument"| C4
+    C2 -->|"DoclingDocument"| C5
+  end
+
+  O1[("&lt;名&gt;.json 約7.4MB")]
+  O2[("&lt;名&gt;.md 約366KB")]
+  O3[("pages/page_001〜122.png<br/>_artifacts/ 画像216個")]
+
+  subgraph S2["src/chunk_doc.py"]
+    K0["main()<br/>DoclingDocument.load_from_json()"]
+    K1["build_chunker()<br/>AutoTokenizer(ruri-v3-310m)<br/>HuggingFaceTokenizer(max_tokens=512)<br/>HybridChunker(merge_peers=True)"]
+    K2["to_records(doc, chunker, hf_tokenizer)<br/>chunker.chunk() → contextualize()<br/>ページ番号・source_refs・token_count算出"]
+    K3["write_jsonl(records, path)"]
+    K4["write_csv(records, path)<br/>utf-8-sig"]
+    K5["print_summary(records, ...)<br/>最大513 / 平均186.6 / 超過11件"]
+    K0 -->|"DoclingDocument"| K2
+    K1 -->|"(hf_tokenizer, chunker)"| K2
+    K2 -->|"records: list[dict] 445件"| K3
+    K2 -->|"records"| K4
+    K2 -->|"records"| K5
+  end
+
+  J1[("chunks.jsonl 445行")]
+  J2[("chunks.csv")]
+
+  subgraph S3["src/embed_and_register.py"]
+    E1["load_records()<br/>data/chunks/*/chunks.jsonl を全件読込"]
+    E2["main()：SentenceTransformer(ruri-v3-310m, mps)<br/>texts = '検索文書: ' + embedding_text"]
+    E3["model.encode(texts, batch_size=16,<br/>normalize_embeddings=True)"]
+    E4["create_collection()（無ければ）<br/>size=768 / COSINE"]
+    E5["make_point_id(record)<br/>uuid5(document_id:chunk_id)"]
+    E6["PointStruct(id, vector, payload)"]
+    E7["client.upsert(batch 16件, wait=True)<br/>→ client.count()"]
+    E1 -->|"records 445件"| E2
+    E2 -->|"texts: list[str] 445件"| E3
+    E3 -->|"vectors: ndarray (445, 768)"| E4
+    E4 --> E6
+    E5 -->|"UUID文字列"| E6
+    E6 -->|"points: list[PointStruct] 445件"| E7
+  end
+
+  Q[("Qdrant<br/>rag_ruri_v3_310m<br/>445 points")]
+
+  P --> C2
+  C3 --> O1
+  C4 --> O2
+  C5 --> O3
+  O1 --> K0
+  K3 --> J1
+  K4 --> J2
+  J1 --> E1
+  E7 --> Q
+</pre>
+  </div>
+
+  <!-- ===================================================== -->
+  <h2 id="qa">3. 質問応答フロー（関数単位）</h2>
+  <p>ブラウザの画面から <code>POST /ask</code> を呼んだときの処理順。<code>/search</code> の場合は ⑦〜⑨ を飛ばして検索結果だけ返す。</p>
+  <div class="diagram">
+<pre class="mermaid">
+sequenceDiagram
+  autonumber
+  actor U as ユーザー
+  participant H as index.html<br/>submit()
+  participant A as main.py<br/>ask()
+  participant S as main.py<br/>search_chunks()
+  participant R as Ruri v3<br/>(CPU)
+  participant Q as Qdrant
+  participant B as main.py<br/>build_context()
+  participant G as main.py<br/>generate_answer()
+  participant O as Ollama<br/>qwen2.5:3b
+
+  U->>H: 質問を入力して Enter
+  H->>A: POST /ask {question, top_k: 3}
+  Note over A: QuestionRequest で検証<br/>question 1文字以上 / top_k 1〜20
+  A->>S: (request, question, top_k)
+  S->>R: model.encode("検索クエリ: " + question,<br/>normalize_embeddings=True)
+  R-->>S: query_vector: list[float] 768次元
+  S->>Q: query_points(collection, query_vector, limit=top_k)
+  Q-->>S: points（score + payload）top_k件
+  S-->>A: sources: list[Source]<br/>(番号, score, 見出し, ページ, 本文)
+  A->>G: (question, sources)
+  G->>B: sources
+  B-->>G: 資料テキスト「［資料1］見出し… / ページ…\n本文」
+  G->>O: POST /api/chat<br/>system: SYSTEM_PROMPT / user: 【資料】+【質問】<br/>stream=false, timeout=600秒
+  O-->>G: message.content（回答文）
+  G-->>A: answer: str
+  A-->>H: AskResponse {question, answer, sources}
+  Note over H: answer を表示<br/>renderSources() で出典を折りたたみ表示
+  H-->>U: 回答 + 出典 + 所要時間（約35秒）
+</pre>
+  </div>
+
+  <!-- ===================================================== -->
+  <h2 id="cli">4. CLI検索フロー（src/search.py）</h2>
+  <p>macOS 上で LLM を使わずに検索結果だけを確認するためのスクリプト。処理は rag-api の <code>search_chunks()</code> と同じ（デバイスのみ MPS）。</p>
+  <div class="diagram">
+<pre class="mermaid">
+flowchart LR
+  IN(["コマンド引数 or input()"]) -->|"query: str"| S["search(query, top_k=5)<br/>'検索クエリ: ' + query を encode<br/>→ query_points()"]
+  S -->|"points: list[ScoredPoint] 5件"| P["print_results(results)<br/>順位・スコア・文書・見出し・ページ・本文"]
+  P --> OUT(["標準出力"])
+  S -.->|"query_vector 768次元"| Q[("Qdrant :6333")]
+  Q -.->|"上位5件"| S
+</pre>
+  </div>
+
+  <!-- ===================================================== -->
+  <h2 id="files">5. ファイル・関数の詳細</h2>
+
+  <h3>5-1. ファイル一覧</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>ファイル</th><th>実行場所</th><th>役割</th><th>入力</th><th>出力</th></tr></thead>
+      <tbody>
+        <tr><td><code>src/convert_pdf.py</code></td><td>macOS</td><td>PDF → DoclingDocument 変換</td><td><code>data/input/*.pdf</code></td><td><code>data/output/&lt;名&gt;/</code> の json・md・画像</td></tr>
+        <tr><td><code>src/chunk_doc.py</code></td><td>macOS</td><td>DoclingDocument のチャンク化</td><td><code>data/output/*/*.json</code></td><td><code>data/chunks/&lt;名&gt;/chunks.jsonl・.csv</code></td></tr>
+        <tr><td><code>src/embed_and_register.py</code></td><td>macOS</td><td>Embedding と Qdrant 登録</td><td><code>data/chunks/*/chunks.jsonl</code></td><td>Qdrant コレクション</td></tr>
+        <tr><td><code>src/search.py</code></td><td>macOS</td><td>CLI での類似度検索</td><td>質問文</td><td>標準出力</td></tr>
+        <tr><td><code>src/chunk_pdf.py</code></td><td>macOS</td><td>（旧版・未使用）PDF を直接変換してチャンク化</td><td><code>data/input/*.pdf</code></td><td><code>data/output/&lt;名&gt;_chunks.json</code></td></tr>
+        <tr><td><code>rag_api/main.py</code></td><td>Docker</td><td>検索・回答 API と画面の配信</td><td>HTTP リクエスト</td><td>JSON / HTML</td></tr>
+        <tr><td><code>rag_api/static/index.html</code></td><td>ブラウザ</td><td>質問応答 UI</td><td>ユーザー入力</td><td>画面表示</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ---------- convert_pdf.py ---------- -->
+  <div class="file">
+    <div class="file-head">
+      <span class="tag mac">macOS</span>
+      <span class="path">src/convert_pdf.py</span>
+      <span class="desc">PDF を Docling で変換し JSON・Markdown・画像を出力</span>
+    </div>
+    <div class="file-body">
+      <p class="note">定数: <code>OCR_LANG=["iso:ja"]</code> / <code>IMAGES_SCALE=1.0</code> / <code>INPUT_DIR=data/input</code> / <code>OUTPUT_DIR=data/output</code></p>
+
+      <div class="fn">
+        <h4>build_converter() → DocumentConverter</h4>
+        <dl>
+          <dt>入力</dt><dd>なし（定数を使用）</dd>
+          <dt>処理</dt><dd>
+            <ol>
+              <li><code>PdfPipelineOptions</code> を作成：<code>do_ocr=True</code>、<code>ocr_options=RapidOcrOptions(lang=["iso:ja"])</code>、<code>do_table_structure=True</code>、<code>TableFormerMode.ACCURATE</code>、<code>images_scale=1.0</code>、<code>generate_page_images=True</code>、<code>generate_picture_images=True</code></li>
+              <li><code>PdfFormatOption</code> に包んで <code>DocumentConverter</code> を生成（backend は標準の <code>ThreadedDoclingParseDocumentBackend</code>）</li>
+            </ol>
+          </dd>
+          <dt>出力</dt><dd><code>DocumentConverter</code></dd>
+          <dt>渡す先</dt><dd><code>main()</code> 内の <code>converter.convert()</code></dd>
+        </dl>
+      </div>
+
+      <div class="fn">
+        <h4>save_page_images(doc, pages_dir) → int</h4>
+        <dl>
+          <dt>入力</dt><dd><code>doc</code>: DoclingDocument ／ <code>pages_dir</code>: 保存先 Path</dd>
+          <dt>処理</dt><dd><code>doc.pages</code> をページ番号順に回し、<code>page.image.pil_image</code> があれば <code>page_001.png</code> 形式で保存</dd>
+          <dt>出力</dt><dd>保存枚数（今回 122）</dd>
+          <dt>渡す先</dt><dd><code>main()</code> のログ表示</dd>
+        </dl>
+      </div>
+
+      <div class="fn">
+        <h4>main() → None</h4>
+        <dl>
+          <dt>入力</dt><dd><code>data/input/*.pdf</code></dd>
+          <dt>処理</dt><dd>
+            <ol>
+              <li>入出力ディレクトリを作成し、PDF を列挙（無ければ終了）</li>
+              <li><code>build_converter()</code> で変換器を作成</li>
+              <li>PDF ごとに <code>converter.convert(pdf_path).document</code> で DoclingDocument を取得（レイアウト解析・OCR・表構造認識）</li>
+              <li><code>doc.save_as_json(..., image_mode=REFERENCED, ensure_ascii=False)</code></li>
+              <li><code>doc.save_as_markdown(..., image_mode=REFERENCED)</code></li>
+              <li><code>save_page_images()</code> でページ画像を保存</li>
+            </ol>
+          </dd>
+          <dt>出力</dt><dd><code>data/output/&lt;名&gt;/&lt;名&gt;.json</code>（約7.4MB）、<code>&lt;名&gt;.md</code>（約366KB）、<code>&lt;名&gt;_artifacts/</code>（画像216個）、<code>pages/</code>（122枚）</dd>
+          <dt>渡す先</dt><dd>JSON を <code>chunk_doc.py</code> が読み込む</dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+
+  <!-- ---------- chunk_doc.py ---------- -->
+  <div class="file">
+    <div class="file-head">
+      <span class="tag mac">macOS</span>
+      <span class="path">src/chunk_doc.py</span>
+      <span class="desc">DoclingDocument(JSON) を Ruri のトークン数基準でチャンク化</span>
+    </div>
+    <div class="file-body">
+      <p class="note">定数: <code>MODEL_ID="cl-nagoya/ruri-v3-310m"</code> / <code>MAX_TOKENS=512</code> / <code>INPUT_DIR=data/output</code> / <code>OUTPUT_DIR=data/chunks</code></p>
+
+      <div class="fn">
+        <h4>build_chunker() → (hf_tokenizer, chunker)</h4>
+        <dl>
+          <dt>入力</dt><dd>なし（定数を使用）</dd>
+          <dt>処理</dt><dd>
+            <ol>
+              <li><code>AutoTokenizer.from_pretrained(ruri-v3-310m)</code> で Ruri のトークナイザーを取得</li>
+              <li><code>HuggingFaceTokenizer(tokenizer, max_tokens=512)</code> で Docling 用に包む</li>
+              <li><code>HybridChunker(tokenizer, merge_peers=True)</code> を作成</li>
+            </ol>
+          </dd>
+          <dt>出力</dt><dd><code>hf_tokenizer</code>（トークン数計測用）と <code>chunker</code></dd>
+          <dt>渡す先</dt><dd><code>to_records()</code></dd>
+        </dl>
+      </div>
+
+      <div class="fn">
+        <h4>to_records(doc, chunker, hf_tokenizer) → list[dict]</h4>
+        <dl>
+          <dt>入力</dt><dd>DoclingDocument、HybridChunker、Ruri トークナイザー</dd>
+          <dt>処理</dt><dd>
+            <ol>
+              <li><code>chunker.chunk(doc)</code> で見出し構造に沿って分割し、512 トークン以内に収める（小さいチャンクは同じ見出し内で結合）</li>
+              <li>各チャンクについて：<code>text</code>（本文）、<code>embedding_text = chunker.contextualize(chunk)</code>（見出し付き本文）</li>
+              <li><code>chunk.meta.headings</code> → 見出しリスト</li>
+              <li><code>chunk.meta.doc_items</code> → <code>self_ref</code>（例 <code>#/texts/1906</code>）を <code>source_refs</code>、<code>prov.page_no</code> を <code>page_numbers</code> に</li>
+              <li><code>hf_tokenizer.encode(embedding_text, add_special_tokens=True)</code> の長さを <code>token_count</code> に（特殊トークン2個込み）</li>
+            </ol>
+          </dd>
+          <dt>出力</dt><dd><code>{chunk_id, document_id, text, headings, source_refs, page_numbers, embedding_text, token_count}</code> のリスト（今回 445件）</dd>
+          <dt>渡す先</dt><dd><code>write_jsonl()</code> / <code>write_csv()</code> / <code>print_summary()</code></dd>
+        </dl>
+      </div>
+
+      <div class="fn">
+        <h4>write_jsonl(records, path) / write_csv(records, path) → None</h4>
+        <dl>
+          <dt>入力</dt><dd>records、出力パス</dd>
+          <dt>処理</dt><dd>JSONL: 1行1チャンクで <code>ensure_ascii=False</code>。CSV: <code>utf-8-sig</code>（Excel対応）、見出しは <code>" &gt; "</code> で連結</dd>
+          <dt>出力</dt><dd><code>data/chunks/&lt;名&gt;/chunks.jsonl</code>、<code>chunks.csv</code></dd>
+          <dt>渡す先</dt><dd>JSONL を <code>embed_and_register.py</code> が読み込む。CSV は目視確認用</dd>
+        </dl>
+      </div>
+
+      <div class="fn">
+        <h4>print_summary(records, jsonl_path, csv_path) → None</h4>
+        <dl>
+          <dt>入力</dt><dd>records と出力パス</dd>
+          <dt>処理</dt><dd>チャンク数、トークン数の最大・平均、<code>MAX_TOKENS</code> 超過チャンクを集計して表示</dd>
+          <dt>出力</dt><dd>標準出力（今回: 445件 / 最大513 / 平均186.6 / 超過11件 ※特殊トークン2個分）</dd>
+          <dt>渡す先</dt><dd>—</dd>
+        </dl>
+      </div>
+
+      <div class="fn">
+        <h4>main() → None</h4>
+        <dl>
+          <dt>処理</dt><dd><code>data/output/*/*.json</code> を列挙 → <code>build_chunker()</code> → JSON ごとに <code>DoclingDocument.load_from_json()</code> → <code>to_records()</code> → 書き出し → サマリー表示</dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+
+  <!-- ---------- embed_and_register.py ---------- -->
+  <div class="file">
+    <div class="file-head">
+      <span class="tag mac">macOS</span>
+      <span class="path">src/embed_and_register.py</span>
+      <span class="desc">chunks.jsonl を Ruri で Embedding し Qdrant に登録</span>
+    </div>
+    <div class="file-body">
+      <p class="note">定数: <code>MODEL_ID="cl-nagoya/ruri-v3-310m"</code> / <code>COLLECTION_NAME="rag_ruri_v3_310m"</code> / <code>QDRANT_URL="http://localhost:6333"</code> / <code>BATCH_SIZE=16</code> / <code>DOCUMENT_PREFIX="検索文書: "</code></p>
+
+      <div class="fn">
+        <h4>load_records() → list[dict]</h4>
+        <dl>
+          <dt>入力</dt><dd><code>data/chunks/*/chunks.jsonl</code></dd>
+          <dt>処理</dt><dd>全ファイルを読み、空行以外を <code>json.loads</code></dd>
+          <dt>出力</dt><dd>records（445件）</dd>
+          <dt>渡す先</dt><dd><code>main()</code></dd>
+        </dl>
+      </div>
+
+      <div class="fn">
+        <h4>make_point_id(record) → str</h4>
+        <dl>
+          <dt>入力</dt><dd>1チャンク分の record</dd>
+          <dt>処理</dt><dd><code>uuid5(NAMESPACE_URL, "document_id:chunk_id")</code> で決定的な UUID を生成（再実行しても同じ ID → 上書き更新）</dd>
+          <dt>出力</dt><dd>UUID 文字列</dd>
+          <dt>渡す先</dt><dd><code>PointStruct</code> の <code>id</code></dd>
+        </dl>
+      </div>
+
+      <div class="fn">
+        <h4>main() → None</h4>
+        <dl>
+          <dt>入力</dt><dd><code>load_records()</code> の結果</dd>
+          <dt>処理</dt><dd>
+            <ol>
+              <li>デバイス選択（MPS が使えれば <code>mps</code>）、<code>SentenceTransformer(ruri-v3-310m)</code> を読み込み（入力上限 8192）</li>
+              <li><code>texts = "検索文書: " + embedding_text</code> を全件作成</li>
+              <li><code>model.encode(texts, batch_size=16, normalize_embeddings=True)</code> → 形状 <code>(445, 768)</code> の正規化済みベクトル</li>
+              <li>コレクションが無ければ <code>create_collection(size=768, distance=COSINE)</code></li>
+              <li>record とベクトルを組にして <code>PointStruct(id=make_point_id(), vector, payload)</code> を作成。payload は chunk_id・document_id・text・headings・embedding_text・source_refs・page_numbers・token_count・parent_id</li>
+              <li>16件ずつ <code>client.upsert(wait=True)</code>、最後に <code>client.count()</code> で件数確認</li>
+            </ol>
+          </dd>
+          <dt>出力</dt><dd>Qdrant <code>rag_ruri_v3_310m</code> に 445 points</dd>
+          <dt>渡す先</dt><dd><code>search.py</code> / <code>rag_api/main.py</code> が検索</dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+
+  <!-- ---------- search.py ---------- -->
+  <div class="file">
+    <div class="file-head">
+      <span class="tag mac">macOS</span>
+      <span class="path">src/search.py</span>
+      <span class="desc">CLI で類似度検索（LLM なし）</span>
+    </div>
+    <div class="file-body">
+      <p class="note">定数: <code>TOP_K=5</code> / <code>QUERY_PREFIX="検索クエリ: "</code>。起動時（モジュール読み込み時）に Ruri（MPS）と QdrantClient を生成。</p>
+
+      <div class="fn">
+        <h4>search(query, top_k=5) → list[ScoredPoint]</h4>
+        <dl>
+          <dt>入力</dt><dd>質問文、取得件数</dd>
+          <dt>処理</dt><dd><code>model.encode("検索クエリ: " + query, normalize_embeddings=True)</code> → 768次元ベクトル → <code>client.query_points(limit=top_k, with_payload=True)</code></dd>
+          <dt>出力</dt><dd>スコア付きポイント（上位 top_k 件）</dd>
+          <dt>渡す先</dt><dd><code>print_results()</code></dd>
+        </dl>
+      </div>
+
+      <div class="fn">
+        <h4>print_results(results) → None</h4>
+        <dl>
+          <dt>入力</dt><dd><code>search()</code> の結果</dd>
+          <dt>処理</dt><dd>順位・類似度スコア・文書・見出し・ページ・本文を整形表示</dd>
+          <dt>出力</dt><dd>標準出力</dd>
+        </dl>
+      </div>
+
+      <div class="fn">
+        <h4>__main__</h4>
+        <dl>
+          <dt>処理</dt><dd>引数があれば 1 回検索して終了。無ければ <code>input()</code> の対話ループ（<code>exit</code> / Ctrl+D で終了）</dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+
+  <!-- ---------- rag_api/main.py ---------- -->
+  <div class="file">
+    <div class="file-head">
+      <span class="tag docker">Docker</span>
+      <span class="path">rag_api/main.py</span>
+      <span class="desc">FastAPI：検索 API・回答生成 API・UI 配信</span>
+    </div>
+    <div class="file-body">
+      <p class="note">環境変数（compose.yaml）: <code>QDRANT_URL=http://qdrant:6333</code> / <code>OLLAMA_URL=http://ollama:11434</code> / <code>COLLECTION_NAME</code> / <code>EMBEDDING_MODEL</code> / <code>LLM_MODEL=qwen2.5:3b</code>。定数: <code>QUERY_PREFIX="検索クエリ: "</code> / <code>OLLAMA_TIMEOUT=600</code></p>
+
+      <div class="fn">
+        <h4>lifespan(app)</h4>
+        <dl>
+          <dt>処理</dt><dd>起動時に <code>SentenceTransformer(ruri-v3-310m, device="cpu")</code> と <code>QdrantClient(timeout=30)</code> を作って <code>app.state</code> に保持。終了時に Qdrant 接続を閉じる</dd>
+          <dt>渡す先</dt><dd><code>search_chunks()</code> が <code>request.app.state</code> から参照</dd>
+        </dl>
+      </div>
+
+      <div class="fn">
+        <h4>データ型（Pydantic）</h4>
+        <dl>
+          <dt>QuestionRequest</dt><dd><code>question: str</code>（1文字以上）、<code>top_k: int</code>（1〜20、初期値5）</dd>
+          <dt>Source</dt><dd><code>source_number, score, document_id, headings, page_numbers, text</code></dd>
+          <dt>Search­Response</dt><dd><code>question, sources</code></dd>
+          <dt>AskResponse</dt><dd><code>question, answer, sources</code></dd>
+        </dl>
+      </div>
+
+      <div class="fn">
+        <h4>search_chunks(request, question, top_k) → list[Source]</h4>
+        <dl>
+          <dt>入力</dt><dd>FastAPI の Request（モデル・クライアント取得用）、質問文、件数</dd>
+          <dt>処理</dt><dd>
+            <ol>
+              <li><code>model.encode("検索クエリ: " + question, normalize_embeddings=True)</code> → 768次元</li>
+              <li><code>client.query_points(collection, query_vector, limit=top_k)</code>（失敗時は HTTP 502）</li>
+              <li>各ポイントの payload から <code>Source</code> を組み立て、1始まりの番号を付与</li>
+            </ol>
+          </dd>
+          <dt>出力</dt><dd><code>list[Source]</code></dd>
+          <dt>渡す先</dt><dd><code>search()</code> はそのまま返却 ／ <code>ask()</code> は <code>generate_answer()</code> へ</dd>
+        </dl>
+      </div>
+
+      <div class="fn">
+        <h4>build_context(sources) → str</h4>
+        <dl>
+          <dt>入力</dt><dd><code>list[Source]</code></dd>
+          <dt>処理</dt><dd>各出典を <code>［資料N］見出し: A &gt; B / ページ: [49]\n本文</code> の形に整形し、空行で連結</dd>
+          <dt>出力</dt><dd>LLM に渡す資料テキスト</dd>
+          <dt>渡す先</dt><dd><code>generate_answer()</code></dd>
+        </dl>
+      </div>
+
+      <div class="fn">
+        <h4>generate_answer(question, sources) → str</h4>
+        <dl>
+          <dt>入力</dt><dd>質問文、<code>list[Source]</code></dd>
+          <dt>処理</dt><dd>
+            <ol>
+              <li>user プロンプト = <code>【資料】\n{build_context()}\n\n【質問】\n{question}</code></li>
+              <li>system プロンプト = 「資料だけを根拠に日本語で回答、［資料N］で出典を示す、資料に無ければ『資料からは分かりません』」</li>
+              <li><code>POST {OLLAMA_URL}/api/chat</code>（<code>stream=false</code>、timeout 600秒、失敗時は HTTP 502）</li>
+            </ol>
+          </dd>
+          <dt>出力</dt><dd><code>message.content</code>（回答文）</dd>
+          <dt>渡す先</dt><dd><code>ask()</code></dd>
+        </dl>
+      </div>
+
+      <div class="fn">
+        <h4>エンドポイント</h4>
+        <dl>
+          <dt>GET /</dt><dd><code>index()</code>：<code>static/index.html</code> を返す</dd>
+          <dt>GET /health</dt><dd><code>health()</code>：<code>{"status":"ok"}</code></dd>
+          <dt>POST /search</dt><dd><code>search()</code>：<code>search_chunks()</code> → <code>SearchResponse</code></dd>
+          <dt>POST /ask</dt><dd><code>ask()</code>：<code>search_chunks()</code> → <code>generate_answer()</code> → <code>AskResponse</code></dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+
+  <!-- ---------- index.html ---------- -->
+  <div class="file">
+    <div class="file-head">
+      <span class="tag docker">ブラウザ</span>
+      <span class="path">rag_api/static/index.html</span>
+      <span class="desc">質問応答 UI（JavaScript）</span>
+    </div>
+    <div class="file-body">
+      <div class="fn">
+        <h4>submit() → Promise&lt;void&gt;</h4>
+        <dl>
+          <dt>入力</dt><dd>テキスト欄の質問、モード（<code>ask</code> / <code>search</code>）、<code>top_k</code>（1〜10、範囲外は3）</dd>
+          <dt>処理</dt><dd>
+            <ol>
+              <li>質問を吹き出しで表示し、「回答生成中… N秒」を 1 秒ごとに更新</li>
+              <li><code>fetch("/ask" or "/search", {question, top_k})</code></li>
+              <li>成功: <code>answer</code> を表示 → <code>renderSources()</code> → 所要時間表示 ／ 失敗: エラー表示</li>
+            </ol>
+          </dd>
+          <dt>出力</dt><dd>画面への描画</dd>
+        </dl>
+      </div>
+      <div class="fn">
+        <h4>renderSources(container, sources) / el(tag, cls, text) / scrollBottom()</h4>
+        <dl>
+          <dt>処理</dt><dd><code>renderSources</code>: 出典ごとに <code>&lt;details&gt;</code>（見出し・ページ・スコア、開くと本文）を生成。<code>el</code>: 要素生成（<code>textContent</code> で安全に文字を入れる）。<code>scrollBottom</code>: 最下部へスクロール</dd>
+        </dl>
+      </div>
+      <div class="fn">
+        <h4>イベント</h4>
+        <dl>
+          <dt>処理</dt><dd>Enter で送信（日本語変換中 <code>isComposing</code> は除外）、Shift+Enter で改行、入力に合わせてテキスト欄の高さを自動調整</dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+
+  <!-- ---------- chunk_pdf.py ---------- -->
+  <div class="file">
+    <div class="file-head">
+      <span class="tag unused">未使用</span>
+      <span class="path">src/chunk_pdf.py</span>
+      <span class="desc">旧版：PDF を直接変換（OCR 設定なしの標準変換）してチャンク化</span>
+    </div>
+    <div class="file-body">
+      <p><code>build_chunker()</code> / <code>chunk_to_dict(chunk_id, chunk, chunker)</code> / <code>main()</code>。現在は <code>convert_pdf.py</code> + <code>chunk_doc.py</code> に置き換え済み。出力は <code>data/output/&lt;名&gt;_chunks.json</code>。</p>
+    </div>
+  </div>
+
+  <!-- ===================================================== -->
+  <h2 id="config">6. 設定・インフラファイル</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>ファイル</th><th>内容</th></tr></thead>
+      <tbody>
+        <tr><td><code>compose.yaml</code></td><td>
+          <b>qdrant</b>（<code>rag-qdrant</code>, 127.0.0.1:6333, volume <code>qdrant_data</code>）／
+          <b>ollama</b>（<code>rag-ollama</code>, 127.0.0.1:11434, volume <code>ollama_data</code>）／
+          <b>rag-api</b>（<code>rag-api</code>, 127.0.0.1:8000, <code>./rag_api</code> をビルド, volume <code>huggingface_cache</code>）。コンテナ間はサービス名（<code>http://qdrant:6333</code> など）で通信</td></tr>
+        <tr><td><code>rag_api/Dockerfile</code></td><td><code>python:3.12-slim</code>、torch は CPU 版を先に導入 → <code>requirements.txt</code> → <code>main.py</code>・<code>static/</code> をコピー → <code>uvicorn main:app</code> を 8000 番で起動</td></tr>
+        <tr><td><code>rag_api/requirements.txt</code></td><td>fastapi / uvicorn / sentence-transformers / qdrant-client / requests</td></tr>
+        <tr><td><code>Dockerfile</code>（ルート）</td><td>開発用イメージ：<code>python:3.12-slim-bookworm</code> + uv 0.9.5、venv は <code>/opt/venv</code>、<code>sleep infinity</code> で待機（現在は未使用。macOS の <code>.venv</code> で実行中）</td></tr>
+        <tr><td><code>pyproject.toml</code> / <code>uv.lock</code></td><td>macOS 側の依存：docling / onnxruntime / qdrant-client / sentence-transformers / transformers</td></tr>
+        <tr><td><code>CLAUDE.md</code> / <code>decision_log.html</code></td><td>Claude の振る舞い定義 ／ 技術選定の判断記録</td></tr>
+      </tbody>
+    </table>
+  </div>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js"></script>
+<script>
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: "neutral",
+    securityLevel: "loose",
+    flowchart: { htmlLabels: true, curve: "basis" },
+    sequence: { wrap: true, mirrorActors: false },
+    fontFamily: '-apple-system, BlinkMacSystemFont, "Hiragino Sans", "Noto Sans JP", sans-serif',
+  });
+</script>
+</body>
+</html>

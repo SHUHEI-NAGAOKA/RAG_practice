@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DoclingDocument エディター</title>
+<style>
+  :root {
+    --bg: #2a2c30;
+    --panel: #32353a;
+    --line: #d4d7dc;
+    --btn: #4a4e55;
+    --btn-hover: #5a5f67;
+    --hl: #4e6a94;
+    --hl-soft: #3c4a60;
+    --text: #ffffff;
+    --muted: #c4c8ce;
+    --err: #ff9e9e;
+    --warn: #ffd98c;
+    --ok: #a8e6b0;
+  }
+  * { box-sizing: border-box; border-radius: 0; }
+  html, body { height: 100%; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Noto Sans JP", sans-serif;
+    font-size: 14px;
+    display: flex;
+    flex-direction: column;
+  }
+  button, select, input, textarea {
+    font: inherit;
+    color: var(--text);
+    background: var(--btn);
+    border: 1px solid var(--line);
+  }
+  button { padding: 4px 10px; cursor: pointer; }
+  button:hover { background: var(--btn-hover); }
+  button:disabled { opacity: 0.45; cursor: default; }
+  button.primary { background: var(--hl); }
+  input, select { padding: 3px 6px; }
+  textarea { background: var(--bg); padding: 6px; width: 100%; resize: vertical; }
+  input:focus, select:focus, textarea:focus, button:focus { outline: 2px solid var(--hl); outline-offset: -2px; }
+  label { color: var(--muted); }
+  code, .mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12px; }
+
+  header {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px;
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--line);
+    background: var(--panel);
+  }
+  header h1 { font-size: 15px; margin: 0 8px 0 0; }
+  #fileName { color: var(--muted); }
+  .spacer { flex: 1; }
+
+  #main { flex: 1; display: flex; min-height: 0; }
+  #left { flex: 1.3; display: flex; flex-direction: column; min-width: 0; border-right: 1px solid var(--line); }
+  #right { flex: 1; overflow-y: auto; min-width: 0; }
+
+  .bar {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px;
+    padding: 6px 10px;
+    border-bottom: 1px solid var(--line);
+  }
+  #tree { flex: 1; overflow: auto; }
+  .row {
+    display: flex; align-items: center; gap: 6px;
+    padding: 2px 8px;
+    border-bottom: 1px solid #45484e;
+    white-space: nowrap; cursor: pointer;
+  }
+  .row:hover { background: var(--hl-soft); }
+  .row.focus { background: var(--hl); }
+  .row.checked .ref { color: var(--warn); }
+  .row input[type=checkbox] { margin: 0; accent-color: var(--hl); }
+  .tog { width: 14px; text-align: center; color: var(--muted); }
+  .ref { color: var(--muted); min-width: 92px; }
+  .lab { padding: 0 4px; border: 1px solid #7a7f87; font-size: 12px; }
+  .txt { overflow: hidden; text-overflow: ellipsis; }
+
+  section { padding: 10px 12px; border-bottom: 1px solid var(--line); }
+  section h2 { font-size: 13px; margin: 0 0 8px; color: var(--muted); font-weight: normal; }
+  .line { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; margin: 6px 0; }
+  #focusInfo { word-break: break-all; }
+  #jsonView { min-height: 220px; }
+  #textEdit { min-height: 70px; }
+
+  #log {
+    height: 120px; overflow-y: auto;
+    border-top: 1px solid var(--line);
+    background: var(--panel);
+    padding: 6px 12px;
+  }
+  #log div { padding: 1px 0; }
+  #log .err { color: var(--err); }
+  #log .warn { color: var(--warn); }
+  #log .ok { color: var(--ok); }
+</style>
+</head>
+<body>
+<header>
+  <h1>DoclingDocument エディター</h1>
+  <input type="file" id="fileInput" accept=".json,application/json">
+  <span id="fileName">（未読み込み）</span>
+  <span class="spacer"></span>
+  <button id="btnValidate" disabled>検証</button>
+  <label>出力名 <input id="outName" size="28" value="edited.json"></label>
+  <button id="btnExport" class="primary" disabled>JSON を書き出す</button>
+</header>
+
+<div id="main">
+  <!-- 左: ツリー -->
+  <div id="left">
+    <div class="bar">
+      <span>チェック: <b id="checkCount">0</b> 件</span>
+      <button id="btnCheckChildren" disabled>直下の子をチェック</button>
+      <button id="btnCheckDesc" disabled>全子孫をチェック</button>
+      <button id="btnCheckFocus" disabled>フォーカス要素をチェック</button>
+      <button id="btnClear" disabled>チェック解除</button>
+    </div>
+    <div class="bar">
+      <label>ジャンプ <input id="jumpRef" size="16" placeholder="#/texts/0"></label>
+      <button id="btnJump" disabled>表示</button>
+      <button id="btnCollapse" disabled>すべて閉じる</button>
+    </div>
+    <div id="tree"></div>
+  </div>
+
+  <!-- 右: 編集パネル -->
+  <div id="right">
+    <section>
+      <h2>フォーカス中の要素</h2>
+      <div id="focusInfo" class="mono">（ツリーの行をクリック）</div>
+    </section>
+
+    <section>
+      <h2>ラベル</h2>
+      <div class="line">
+        <select id="labelSelect" disabled></select>
+        <label>level <input id="levelInput" type="number" min="1" max="100" value="1" style="width:4.5em"></label>
+      </div>
+      <div class="line">
+        <button id="btnLabelFocus" disabled>フォーカス要素に適用</button>
+        <button id="btnLabelChecked" disabled>チェックした要素に一括適用</button>
+      </div>
+    </section>
+
+    <section>
+      <h2>階層（親）の変更</h2>
+      <div class="line">
+        <label>移動先 <input id="targetRef" class="mono" size="16" placeholder="#/body"></label>
+        <button id="btnSetTarget" disabled>フォーカス要素を移動先に</button>
+      </div>
+      <div class="line">
+        <label>位置 <input id="moveIndex" type="number" min="0" style="width:5em" placeholder="末尾"></label>
+        <span class="mono" style="color:var(--muted)">（0 = 先頭、空欄 = 末尾）</span>
+      </div>
+      <div class="line">
+        <button id="btnMoveFocus" disabled>フォーカス要素を移動</button>
+        <button id="btnMoveChecked" disabled>チェックした要素を一括移動</button>
+      </div>
+    </section>
+
+    <section>
+      <h2>本文（text）</h2>
+      <textarea id="textEdit" disabled></textarea>
+      <div class="line">
+        <label><input type="checkbox" id="syncOrig" checked> orig も同じ値にする</label>
+        <button id="btnText" disabled>本文を反映</button>
+      </div>
+    </section>
+
+    <section>
+      <h2>JSON（実際の記述・直接編集）</h2>
+      <textarea id="jsonView" class="mono" spellcheck="false" disabled></textarea>
+      <div class="line">
+        <button id="btnJson" disabled>JSON を反映</button>
+        <button id="btnJsonReset" disabled>編集を取り消す</button>
+        <span class="mono" style="color:var(--muted)">self_ref / parent / children は変更不可</span>
+      </div>
+    </section>
+  </div>
+</div>
+
+<div id="log"></div>
+
+<script src="core.js"></script>
+<script>
+(function () {
+  "use strict";
+  const C = window.DocCore;
+  const $ = (id) => document.getElementById(id);
+
+  const state = {
+    doc: null,
+    name: "",
+    focus: null,
+    checked: new Set(),
+    expanded: new Set(["#/body"]),
+    lastExport: null,
+  };
+
+  // ==========================================
+  // ログ
+  // ==========================================
+  function log(msg, cls) {
+    const d = document.createElement("div");
+    if (cls) d.className = cls;
+    d.textContent = msg;
+    $("log").appendChild(d);
+    $("log").scrollTop = $("log").scrollHeight;
+  }
+
+  function report(res, okMsg) {
+    if (res.ok) log(okMsg, "ok");
+    else log("失敗: " + res.error, "err");
+    return res.ok;
+  }
+
+  // ==========================================
+  // ツリー描画
+  // ==========================================
+  function renderTree() {
+    const tree = $("tree");
+    tree.textContent = "";
+    if (!state.doc) return;
+    const frag = document.createDocumentFragment();
+    for (const root of C.ROOTS) addRow(frag, root, 0);
+    tree.appendChild(frag);
+    $("checkCount").textContent = state.checked.size;
+  }
+
+  function addRow(frag, ref, depth) {
+    const kids = C.childRefs(state.doc, ref);
+    const item = C.getItem(state.doc, ref);
+    const row = document.createElement("div");
+    row.className = "row";
+    if (ref === state.focus) row.classList.add("focus");
+    if (state.checked.has(ref)) row.classList.add("checked");
+    row.dataset.ref = ref;
+    row.style.paddingLeft = 8 + depth * 18 + "px";
+
+    const cb = document.createElement("input");
+    cb.type = "checkbox";
+    cb.checked = state.checked.has(ref);
+    cb.disabled = C.ROOTS.includes(ref);
+    cb.dataset.role = "check";
+    row.appendChild(cb);
+
+    const tog = document.createElement("span");
+    tog.className = "tog";
+    tog.dataset.role = "toggle";
+    tog.textContent = kids.length ? (state.expanded.has(ref) ? "▾" : "▸") : "";
+    row.appendChild(tog);
+
+    const r = document.createElement("span");
+    r.className = "ref mono";
+    r.textContent = ref;
+    row.appendChild(r);
+
+    if (!C.ROOTS.includes(ref)) {
+      const lab = document.createElement("span");
+      lab.className = "lab";
+      lab.textContent = item.label + (item.label === "section_header" ? ` L${item.level}` : "");
+      row.appendChild(lab);
+    }
+
+    const t = document.createElement("span");
+    t.className = "txt";
+    const d = C.describe(state.doc, ref);
+    t.textContent = (d.includes(" | ") ? d.split(" | ").slice(1).join(" | ") : "") + (kids.length ? `  (${kids.length})` : "");
+    row.appendChild(t);
+
+    frag.appendChild(row);
+    if (kids.length && state.expanded.has(ref)) {
+      for (const k of kids) addRow(frag, k, depth + 1);
+    }
+  }
+
+  // ツリー操作（イベント委譲）
+  $("tree").addEventListener("click", (e) => {
+    const row = e.target.closest(".row");
+    if (!row) return;
+    const ref = row.dataset.ref;
+    const role = e.target.dataset.role;
+    if (role === "check") {
+      if (e.target.checked) state.checked.add(ref);
+      else state.checked.delete(ref);
+      row.classList.toggle("checked", e.target.checked);
+      $("checkCount").textContent = state.checked.size;
+      updateButtons();
+      return;
+    }
+    if (role === "toggle") {
+      if (state.expanded.has(ref)) state.expanded.delete(ref);
+      else state.expanded.add(ref);
+      renderTree();
+      return;
+    }
+    setFocus(ref);
+  });
+
+  // ==========================================
+  // フォーカス・詳細パネル
+  // ==========================================
+  function setFocus(ref) {
+    state.focus = ref;
+    renderTree();
+    renderDetail();
+  }
+
+  function renderDetail() {
+    const ref = state.focus;
+    const item = ref && C.getItem(state.doc, ref);
+    if (!item) {
+      $("focusInfo").textContent = "（ツリーの行をクリック）";
+      $("jsonView").value = "";
+      $("textEdit").value = "";
+      updateButtons();
+      return;
+    }
+    const isRoot = C.ROOTS.includes(ref);
+    const parent = C.parentRef(state.doc, ref);
+    $("focusInfo").textContent =
+      `${ref}  /  親: ${parent || "なし"}  /  子: ${C.childRefs(state.doc, ref).length} 件` +
+      (isRoot ? "" : `  /  ${item.label}`);
+
+    // ラベル候補
+    const sel = $("labelSelect");
+    sel.textContent = "";
+    for (const l of C.labelOptions(ref)) {
+      const o = document.createElement("option");
+      o.value = l;
+      o.textContent = l;
+      sel.appendChild(o);
+    }
+    if (C.labelOptions(ref).includes(item.label)) sel.value = item.label;
+    if (item.label === "section_header") $("levelInput").value = item.level;
+
+    $("textEdit").value = typeof item.text === "string" ? item.text : "";
+    $("jsonView").value = isRoot
+      ? JSON.stringify({ self_ref: item.self_ref, children: `（${(item.children || []).length} 件）` }, null, 2)
+      : C.serialize(item);
+    updateButtons();
+  }
+
+  function updateButtons() {
+    const loaded = !!state.doc;
+    const ref = state.focus;
+    const item = loaded && ref && C.getItem(state.doc, ref);
+    const isRoot = ref && C.ROOTS.includes(ref);
+    const hasKids = item && C.childRefs(state.doc, ref).length > 0;
+    const isText = item && C.arrayOf(ref) === "texts";
+    const hasChecked = state.checked.size > 0;
+    const set = (id, on) => { $(id).disabled = !on; };
+
+    ["btnValidate", "btnExport", "btnJump", "btnCollapse"].forEach((id) => set(id, loaded));
+    set("btnCheckChildren", hasKids);
+    set("btnCheckDesc", hasKids);
+    set("btnCheckFocus", item && !isRoot);
+    set("btnClear", hasChecked);
+    set("labelSelect", item && !isRoot && C.labelOptions(ref).length > 0);
+    set("btnLabelFocus", item && !isRoot);
+    set("btnLabelChecked", hasChecked);
+    set("btnSetTarget", !!item);
+    set("btnMoveFocus", item && !isRoot);
+    set("btnMoveChecked", hasChecked);
+    set("textEdit", isText);
+    set("btnText", isText);
+    set("jsonView", item && !isRoot);
+    set("btnJson", item && !isRoot);
+    set("btnJsonReset", item && !isRoot);
+  }
+
+  // 編集後の再描画（移動した要素が見えるよう親を展開）
+  function afterEdit(refsToShow) {
+    for (const r of refsToShow || []) {
+      for (const a of C.ancestors(state.doc, r)) state.expanded.add(a);
+    }
+    renderTree();
+    renderDetail();
+  }
+
+  // ==========================================
+  // 読み込み・検証・書き出し
+  // ==========================================
+  function loadText(text, name) {
+    try {
+      state.doc = C.parse(text);
+    } catch (e) {
+      log("JSON の読み込みに失敗: " + e.message, "err");
+      return false;
+    }
+    state.name = name || "document.json";
+    state.focus = null;
+    state.checked.clear();
+    state.expanded = new Set(["#/body"]);
+    $("fileName").textContent = state.name;
+    $("outName").value = state.name.replace(/\.json$/i, "") + "_edited.json";
+    if (!C.canRaw) log("このブラウザは大きな整数の桁保持に未対応です（origin.binary_hash が変わる可能性があります）", "warn");
+    log(`読み込み: ${state.name}（texts ${state.doc.texts.length} / groups ${state.doc.groups.length}）`, "ok");
+    renderTree();
+    renderDetail();
+    runValidate();
+    return true;
+  }
+
+  $("fileInput").addEventListener("change", (e) => {
+    const f = e.target.files[0];
+    if (!f) return;
+    const reader = new FileReader();
+    reader.onload = () => loadText(reader.result, f.name);
+    reader.readAsText(f, "utf-8");
+  });
+
+  function runValidate() {
+    const v = C.validate(state.doc);
+    v.errors.slice(0, 20).forEach((m) => log("エラー: " + m, "err"));
+    v.warnings.slice(0, 20).forEach((m) => log("警告: " + m, "warn"));
+    log(`検証: エラー ${v.errors.length} 件 / 警告 ${v.warnings.length} 件`, v.ok ? "ok" : "err");
+    return v;
+  }
+  $("btnValidate").addEventListener("click", runValidate);
+
+  $("btnExport").addEventListener("click", () => {
+    const v = runValidate();
+    if (!v.ok) {
+      log("エラーがあるため書き出しません", "err");
+      return;
+    }
+    const text = C.serialize(state.doc);
+    state.lastExport = text;
+    const name = $("outName").value.trim() || "edited.json";
+    if (typeof URL !== "undefined" && URL.createObjectURL) {
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(new Blob([text], { type: "application/json" }));
+      a.download = name;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+    }
+    log(`書き出し: ${name}`, "ok");
+  });
+
+  // ==========================================
+  // 選択（チェック）
+  // ==========================================
+  function check(refs) {
+    refs.filter((r) => !C.ROOTS.includes(r)).forEach((r) => state.checked.add(r));
+    state.expanded.add(state.focus);
+    renderTree();
+    updateButtons();
+  }
+  $("btnCheckChildren").addEventListener("click", () => {
+    const refs = C.childRefs(state.doc, state.focus);
+    check(refs);
+    log(`${state.focus} の直下の子 ${refs.length} 件をチェック`);
+  });
+  $("btnCheckDesc").addEventListener("click", () => {
+    const refs = C.descendants(state.doc, state.focus);
+    refs.forEach((r) => { if (C.childRefs(state.doc, r).length) state.expanded.add(r); });
+    check(refs);
+    log(`${state.focus} の全子孫 ${refs.length} 件をチェック`);
+  });
+  $("btnCheckFocus").addEventListener("click", () => {
+    state.checked.add(state.focus);
+    renderTree();
+    updateButtons();
+  });
+  $("btnClear").addEventListener("click", () => {
+    state.checked.clear();
+    renderTree();
+    updateButtons();
+    log("チェックを解除");
+  });
+
+  // ジャンプ・折りたたみ
+  $("btnJump").addEventListener("click", () => {
+    const ref = $("jumpRef").value.trim();
+    if (!C.getItem(state.doc, ref)) {
+      log(`${ref} は存在しません`, "err");
+      return;
+    }
+    C.ancestors(state.doc, ref).forEach((a) => state.expanded.add(a));
+    setFocus(ref);
+    const row = document.querySelector(`.row[data-ref="${ref}"]`);
+    if (row && row.scrollIntoView) row.scrollIntoView({ block: "center" });
+  });
+  $("btnCollapse").addEventListener("click", () => {
+    state.expanded = new Set(["#/body"]);
+    renderTree();
+  });
+
+  // ==========================================
+  // ラベル
+  // ==========================================
+  function labelArgs(refs) {
+    const label = $("labelSelect").value;
+    const level = label === "section_header" ? Number($("levelInput").value) : undefined;
+    return { refs, label, level };
+  }
+  $("btnLabelFocus").addEventListener("click", () => {
+    const a = labelArgs([state.focus]);
+    report(C.setLabels(state.doc, a), `${state.focus} のラベルを ${a.label} に変更`);
+    afterEdit();
+  });
+  $("btnLabelChecked").addEventListener("click", () => {
+    const refs = [...state.checked];
+    const a = labelArgs(refs);
+    report(C.setLabels(state.doc, a), `${refs.length} 件のラベルを ${a.label} に変更`);
+    afterEdit();
+  });
+
+  // ==========================================
+  // 移動
+  // ==========================================
+  $("btnSetTarget").addEventListener("click", () => {
+    $("targetRef").value = state.focus;
+  });
+  function moveArgs(refs) {
+    const target = $("targetRef").value.trim();
+    const iv = $("moveIndex").value.trim();
+    return { refs, target, index: iv === "" ? undefined : Number(iv) };
+  }
+  $("btnMoveFocus").addEventListener("click", () => {
+    const a = moveArgs([state.focus]);
+    const ok = report(C.moveItems(state.doc, a), `${state.focus} を ${a.target} へ移動`);
+    if (ok) state.expanded.add(a.target);
+    afterEdit(ok ? [state.focus] : []);
+  });
+  $("btnMoveChecked").addEventListener("click", () => {
+    const refs = [...state.checked];
+    const a = moveArgs(refs);
+    const moved = C.topmost(state.doc, refs).length;
+    const ok = report(C.moveItems(state.doc, a), `${moved} 件を ${a.target} へ一括移動（親子同時選択は親ごと移動）`);
+    if (ok) {
+      state.expanded.add(a.target);
+      state.checked.clear();
+    }
+    afterEdit(ok ? refs : []);
+  });
+
+  // ==========================================
+  // バリュー（本文・JSON）
+  // ==========================================
+  $("btnText").addEventListener("click", () => {
+    report(
+      C.setText(state.doc, { ref: state.focus, text: $("textEdit").value, syncOrig: $("syncOrig").checked }),
+      `${state.focus} の本文を変更`
+    );
+    afterEdit();
+  });
+  $("btnJson").addEventListener("click", () => {
+    report(C.updateItem(state.doc, { ref: state.focus, json: $("jsonView").value }), `${state.focus} の JSON を反映`);
+    afterEdit();
+  });
+  $("btnJsonReset").addEventListener("click", renderDetail);
+
+  // テスト・外部からの操作用
+  window.DocEditor = { state, loadText, renderTree, setFocus };
+  updateButtons();
+})();
+</script>
+</body>
+</html>

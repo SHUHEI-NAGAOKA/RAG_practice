@@ -1,0 +1,54 @@
+/Users/nagaokashuuhei/Desktop/claude_project/project_dir/RAG_practice/src/eval_ragas.py:186: DeprecationWarning: Importing Faithfulness from 'ragas.metrics' is deprecated and will be removed in v1.0. Please use 'ragas.metrics.collections' instead. Example: from ragas.metrics.collections import Faithfulness
+  from ragas.metrics import (
+/Users/nagaokashuuhei/Desktop/claude_project/project_dir/RAG_practice/src/eval_ragas.py:186: DeprecationWarning: Importing LLMContextPrecisionWithReference from 'ragas.metrics' is deprecated and will be removed in v1.0. Please use 'ragas.metrics.collections' instead. Example: from ragas.metrics.collections import ContextPrecisionWithReference
+  from ragas.metrics import (
+/Users/nagaokashuuhei/Desktop/claude_project/project_dir/RAG_practice/src/eval_ragas.py:186: DeprecationWarning: Importing LLMContextRecall from 'ragas.metrics' is deprecated and will be removed in v1.0. Please use 'ragas.metrics.collections' instead. Example: from ragas.metrics.collections import ContextRecall
+  from ragas.metrics import (
+/Users/nagaokashuuhei/Desktop/claude_project/project_dir/RAG_practice/src/eval_ragas.py:186: DeprecationWarning: Importing ResponseRelevancy from 'ragas.metrics' is deprecated and will be removed in v1.0. Please use 'ragas.metrics.collections' instead. Example: from ragas.metrics.collections import AnswerRelevancy
+  from ragas.metrics import (
+W1116 02:51:39.230000 30940 torch/distributed/elastic/multiprocessing/redirects.py:35] NOTE: Redirects are currently not supported in MacOs.
+採点対象 20/20 問（評価用 LLM: claude-opus-5-5）
+Loading weights:   0%|          | 0/152 [00:00<?, ?it/s]Loading weights: 100%|██████████| 152/152 [00:00<00:00, 5423.75it/s]
+Evaluating:   0%|          | 0/20 [00:00<?, ?it/s]Evaluating:   5%|▌         | 1/20 [00:07<02:24,  7.63s/it]Evaluating:  10%|█         | 2/20 [00:09<01:14,  4.16s/it]Evaluating:  15%|█▌        | 3/20 [00:10<00:50,  2.99s/it]Evaluating:  20%|██        | 4/20 [00:12<00:39,  2.49s/it]Evaluating:  25%|██▌       | 5/20 [00:15<00:40,  2.72s/it]Evaluating:  30%|███       | 6/20 [00:19<00:41,  3.00s/it]Evaluating:  35%|███▌      | 7/20 [00:20<00:32,  2.53s/it]Evaluating:  40%|████      | 8/20 [00:24<00:36,  3.01s/it]Evaluating:  45%|████▌     | 9/20 [00:26<00:28,  2.60s/it]Evaluating:  50%|█████     | 10/20 [00:28<00:22,  2.29s/it]Evaluating:  55%|█████▌    | 11/20 [00:31<00:23,  2.66s/it]Evaluating:  60%|██████    | 12/20 [00:33<00:18,  2.33s/it]Evaluating:  65%|██████▌   | 13/20 [00:37<00:20,  2.90s/it]Evaluating:  70%|███████   | 14/20 [00:39<00:14,  2.50s/it]Evaluating:  75%|███████▌  | 15/20 [00:42<00:13,  2.73s/it]Evaluating:  80%|████████  | 16/20 [00:44<00:10,  2.59s/it]Evaluating:  85%|████████▌ | 17/20 [00:46<00:06,  2.29s/it]Evaluating:  90%|█████████ | 18/20 [00:51<00:06,  3.33s/it]Evaluating:  95%|█████████▌| 19/20 [00:55<00:03,  3.29s/it]Evaluating: 100%|██████████| 20/20 [00:55<00:00,  2.76s/it]
+{
+  "judge_model": "claude-opus-5-5",
+  "questions": 20,
+  "mean": {
+    "faithfulness": 0.812,
+    "answer_relevancy": 0.718,
+    "llm_context_precision_with_reference": 0.72,
+    "context_recall": 0.56
+  },
+  "mean_by_type": {
+    "multi": {
+      "faithfulness": 0.703,
+      "answer_relevancy": 0.947,
+      "llm_context_precision_with_reference": 0.972,
+      "context_recall": 0.444
+    },
+    "single": {
+      "faithfulness": 0.821,
+      "answer_relevancy": 0.72,
+      "llm_context_precision_with_reference": 0.718,
+      "context_recall": 0.554
+    },
+    "unanswerable": {
+      "faithfulness": 1.0,
+      "answer_relevancy": 0.0,
+      "llm_context_precision_with_reference": 0.0,
+      "context_recall": 1.0
+    }
+  }
+}
+Traceback (most recent call last):
+  File "/Users/nagaokashuuhei/Desktop/claude_project/project_dir/RAG_practice/src/eval_ragas.py", line 263, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/Users/nagaokashuuhei/Desktop/claude_project/project_dir/RAG_practice/src/eval_ragas.py", line 259, in main
+    score(Path(a.run_dir), a.only)
+  File "/Users/nagaokashuuhei/Desktop/claude_project/project_dir/RAG_practice/src/eval_ragas.py", line 244, in score
+    print("保存:", (run_dir / "scores.csv").relative_to(ROOT))
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/nagaokashuuhei/.local/share/uv/python/cpython-3.12.16-macos-aarch64-none/lib/python3.12/pathlib.py", line 682, in relative_to
+    raise ValueError(f"{str(self)!r} is not in the subpath of {str(other)!r}")
+ValueError: 'data/eval/results/20261116_0230_summary_3b/scores.csv' is not in the subpath of '/Users/nagaokashuuhei/Desktop/claude_project/project_dir/RAG_practice'

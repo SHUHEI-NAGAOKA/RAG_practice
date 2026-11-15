@@ -1,0 +1,174 @@
+/Users/nagaokashuuhei/Desktop/claude_project/project_dir/RAG_practice/src/eval_ragas.py:185: DeprecationWarning: Importing Faithfulness from 'ragas.metrics' is deprecated and will be removed in v1.0. Please use 'ragas.metrics.collections' instead. Example: from ragas.metrics.collections import Faithfulness
+  from ragas.metrics import (
+/Users/nagaokashuuhei/Desktop/claude_project/project_dir/RAG_practice/src/eval_ragas.py:185: DeprecationWarning: Importing LLMContextPrecisionWithReference from 'ragas.metrics' is deprecated and will be removed in v1.0. Please use 'ragas.metrics.collections' instead. Example: from ragas.metrics.collections import ContextPrecisionWithReference
+  from ragas.metrics import (
+/Users/nagaokashuuhei/Desktop/claude_project/project_dir/RAG_practice/src/eval_ragas.py:185: DeprecationWarning: Importing LLMContextRecall from 'ragas.metrics' is deprecated and will be removed in v1.0. Please use 'ragas.metrics.collections' instead. Example: from ragas.metrics.collections import ContextRecall
+  from ragas.metrics import (
+/Users/nagaokashuuhei/Desktop/claude_project/project_dir/RAG_practice/src/eval_ragas.py:185: DeprecationWarning: Importing ResponseRelevancy from 'ragas.metrics' is deprecated and will be removed in v1.0. Please use 'ragas.metrics.collections' instead. Example: from ragas.metrics.collections import AnswerRelevancy
+  from ragas.metrics import (
+W1116 02:47:48.928000 28912 torch/distributed/elastic/multiprocessing/redirects.py:35] NOTE: Redirects are currently not supported in MacOs.
+採点対象 20/20 問（評価用 LLM: claude-opus-5-5）
+Loading weights:   0%|          | 0/152 [00:00<?, ?it/s]Loading weights: 100%|██████████| 152/152 [00:00<00:00, 4347.58it/s]
+Evaluating:   0%|          | 0/80 [00:00<?, ?it/s]Evaluating:   1%|▏         | 1/80 [00:03<04:14,  3.22s/it]Evaluating:   2%|▎         | 2/80 [00:04<02:46,  2.14s/it]Exception raised in Job[1]: ValidationError(1 validation error for EmbeddingUsageEvent
+model
+  Input should be a valid string [type=string_type, input_value=SentenceTransformer(
+  (0...nclude_prompt': True})
+), input_type=SentenceTransformer]
+    For further information visit https://errors.pydantic.dev/2.14/v/string_type)
+Evaluating:   4%|▍         | 3/80 [00:05<02:16,  1.77s/it]Evaluating:   5%|▌         | 4/80 [00:06<01:50,  1.45s/it]Evaluating:   6%|▋         | 5/80 [00:10<02:53,  2.31s/it]Evaluating:   8%|▊         | 6/80 [00:11<02:19,  1.89s/it]Exception raised in Job[5]: ValidationError(1 validation error for EmbeddingUsageEvent
+model
+  Input should be a valid string [type=string_type, input_value=SentenceTransformer(
+  (0...nclude_prompt': True})
+), input_type=SentenceTransformer]
+    For further information visit https://errors.pydantic.dev/2.14/v/string_type)
+Evaluating:   9%|▉         | 7/80 [00:12<01:49,  1.50s/it]Evaluating:  10%|█         | 8/80 [00:13<01:36,  1.35s/it]Evaluating:  11%|█▏        | 9/80 [00:15<01:45,  1.49s/it]Evaluating:  12%|█▎        | 10/80 [00:15<01:22,  1.19s/it]Evaluating:  14%|█▍        | 11/80 [00:16<01:14,  1.07s/it]Exception raised in Job[9]: ValidationError(1 validation error for EmbeddingUsageEvent
+model
+  Input should be a valid string [type=string_type, input_value=SentenceTransformer(
+  (0...nclude_prompt': True})
+), input_type=SentenceTransformer]
+    For further information visit https://errors.pydantic.dev/2.14/v/string_type)
+Evaluating:  15%|█▌        | 12/80 [00:18<01:30,  1.32s/it]Evaluating:  16%|█▋        | 13/80 [00:19<01:16,  1.15s/it]Evaluating:  18%|█▊        | 14/80 [00:20<01:21,  1.24s/it]Exception raised in Job[13]: ValidationError(1 validation error for EmbeddingUsageEvent
+model
+  Input should be a valid string [type=string_type, input_value=SentenceTransformer(
+  (0...nclude_prompt': True})
+), input_type=SentenceTransformer]
+    For further information visit https://errors.pydantic.dev/2.14/v/string_type)
+Evaluating:  19%|█▉        | 15/80 [00:24<02:11,  2.03s/it]Evaluating:  20%|██        | 16/80 [00:26<01:59,  1.87s/it]Exception raised in Job[17]: ValidationError(1 validation error for EmbeddingUsageEvent
+model
+  Input should be a valid string [type=string_type, input_value=SentenceTransformer(
+  (0...nclude_prompt': True})
+), input_type=SentenceTransformer]
+    For further information visit https://errors.pydantic.dev/2.14/v/string_type)
+Evaluating:  21%|██▏       | 17/80 [00:26<01:35,  1.52s/it]Evaluating:  22%|██▎       | 18/80 [00:27<01:15,  1.23s/it]Evaluating:  24%|██▍       | 19/80 [00:27<01:01,  1.01s/it]Evaluating:  25%|██▌       | 20/80 [00:29<01:20,  1.34s/it]Evaluating:  26%|██▋       | 21/80 [00:32<01:47,  1.82s/it]Evaluating:  28%|██▊       | 22/80 [00:33<01:23,  1.43s/it]Evaluating:  29%|██▉       | 23/80 [00:34<01:09,  1.22s/it]Exception raised in Job[21]: ValidationError(1 validation error for EmbeddingUsageEvent
+model
+  Input should be a valid string [type=string_type, input_value=SentenceTransformer(
+  (0...nclude_prompt': True})
+), input_type=SentenceTransformer]
+    For further information visit https://errors.pydantic.dev/2.14/v/string_type)
+Evaluating:  30%|███       | 24/80 [00:36<01:28,  1.58s/it]Evaluating:  31%|███▏      | 25/80 [00:39<01:41,  1.84s/it]Exception raised in Job[25]: ValidationError(1 validation error for EmbeddingUsageEvent
+model
+  Input should be a valid string [type=string_type, input_value=SentenceTransformer(
+  (0...nclude_prompt': True})
+), input_type=SentenceTransformer]
+    For further information visit https://errors.pydantic.dev/2.14/v/string_type)
+Evaluating:  32%|███▎      | 26/80 [00:39<01:20,  1.48s/it]Evaluating:  34%|███▍      | 27/80 [00:43<01:57,  2.21s/it]Exception raised in Job[29]: ValidationError(1 validation error for EmbeddingUsageEvent
+model
+  Input should be a valid string [type=string_type, input_value=SentenceTransformer(
+  (0...nclude_prompt': True})
+), input_type=SentenceTransformer]
+    For further information visit https://errors.pydantic.dev/2.14/v/string_type)
+Evaluating:  35%|███▌      | 28/80 [00:46<02:12,  2.55s/it]Evaluating:  36%|███▋      | 29/80 [00:50<02:21,  2.77s/it]Evaluating:  38%|███▊      | 30/80 [00:51<01:56,  2.32s/it]Evaluating:  39%|███▉      | 31/80 [00:57<02:43,  3.35s/it]Exception raised in Job[33]: ValidationError(1 validation error for EmbeddingUsageEvent
+model
+  Input should be a valid string [type=string_type, input_value=SentenceTransformer(
+  (0...nclude_prompt': True})
+), input_type=SentenceTransformer]
+    For further information visit https://errors.pydantic.dev/2.14/v/string_type)
+Evaluating:  40%|████      | 32/80 [00:59<02:25,  3.04s/it]Evaluating:  41%|████▏     | 33/80 [01:00<01:56,  2.47s/it]Evaluating:  42%|████▎     | 34/80 [01:01<01:26,  1.89s/it]Evaluating:  44%|████▍     | 35/80 [01:03<01:33,  2.07s/it]Evaluating:  45%|████▌     | 36/80 [01:05<01:26,  1.96s/it]Exception raised in Job[37]: ValidationError(1 validation error for EmbeddingUsageEvent
+model
+  Input should be a valid string [type=string_type, input_value=SentenceTransformer(
+  (0...nclude_prompt': True})
+), input_type=SentenceTransformer]
+    For further information visit https://errors.pydantic.dev/2.14/v/string_type)
+Evaluating:  46%|████▋     | 37/80 [01:06<01:08,  1.59s/it]Evaluating:  48%|████▊     | 38/80 [01:12<02:12,  3.16s/it]Evaluating:  49%|████▉     | 39/80 [01:15<02:02,  3.00s/it]Evaluating:  50%|█████     | 40/80 [01:18<01:57,  2.93s/it]Evaluating:  51%|█████▏    | 41/80 [01:18<01:26,  2.21s/it]Exception raised in Job[41]: ValidationError(1 validation error for EmbeddingUsageEvent
+model
+  Input should be a valid string [type=string_type, input_value=SentenceTransformer(
+  (0...nclude_prompt': True})
+), input_type=SentenceTransformer]
+    For further information visit https://errors.pydantic.dev/2.14/v/string_type)
+Evaluating:  52%|█████▎    | 42/80 [01:19<01:06,  1.74s/it]Evaluating:  54%|█████▍    | 43/80 [01:22<01:14,  2.02s/it]Exception raised in Job[45]: ValidationError(1 validation error for EmbeddingUsageEvent
+model
+  Input should be a valid string [type=string_type, input_value=SentenceTransformer(
+  (0...nclude_prompt': True})
+), input_type=SentenceTransformer]
+    For further information visit https://errors.pydantic.dev/2.14/v/string_type)
+Evaluating:  55%|█████▌    | 44/80 [01:25<01:22,  2.30s/it]Evaluating:  56%|█████▋    | 45/80 [01:25<01:02,  1.78s/it]Evaluating:  57%|█████▊    | 46/80 [01:28<01:07,  1.98s/it]Evaluating:  59%|█████▉    | 47/80 [01:30<01:08,  2.07s/it]Evaluating:  60%|██████    | 48/80 [01:33<01:15,  2.35s/it]Evaluating:  61%|██████▏   | 49/80 [01:33<00:55,  1.80s/it]Evaluating:  62%|██████▎   | 50/80 [01:35<00:50,  1.67s/it]Exception raised in Job[49]: ValidationError(1 validation error for EmbeddingUsageEvent
+model
+  Input should be a valid string [type=string_type, input_value=SentenceTransformer(
+  (0...nclude_prompt': True})
+), input_type=SentenceTransformer]
+    For further information visit https://errors.pydantic.dev/2.14/v/string_type)
+Evaluating:  64%|██████▍   | 51/80 [01:36<00:43,  1.50s/it]Evaluating:  65%|██████▌   | 52/80 [01:37<00:40,  1.45s/it]Exception raised in Job[53]: ValidationError(1 validation error for EmbeddingUsageEvent
+model
+  Input should be a valid string [type=string_type, input_value=SentenceTransformer(
+  (0...nclude_prompt': True})
+), input_type=SentenceTransformer]
+    For further information visit https://errors.pydantic.dev/2.14/v/string_type)
+Evaluating:  66%|██████▋   | 53/80 [01:41<00:54,  2.03s/it]Evaluating:  68%|██████▊   | 54/80 [01:42<00:46,  1.78s/it]Evaluating:  69%|██████▉   | 55/80 [01:45<00:57,  2.29s/it]Exception raised in Job[57]: ValidationError(1 validation error for EmbeddingUsageEvent
+model
+  Input should be a valid string [type=string_type, input_value=SentenceTransformer(
+  (0...nclude_prompt': True})
+), input_type=SentenceTransformer]
+    For further information visit https://errors.pydantic.dev/2.14/v/string_type)
+Evaluating:  70%|███████   | 56/80 [01:48<00:58,  2.44s/it]Evaluating:  71%|███████▏  | 57/80 [01:50<00:53,  2.33s/it]Evaluating:  72%|███████▎  | 58/80 [01:55<01:10,  3.21s/it]Evaluating:  74%|███████▍  | 59/80 [02:00<01:18,  3.76s/it]Exception raised in Job[61]: ValidationError(1 validation error for EmbeddingUsageEvent
+model
+  Input should be a valid string [type=string_type, input_value=SentenceTransformer(
+  (0...nclude_prompt': True})
+), input_type=SentenceTransformer]
+    For further information visit https://errors.pydantic.dev/2.14/v/string_type)
+Evaluating:  75%|███████▌  | 60/80 [02:02<00:59,  2.95s/it]Evaluating:  76%|███████▋  | 61/80 [02:03<00:45,  2.37s/it]Evaluating:  78%|███████▊  | 62/80 [02:04<00:38,  2.13s/it]Evaluating:  79%|███████▉  | 63/80 [02:06<00:32,  1.92s/it]Evaluating:  80%|████████  | 64/80 [02:07<00:28,  1.78s/it]Evaluating:  81%|████████▏ | 65/80 [02:09<00:25,  1.70s/it]Evaluating:  82%|████████▎ | 66/80 [02:13<00:33,  2.39s/it]Exception raised in Job[65]: ValidationError(1 validation error for EmbeddingUsageEvent
+model
+  Input should be a valid string [type=string_type, input_value=SentenceTransformer(
+  (0...nclude_prompt': True})
+), input_type=SentenceTransformer]
+    For further information visit https://errors.pydantic.dev/2.14/v/string_type)
+Evaluating:  84%|████████▍ | 67/80 [02:16<00:33,  2.57s/it]Exception raised in Job[69]: ValidationError(1 validation error for EmbeddingUsageEvent
+model
+  Input should be a valid string [type=string_type, input_value=SentenceTransformer(
+  (0...nclude_prompt': True})
+), input_type=SentenceTransformer]
+    For further information visit https://errors.pydantic.dev/2.14/v/string_type)
+Evaluating:  85%|████████▌ | 68/80 [02:18<00:29,  2.43s/it]Evaluating:  86%|████████▋ | 69/80 [02:24<00:39,  3.58s/it]Evaluating:  88%|████████▊ | 70/80 [02:25<00:29,  2.98s/it]Evaluating:  89%|████████▉ | 71/80 [02:26<00:20,  2.29s/it]Evaluating:  90%|█████████ | 72/80 [02:30<00:21,  2.66s/it]Exception raised in Job[73]: ValidationError(1 validation error for EmbeddingUsageEvent
+model
+  Input should be a valid string [type=string_type, input_value=SentenceTransformer(
+  (0...nclude_prompt': True})
+), input_type=SentenceTransformer]
+    For further information visit https://errors.pydantic.dev/2.14/v/string_type)
+Evaluating:  91%|█████████▏| 73/80 [02:33<00:19,  2.74s/it]Evaluating:  92%|█████████▎| 74/80 [02:36<00:18,  3.03s/it]Evaluating:  94%|█████████▍| 75/80 [02:37<00:12,  2.46s/it]Evaluating:  95%|█████████▌| 76/80 [02:40<00:09,  2.38s/it]Evaluating:  96%|█████████▋| 77/80 [02:44<00:09,  3.08s/it]Exception raised in Job[77]: ValidationError(1 validation error for EmbeddingUsageEvent
+model
+  Input should be a valid string [type=string_type, input_value=SentenceTransformer(
+  (0...nclude_prompt': True})
+), input_type=SentenceTransformer]
+    For further information visit https://errors.pydantic.dev/2.14/v/string_type)
+Evaluating:  98%|█████████▊| 78/80 [02:45<00:04,  2.50s/it]Evaluating:  99%|█████████▉| 79/80 [02:57<00:05,  5.08s/it]Evaluating: 100%|██████████| 80/80 [03:05<00:00,  6.18s/it]Evaluating: 100%|██████████| 80/80 [03:05<00:00,  2.32s/it]
+{
+  "judge_model": "claude-opus-5-5",
+  "questions": 20,
+  "mean": {
+    "faithfulness": 0.812,
+    "answer_relevancy": NaN,
+    "llm_context_precision_with_reference": 0.72,
+    "context_recall": 0.56
+  },
+  "mean_by_type": {
+    "multi": {
+      "faithfulness": 0.703,
+      "answer_relevancy": NaN,
+      "llm_context_precision_with_reference": 0.972,
+      "context_recall": 0.444
+    },
+    "single": {
+      "faithfulness": 0.821,
+      "answer_relevancy": NaN,
+      "llm_context_precision_with_reference": 0.718,
+      "context_recall": 0.554
+    },
+    "unanswerable": {
+      "faithfulness": 1.0,
+      "answer_relevancy": NaN,
+      "llm_context_precision_with_reference": 0.0,
+      "context_recall": 1.0
+    }
+  }
+}
+Traceback (most recent call last):
+  File "/Users/nagaokashuuhei/Desktop/claude_project/project_dir/RAG_practice/src/eval_ragas.py", line 247, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/Users/nagaokashuuhei/Desktop/claude_project/project_dir/RAG_practice/src/eval_ragas.py", line 243, in main
+    score(Path(a.run_dir))
+  File "/Users/nagaokashuuhei/Desktop/claude_project/project_dir/RAG_practice/src/eval_ragas.py", line 229, in score
+    print("保存:", (run_dir / "scores.csv").relative_to(ROOT))
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/nagaokashuuhei/.local/share/uv/python/cpython-3.12.16-macos-aarch64-none/lib/python3.12/pathlib.py", line 682, in relative_to
+    raise ValueError(f"{str(self)!r} is not in the subpath of {str(other)!r}")
+ValueError: 'data/eval/results/20261116_0230_summary_3b/scores.csv' is not in the subpath of '/Users/nagaokashuuhei/Desktop/claude_project/project_dir/RAG_practice'
