@@ -1,0 +1,397 @@
+{
+ "ops": [
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3197",
+   "label": "section_header",
+   "level": 5
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3198",
+   "label": "section_header",
+   "level": 5
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3201",
+   "label": "section_header",
+   "level": 3
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3202",
+   "label": "section_header",
+   "level": 4
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3205",
+   "label": "section_header",
+   "level": 4
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3206",
+   "label": "section_header",
+   "level": 5
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3207",
+   "label": "section_header",
+   "level": 5
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3208",
+   "label": "section_header",
+   "level": 4
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3209",
+   "label": "section_header",
+   "level": 5
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3210",
+   "label": "section_header",
+   "level": 5
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3213",
+   "label": "section_header",
+   "level": 4
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3214",
+   "label": "section_header",
+   "level": 5
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3215",
+   "label": "section_header",
+   "level": 5
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3216",
+   "label": "section_header",
+   "level": 4
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3217",
+   "label": "section_header",
+   "level": 5
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3218",
+   "label": "section_header",
+   "level": 5
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3221",
+   "label": "section_header",
+   "level": 2
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3225",
+   "label": "section_header",
+   "level": 3
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3226",
+   "label": "section_header",
+   "level": 4
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3227",
+   "label": "section_header",
+   "level": 5
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3228",
+   "label": "section_header",
+   "level": 4
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3229",
+   "label": "section_header",
+   "level": 5
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3230",
+   "label": "section_header",
+   "level": 4
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3231",
+   "label": "section_header",
+   "level": 5
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3232",
+   "label": "section_header",
+   "level": 4
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3233",
+   "label": "section_header",
+   "level": 5
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3236",
+   "label": "section_header",
+   "level": 3
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3237",
+   "label": "section_header",
+   "level": 4
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3238",
+   "label": "section_header",
+   "level": 5
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3239",
+   "label": "section_header",
+   "level": 4
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3240",
+   "label": "section_header",
+   "level": 5
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3241",
+   "label": "section_header",
+   "level": 4
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3242",
+   "label": "section_header",
+   "level": 5
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3245",
+   "label": "section_header",
+   "level": 4
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3246",
+   "label": "section_header",
+   "level": 5
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3247",
+   "label": "section_header",
+   "level": 3
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3248",
+   "label": "section_header",
+   "level": 4
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3249",
+   "label": "section_header",
+   "level": 5
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3250",
+   "label": "section_header",
+   "level": 4
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3251",
+   "label": "section_header",
+   "level": 5
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3252",
+   "label": "section_header",
+   "level": 4
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3253",
+   "label": "section_header",
+   "level": 5
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3256",
+   "label": "section_header",
+   "level": 4
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3257",
+   "label": "section_header",
+   "level": 5
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3258",
+   "label": "section_header",
+   "level": 3
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3259",
+   "label": "section_header",
+   "level": 4
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3260",
+   "label": "section_header",
+   "level": 5
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3261",
+   "label": "section_header",
+   "level": 4
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3262",
+   "label": "section_header",
+   "level": 5
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3263",
+   "label": "section_header",
+   "level": 4
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3264",
+   "label": "section_header",
+   "level": 5
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3267",
+   "label": "section_header",
+   "level": 4
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3268",
+   "label": "section_header",
+   "level": 5
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3269",
+   "label": "section_header",
+   "level": 3
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3270",
+   "label": "section_header",
+   "level": 4
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3271",
+   "label": "section_header",
+   "level": 5
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3272",
+   "label": "section_header",
+   "level": 4
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3273",
+   "label": "section_header",
+   "level": 5
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3276",
+   "label": "section_header",
+   "level": 4
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3277",
+   "label": "section_header",
+   "level": 5
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3280",
+   "label": "section_header",
+   "level": 2
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3281",
+   "label": "section_header",
+   "level": 3
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3294",
+   "label": "text"
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3295",
+   "label": "text"
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3296",
+   "label": "text"
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3298",
+   "label": "text"
+  }
+ ],
+ "notes": "Levels come from the outline. Several 【KPI】 and 【指標】 lines were labelled text; I changed them to section_header at level 5 to match the outline. The p.122 back-cover lines (the document title, the plan period, 発行 and 編集) are not in the outline, so I set them to text. The title already appears at p.1. No dotted lines or split headings showed up in the list, so there are no delete, setText or merge ops."
+}

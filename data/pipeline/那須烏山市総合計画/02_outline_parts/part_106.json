@@ -1,0 +1,12 @@
+{
+ "markdown": "<!-- ERROR: Could not read pages 106-120 of data/input/那須烏山市総合計画.pdf. The Read tool needs pdftoppm (poppler) to render PDF pages, and it is not installed here. Under the project rules I can't run `brew install` or other system-wide installs, so no headings were extracted for this range. I did not fall back to the existing Docling output (data/output/那須烏山市総合計画/*.md / *.json), because that would make this reading depend on Docling's results. Fix: install poppler on the host yourself, or render the pages to images (e.g. in Docker) and pass those in, then re-run this range. -->",
+ "last_path": [
+  "那須烏山市 第3次総合計画",
+  "資料編",
+  "Ⅴ 各施策・事業の評価等",
+  "２ 成果指標状況及び主な取組内容（第２次総合計画）",
+  "－基本目標５ 市民と共に築く持続可能なまちづくり－",
+  "政策５－２ 行財政改革の推進",
+  "【重点施策指標】"
+ ]
+}

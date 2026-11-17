@@ -49,7 +49,7 @@ function test(name, desc, fn, opts = {}) {
     }
     const file = path.join(OUT, `${name}.json`);
     fs.writeFileSync(file, C.serialize(doc));
-    manifest.push({ name, file, expect: extra.expect || [], expectDoc: extra.expectDoc || [] });
+    manifest.push({ name, file, expect: extra.expect || [], expectDoc: extra.expectDoc || [], absent: extra.absent || [] });
     results.push(["PASS", name, desc, `警告${v.warnings.length}`]);
   } catch (e) {
     results.push(["FAIL", name, desc, e.message]);
@@ -282,6 +282,159 @@ test("C5_all_features", "全機能を順に使用（ラベル・単体移動・�
   assert.strictEqual(C.getItem(d, "#/groups/169").name, "edited-group");
   return { expect: ["【全機能テスト】"] };
 }, { maxWarn: BASE_WARN + 1 }); // groups/191 が空
+
+// ==========================================
+// Stage 5: 要素の追加
+// ==========================================
+test("A1_add_after", "#/pictures/5 の直後（兄弟）に本文を追加（ページ位置を引き継ぐ）", (d) => {
+  const n = d.texts.length;
+  const res = C.addText(d, { after: "#/pictures/5", text: "【追加した図の説明】テスト" });
+  okRes(res);
+  assert.strictEqual(res.ref, `#/texts/${n}`);
+  const b = kids(d, "#/body");
+  assert.strictEqual(b[b.indexOf("#/pictures/5") + 1], res.ref);
+  const it = C.getItem(d, res.ref);
+  assert.strictEqual(it.parent.$ref, "#/body");
+  assert.strictEqual(it.prov[0].page_no, C.getItem(d, "#/pictures/5").prov[0].page_no);
+  assert.strictEqual(it.orig, it.text);
+  return { expect: ["【追加した図の説明】テスト"] };
+}, { maxWarn: BASE_WARN });
+
+test("A2_add_child_header_and_text", "見出し（L2）を子として追加し、その直後に本文を追加", (d) => {
+  const h = C.addText(d, { parent: "#/body", index: 0, label: "section_header", level: 2, text: "【追加見出し】" });
+  okRes(h);
+  assert.strictEqual(kids(d, "#/body")[0], h.ref);
+  assert.strictEqual(C.getItem(d, h.ref).level, 2);
+  const t = C.addText(d, { after: h.ref, text: "【追加見出しの本文】", provFrom: "#/texts/0" });
+  okRes(t);
+  assert.strictEqual(kids(d, "#/body")[1], t.ref);
+  return { expect: ["【追加見出しの本文】"] };
+}, { maxWarn: BASE_WARN });
+
+test("A3_add_list_item", "リスト（#/groups/170）の先頭に list_item を追加（enumerated/marker が付く）", (d) => {
+  const res = C.addText(d, { parent: "#/groups/170", index: 0, label: "list_item", text: "【追加した項目】" });
+  okRes(res);
+  const it = C.getItem(d, res.ref);
+  assert.ok("enumerated" in it && "marker" in it && !("level" in it));
+  assert.strictEqual(kids(d, "#/groups/170")[0], res.ref);
+  return { expect: ["【追加した項目】"] };
+}, { maxWarn: BASE_WARN });
+
+test("A4_add_rejects", "追加の拒否（空の本文 / 不正ラベル / 存在しない親 / ルートの直後）・無変更", (d) => {
+  const before = C.serialize(d);
+  ngRes(C.addText(d, { after: "#/texts/1", text: "" }), /本文/);
+  ngRes(C.addText(d, { after: "#/texts/1", text: "x", label: "picture" }), /使えません/);
+  ngRes(C.addText(d, { parent: "#/texts/99999", text: "x" }), /存在しません/);
+  ngRes(C.addText(d, { after: "#/body", text: "x" }), /追加できません/);
+  ngRes(C.addText(d, { after: "#/texts/1", text: "x", label: "section_header", level: 0 }), /level/);
+  assert.strictEqual(C.serialize(d), before);
+}, { maxWarn: BASE_WARN });
+
+// ==========================================
+// Stage 6: 要素の削除（番号の詰め直し）
+// ==========================================
+test("D1_delete_leaf", "末端の要素（L3 #/texts/2697）を削除 → 後ろの番号が詰まり参照も書き換わる", (d) => {
+  const n = d.texts.length;
+  const nextText = C.getItem(d, "#/texts/2698").text;
+  const lastText = C.getItem(d, `#/texts/${n - 1}`).text;
+  const res = C.deleteItems(d, { refs: ["#/texts/2697"] });
+  okRes(res);
+  assert.strictEqual(d.texts.length, n - 1);
+  assert.strictEqual(C.getItem(d, "#/texts/2697").text, nextText); // 旧 2698 が 2697 に
+  assert.strictEqual(C.parentRef(d, "#/texts/2697"), "#/groups/170");
+  assert.deepStrictEqual(kids(d, "#/groups/170"), ["#/texts/2696", "#/texts/2697"]);
+  assert.strictEqual(C.getItem(d, `#/texts/${n - 2}`).text, lastText);
+  assert.strictEqual(res.map.get("#/texts/2698"), "#/texts/2697");
+  return { absent: ["②子育て世代・女性団体との意見交換会"], expect: ["③タウンミーティング"] };
+}, { maxWarn: BASE_WARN });
+
+test("D2_delete_keep_children", "子を持つ #/pictures/5 を削除し、子は同じ位置に繰り上げ", (d) => {
+  const np = d.pictures.length;
+  const picKids = kids(d, "#/pictures/5").map((r) => C.getItem(d, r).text);
+  const idx = kids(d, "#/body").indexOf("#/pictures/5");
+  okRes(C.deleteItems(d, { refs: ["#/pictures/5"], keepChildren: true }));
+  assert.strictEqual(d.pictures.length, np - 1);
+  const b = kids(d, "#/body");
+  assert.deepStrictEqual(b.slice(idx, idx + picKids.length).map((r) => C.getItem(d, r).text), picKids);
+  b.slice(idx, idx + picKids.length).forEach((r) => assert.strictEqual(C.parentRef(d, r), "#/body"));
+}, { maxWarn: BASE_WARN });
+
+test("D3_delete_subtree", "#/groups/169 を子孫ごと削除（groups と texts の両方の番号が詰まる）", (d) => {
+  const ng = d.groups.length, nt = d.texts.length;
+  const desc = C.descendants(d, "#/groups/169");
+  const nDescTexts = desc.filter((r) => C.arrayOf(r) === "texts").length;
+  okRes(C.deleteItems(d, { refs: ["#/groups/169"], keepChildren: false }));
+  assert.strictEqual(d.texts.length, nt - nDescTexts);
+  assert.strictEqual(d.groups.length, ng - 1 - desc.filter((r) => C.arrayOf(r) === "groups").length);
+  return { absent: ["①市内事業経営者、まちづくり団体等との意見交換会"] };
+}, { maxWarn: BASE_WARN });
+
+test("D4_delete_caption", "図のキャプション（#/texts/245）を削除 → 図の captions からも消える", (d) => {
+  assert.deepStrictEqual(d.pictures[22].captions.map((c) => c.$ref), ["#/texts/245"]);
+  okRes(C.deleteItems(d, { refs: ["#/texts/245"] }));
+  assert.deepStrictEqual(d.pictures[22].captions, []);
+  assert.deepStrictEqual(d.pictures[23].captions.map((c) => c.$ref), ["#/texts/441"]); // 旧 442
+}, { maxWarn: BASE_WARN });
+
+test("D5_delete_rejects", "削除の拒否（ルート / 存在しない要素 / 未選択）・無変更", (d) => {
+  const before = C.serialize(d);
+  ngRes(C.deleteItems(d, { refs: ["#/body"] }), /削除できません/);
+  ngRes(C.deleteItems(d, { refs: ["#/texts/99999"] }), /存在しません/);
+  ngRes(C.deleteItems(d, { refs: [] }), /選択/);
+  assert.strictEqual(C.serialize(d), before);
+}, { maxWarn: BASE_WARN });
+
+// ==========================================
+// Stage 7: 要素の合体
+// ==========================================
+test("G1_merge_siblings", "見出しの続き（#/texts/6 と 7）を合体（つなぎ文字なし）", (d) => {
+  const t6 = C.getItem(d, "#/texts/6").text, t7 = C.getItem(d, "#/texts/7").text;
+  const n = d.texts.length;
+  const res = C.mergeTexts(d, { refs: ["#/texts/7", "#/texts/6"] }); // 選択順に関係なく並び順の先頭へ
+  okRes(res);
+  assert.strictEqual(res.ref, "#/texts/6");
+  assert.strictEqual(C.getItem(d, "#/texts/6").text, t6 + t7);
+  assert.strictEqual(C.getItem(d, "#/texts/6").prov.length, 2);
+  assert.strictEqual(d.texts.length, n - 1);
+  assert.strictEqual(kids(d, "#/body")[7], "#/pictures/0"); // 旧 texts/7 の位置が詰まる
+  return { expectDoc: [{ ref: "#/texts/6", label: "section_header", text: t6 + t7, parent: "#/body" }] };
+}, { maxWarn: BASE_WARN });
+
+test("G2_merge_with_children_sep", "子を持つ要素を改行つなぎで合体 → 子は先頭の要素へ移る", (d) => {
+  okRes(C.moveItems(d, { refs: ["#/texts/2696"], target: "#/texts/5" })); // texts/5 に子を作る
+  okRes(C.setLabels(d, { refs: ["#/texts/2696"], label: "text" }));
+  const t4 = C.getItem(d, "#/texts/4").text, t5 = C.getItem(d, "#/texts/5").text;
+  const res = C.mergeTexts(d, { refs: ["#/texts/4", "#/texts/5"], sep: "\n" });
+  okRes(res);
+  assert.strictEqual(C.getItem(d, "#/texts/4").text, t4 + "\n" + t5);
+  const moved = kids(d, "#/texts/4");
+  assert.strictEqual(moved.length, 1);
+  assert.ok(C.getItem(d, moved[0]).text.startsWith("①市内事業経営者"));
+  return { expect: ["①市内事業経営者"] };
+}, { maxWarn: BASE_WARN });
+
+test("G3_merge_rejects", "合体の拒否（1件のみ / 本文を持たない要素）・無変更", (d) => {
+  const before = C.serialize(d);
+  ngRes(C.mergeTexts(d, { refs: ["#/texts/4"] }), /2 件以上/);
+  ngRes(C.mergeTexts(d, { refs: ["#/texts/4", "#/groups/0"] }), /合体できません/);
+  ngRes(C.mergeTexts(d, { refs: ["#/texts/4", "#/pictures/5"] }), /合体できません/);
+  assert.strictEqual(C.serialize(d), before);
+}, { maxWarn: BASE_WARN });
+
+test("C6_add_merge_delete_mix", "追加 → 移動 → 合体 → 削除 → ラベル変更を続けて使用", (d) => {
+  const a = C.addText(d, { after: "#/pictures/5", text: "【組合せ-追加1】" });
+  okRes(a);
+  const b = C.addText(d, { after: a.ref, text: "【組合せ-追加2】" });
+  okRes(b);
+  okRes(C.moveItems(d, { refs: [b.ref], target: "#/body", index: kids(d, "#/body").indexOf(a.ref) + 1 }));
+  const m = C.mergeTexts(d, { refs: [a.ref, b.ref], sep: " / " });
+  okRes(m);
+  okRes(C.deleteItems(d, { refs: ["#/texts/2697", "#/texts/2698"] }));
+  okRes(C.setLabels(d, { refs: ["#/texts/2696"], label: "text" }));
+  const merged = d.texts.find((t) => t.text === "【組合せ-追加1】 / 【組合せ-追加2】");
+  assert.ok(merged, "合体した要素が見つかりません");
+  return { expect: ["【組合せ-追加1】 / 【組合せ-追加2】"], absent: ["③タウンミーティング"] };
+}, { maxWarn: BASE_WARN + 1 }); // texts/2696 の list_item→text でリスト内に text（警告）
 
 // ==========================================
 fs.writeFileSync(path.join(OUT, "manifest.json"), JSON.stringify(manifest, null, 2));

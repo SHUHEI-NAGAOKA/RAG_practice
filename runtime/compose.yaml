@@ -1,0 +1,69 @@
+# RAG 実行環境（Qdrant ＋ Ollama ＋ RAG API）
+# このフォルダ（runtime/）だけで動く。パイプライン（ingest/）には依存しない。
+#
+# 使い方:
+#   cp .env.example .env            # 設定を書く（LLM_MODEL で 3B / 7B を切り替え）
+#   docker compose up -d --build    # 起動（このフォルダで実行）
+#   ./ollama/pull_models.sh         # 初回のみ: LLM のモデルを Ollama に入れる
+# 注意: `docker compose down -v` は使わない（ボリューム内の Qdrant・モデルのデータが消える）
+
+# プロジェクト名を固定する（ボリューム名 rag_practice_* を変えないため）
+name: rag_practice
+
+services:
+  # ベクトルデータベース（チャンクと文書要素。登録はパイプラインが行う）
+  qdrant:
+    image: qdrant/qdrant:latest
+    container_name: rag-qdrant
+    ports:
+      - "127.0.0.1:${QDRANT_PORT:-6333}:6333"
+    volumes:
+      - qdrant_data:/qdrant/storage
+    restart: unless-stopped
+
+  # ローカル LLM（3B・7B の両方を入れておき、rag-api の LLM_MODEL で選ぶ）
+  ollama:
+    image: ollama/ollama:latest
+    container_name: rag-ollama
+    ports:
+      - "127.0.0.1:${OLLAMA_PORT:-11434}:11434"
+    volumes:
+      - ollama_models:/root/.ollama
+    restart: unless-stopped
+
+  # RAG API（FastAPI ＋ 画面）
+  rag-api:
+    build:
+      context: ./rag_api
+    container_name: rag-api
+    ports:
+      - "127.0.0.1:${API_PORT:-8000}:8000"
+    environment:
+      QDRANT_URL: http://qdrant:6333
+      OLLAMA_URL: http://ollama:11434
+      # 3B / 7B の切り替え（.env の LLM_MODEL=qwen2.5:3b / qwen2.5:7b）
+      LLM_MODEL: ${LLM_MODEL:-qwen2.5:3b}
+      NUM_CTX: ${NUM_CTX:-8192}
+      # Qdrant のコレクションと Embedding（contract/qdrant_schema.json と同じ値）
+      COLLECTION_NAME: rag_ruri_v3_310m
+      DOC_ITEMS_COLLECTION: rag_doc_items
+      EMBEDDING_MODEL: cl-nagoya/ruri-v3-310m
+      HF_HOME: /models/huggingface
+      # 評価モード（本番では EVAL_ENABLED=false）
+      EVAL_ENABLED: ${EVAL_ENABLED:-false}
+      EVAL_DIR: /app/eval
+      EVAL_TESTSET: ${EVAL_TESTSET:-testset_v2.jsonl}
+    volumes:
+      - huggingface_cache:/models/huggingface
+      - ${EVAL_HOST_DIR:-./eval}:/app/eval
+    depends_on:
+      - qdrant
+      - ollama
+    restart: unless-stopped
+
+volumes:
+  qdrant_data:
+  huggingface_cache:
+  ollama_models:
+    # 既存のボリュームを使うときは .env の OLLAMA_VOLUME で名前を指定する
+    name: ${OLLAMA_VOLUME:-rag_practice_ollama_models}

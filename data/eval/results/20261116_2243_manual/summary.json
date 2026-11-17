@@ -1,0 +1,67 @@
+{
+  "judge": "Claude Code（会話内で判定・API 不使用）",
+  "embedding": "cl-nagoya/ruri-v3-310m",
+  "questions": 30,
+  "mean": {
+    "faithfulness": 0.813,
+    "answer_relevancy": 0.832,
+    "llm_context_precision_with_reference": 0.787,
+    "context_recall": 0.773
+  },
+  "mean_by_type": {
+    "single": {
+      "faithfulness": 0.873,
+      "answer_relevancy": 0.924,
+      "llm_context_precision_with_reference": 0.922,
+      "context_recall": 0.755
+    },
+    "multi": {
+      "faithfulness": 0.933,
+      "answer_relevancy": 0.918,
+      "llm_context_precision_with_reference": 0.952,
+      "context_recall": 0.706
+    },
+    "unanswerable": {
+      "faithfulness": 1.0,
+      "answer_relevancy": 0.0,
+      "llm_context_precision_with_reference": 0.0,
+      "context_recall": 1.0
+    },
+    "figure": {
+      "faithfulness": 0.663,
+      "answer_relevancy": 0.742,
+      "llm_context_precision_with_reference": 0.6,
+      "context_recall": 0.8
+    }
+  },
+  "compare": {
+    "run": "20261116_0230_summary_3b",
+    "共通の問題": 20,
+    "指標": {
+      "faithfulness": {
+        "今回": 0.888,
+        "比較先": 0.812,
+        "差": 0.076,
+        "問題数": 20
+      },
+      "answer_relevancy": {
+        "今回": 0.877,
+        "比較先": 0.718,
+        "差": 0.159,
+        "問題数": 20
+      },
+      "llm_context_precision_with_reference": {
+        "今回": 0.881,
+        "比較先": 0.72,
+        "差": 0.161,
+        "問題数": 20
+      },
+      "context_recall": {
+        "今回": 0.76,
+        "比較先": 0.56,
+        "差": 0.2,
+        "問題数": 20
+      }
+    }
+  }
+}

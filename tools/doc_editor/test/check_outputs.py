@@ -1,7 +1,7 @@
 """core_tests.js / ui_tests.js が書き出した JSON を Python(docling) 側で検証する。
 
 1. DoclingDocument.load_from_json() が通る（スキーマ・ツリー検証）
-2. HybridChunker（chunk_doc.py と同じ設定）でエラーなくチャンク化できる
+2. HybridChunker（パイプラインの ingest/steps/s07_chunk.py と同じ設定）でエラーなくチャンク化できる
 3. 編集した文字列（expect）がチャンクに含まれる
 
 実行: .venv/bin/python tools/doc_editor/test/check_outputs.py [manifest.json ...]
@@ -13,10 +13,10 @@ import warnings
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[3]
-sys.path.insert(0, str(ROOT / "src"))
+sys.path.insert(0, str(ROOT))
 
 from docling_core.types.doc import DoclingDocument  # noqa: E402
-from chunk_doc import build_chunker, to_records  # noqa: E402
+from ingest.steps.s07_chunk import build_chunker, to_records  # noqa: E402
 
 
 def main() -> int:
@@ -39,6 +39,9 @@ def main() -> int:
             joined = "\n".join(r["embedding_text"] for r in records)
             for s in e.get("expect", []):
                 assert s in joined, f"チャンクに「{s}」がありません"
+            # 削除した文字列（absent）がチャンクに残っていない
+            for s in e.get("absent", []):
+                assert s not in joined, f"削除したはずの「{s}」がチャンクに残っています"
             # docling 上の要素の確認（ラベル・本文・親）
             for x in e.get("expectDoc", []):
                 item = next(i for i in doc.texts if i.self_ref == x["ref"])

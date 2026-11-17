@@ -1,0 +1,15 @@
+[s01] PDF → DoclingDocument（JSON）と画像 … 開始
+  ページ 1〜60 / 230
+W1117 14:03:41.786000 57903 .venv/lib/python3.12/site-packages/torch/distributed/elastic/multiprocessing/redirects.py:35] NOTE: Redirects are currently not supported in MacOs.
+Loading weights:   0%|          | 0/770 [00:00<?, ?it/s]Loading weights: 100%|██████████| 770/770 [00:00<00:00, 8962.66it/s]
+RapidOCR returned empty result!
+RapidOCR returned empty result!
+  ページ 61〜120 / 230
+  ページ 121〜180 / 230
+  ページ 181〜230 / 230
+[s01] PDF → DoclingDocument（JSON）と画像 … 完了 787.6秒 {"texts": 5115, "tables": 341, "pictures": 182, "pages": 230}
+[s02] PDF → 見出しの階層の md（Claude CLI） … 開始（Claude CLI を使います）
+[s02] PDF → 見出しの階層の md（Claude CLI） … 完了 418.1秒 {"pages": 230, "claude_calls": 16, "headings": 61}
+[s03] md を参考に階層・不要な文字・合体を整える（Claude CLI → ツール） … 開始（Claude CLI を使います）
+/Users/nagaokashuuhei/.local/share/uv/python/cpython-3.12.16-macos-aarch64-none/lib/python3.12/multiprocessing/resource_tracker.py:279: UserWarning: resource_tracker: There appear to be 1 leaked semaphore objects to clean up at shutdown
+  warnings.warn('resource_tracker: There appear to be %d '

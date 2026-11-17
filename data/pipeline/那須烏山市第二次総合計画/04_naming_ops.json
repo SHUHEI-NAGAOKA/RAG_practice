@@ -1,0 +1,14 @@
+[
+ {
+  "op": "setText",
+  "ref": "#/texts/0",
+  "text": "那須烏山市 第2次総合計画",
+  "syncOrig": true
+ },
+ {
+  "op": "addText",
+  "after": "#/texts/0",
+  "label": "text",
+  "text": "この文書は那須烏山市 第2次総合計画です（第3次総合計画の前の計画）。"
+ }
+]

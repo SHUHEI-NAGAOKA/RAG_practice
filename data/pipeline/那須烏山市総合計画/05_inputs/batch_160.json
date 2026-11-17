@@ -1,0 +1,90 @@
+[
+ {
+  "ref": "#/pictures/80",
+  "image": "data/pipeline/那須烏山市総合計画/01_artifacts/image_000080_223fc89805c7c8813a4255abc763cfc46bdb10e108d66e78d69ed0d358f2ba56.png",
+  "page": 80,
+  "headings": [
+   "那須烏山市 第3次総合計画",
+   "資料編",
+   "Ⅰ SDGsの17のゴール"
+  ],
+  "caption": "",
+  "before": [
+   "4",
+   "質の高い教育を",
+   "みんなに"
+  ],
+  "after": [
+   "8",
+   "働きがいも",
+   "経济成長も"
+  ],
+  "inside": "6 ｜ 安全な水とトイレ ｜ を世界中に"
+ },
+ {
+  "ref": "#/pictures/81",
+  "image": "data/pipeline/那須烏山市総合計画/01_artifacts/image_000081_3f94c9191487ce5313e1b57afe5a8a0ff1691067b6c23f8ff723c525a4ecc360.png",
+  "page": 80,
+  "headings": [
+   "那須烏山市 第3次総合計画",
+   "資料編",
+   "Ⅰ SDGsの17のゴール"
+  ],
+  "caption": "",
+  "before": [
+   "6",
+   "安全な水とトイレ",
+   "を世界中に"
+  ],
+  "after": [
+   "10",
+   "人や国の不平等",
+   "をなくそう"
+  ],
+  "inside": "8 ｜ 働きがいも ｜ 経济成長も"
+ },
+ {
+  "ref": "#/pictures/82",
+  "image": "data/pipeline/那須烏山市総合計画/01_artifacts/image_000082_ca56bc0fdfdf643491d12622a6d9c8880b90d0b7af41a01e5cf95122f55b1d5f.png",
+  "page": 80,
+  "headings": [
+   "那須烏山市 第3次総合計画",
+   "資料編",
+   "Ⅰ SDGsの17のゴール"
+  ],
+  "caption": "",
+  "before": [
+   "8",
+   "働きがいも",
+   "経济成長も"
+  ],
+  "after": [
+   "12 つくる责任 つかう責任",
+   "14",
+   "海の豊かさを"
+  ],
+  "inside": "10 ｜ 人や国の不平等 ｜ をなくそう"
+ },
+ {
+  "ref": "#/pictures/83",
+  "image": "data/pipeline/那須烏山市総合計画/01_artifacts/image_000083_4216f2d7008c94ee4945db4c23d2a8125230ecdb9ffe34280e0de7378b291b94.png",
+  "page": 80,
+  "headings": [
+   "那須烏山市 第3次総合計画",
+   "資料編",
+   "Ⅰ SDGsの17のゴール"
+  ],
+  "caption": "",
+  "before": [
+   "人や国の不平等",
+   "をなくそう",
+   "12 つくる责任 つかう責任"
+  ],
+  "after": [
+   "16",
+   "平和と公正を",
+   "すべての人に"
+  ],
+  "inside": "14 ｜ 海の豊かさを ｜ 守ろう"
+ }
+]

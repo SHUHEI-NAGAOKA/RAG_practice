@@ -1,0 +1,22 @@
+[s02] PDF → 見出しの階層の md（Claude CLI） … 開始（Claude CLI を使います）
+[s02] PDF → 見出しの階層の md（Claude CLI） … 完了 449.4秒 {"pages": 230, "claude_calls": 16, "headings": 1108}
+[s03] md を参考に階層・不要な文字・合体を整える（Claude CLI → ツール） … 開始（Claude CLI を使います）
+[s03] md を参考に階層・不要な文字・合体を整える（Claude CLI → ツール） … 完了 539.4秒 {"items": 3392, "claude_calls": 9, "ops": 1148, "rejected": 0, "setLabel": 1113, "setText": 1, "merge": 28, "delete": 6, "warnings": 29}
+[s04] 見出しの level で入れ子にする（ツール） … 開始
+[s04] 見出しの level で入れ子にする（ツール） … 完了 1.1秒 {"input": "04_named.json", "naming": 2, "moves": 2901, "warnings": 29}
+[s05] 図の意味・文脈・数値一覧を追加（Claude CLI → ツール） … 開始（Claude CLI を使います）
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/Users/nagaokashuuhei/Desktop/claude_project/project_dir/RAG_practice/ingest/run.py", line 96, in <module>
+    "",
+^^^^^^
+  File "/Users/nagaokashuuhei/Desktop/claude_project/project_dir/RAG_practice/ingest/run.py", line 86, in main
+    f"- 更新: {time.strftime('%Y-%m-%d %H:%M:%S')}",
+            ^^^^^^^^^^^^
+  File "/Users/nagaokashuuhei/Desktop/claude_project/project_dir/RAG_practice/ingest/steps/s05_figures.py", line 148, in run
+    result = run_json(cfg, load_prompt("figure_describe", figures=rel(input_file)), SCHEMA, f"s05_{input_file.stem}")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/nagaokashuuhei/Desktop/claude_project/project_dir/RAG_practice/ingest/claude_cli.py", line 73, in run_json
+    raise ClaudeCliError(f"{log_name}: {last_error}")
+ingest.claude_cli.ClaudeCliError: s05_batch_000: 返答がスキーマどおりではありません: You've hit your monthly spend limit · raise it at https://claude.ai/settings/usage?from=cc_cli_limit_message · your 5-hour limit resets 5:50pm (Asia/Tokyo)

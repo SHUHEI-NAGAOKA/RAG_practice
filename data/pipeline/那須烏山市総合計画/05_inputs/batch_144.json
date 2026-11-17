@@ -1,0 +1,90 @@
+[
+ {
+  "ref": "#/pictures/72",
+  "image": "data/pipeline/那須烏山市総合計画/01_artifacts/image_000072_cf2976ac9882012eacd0bf35c43730320ce8cea0d0487266228e28fc8a45991d.png",
+  "page": 80,
+  "headings": [
+   "那須烏山市 第3次総合計画",
+   "資料編",
+   "Ⅰ SDGsの17のゴール"
+  ],
+  "caption": "",
+  "before": [
+   "5",
+   "ジェンダー平等を",
+   "実現しよう"
+  ],
+  "after": [
+   "9",
+   "産業と技術革新の",
+   "基盤をつくろう"
+  ],
+  "inside": "エネルギーをみんなに ｜ そしてクリーンに"
+ },
+ {
+  "ref": "#/pictures/73",
+  "image": "data/pipeline/那須烏山市総合計画/01_artifacts/image_000073_1dae51ff4c826177c8ce8acb9019cc246e19ee492122a7d12ff86b43bed3f034.png",
+  "page": 80,
+  "headings": [
+   "那須烏山市 第3次総合計画",
+   "資料編",
+   "Ⅰ SDGsの17のゴール"
+  ],
+  "caption": "",
+  "before": [
+   "実現しよう",
+   "エネルギーをみんなに",
+   "そしてクリーンに"
+  ],
+  "after": [
+   "11",
+   "住み続けられる",
+   "まちづくりを"
+  ],
+  "inside": "9 ｜ 産業と技術革新の ｜ 基盤をつくろう"
+ },
+ {
+  "ref": "#/pictures/74",
+  "image": "data/pipeline/那須烏山市総合計画/01_artifacts/image_000074_1afe60dc3dc6c7b9c3551461917131d56baf4afa68092f32319c173d20bc93e2.png",
+  "page": 80,
+  "headings": [
+   "那須烏山市 第3次総合計画",
+   "資料編",
+   "Ⅰ SDGsの17のゴール"
+  ],
+  "caption": "",
+  "before": [
+   "9",
+   "産業と技術革新の",
+   "基盤をつくろう"
+  ],
+  "after": [
+   "13",
+   "気候変動に",
+   "具体的な対策を"
+  ],
+  "inside": "11 ｜ 住み続けられる ｜ まちづくりを"
+ },
+ {
+  "ref": "#/pictures/75",
+  "image": "data/pipeline/那須烏山市総合計画/01_artifacts/image_000075_2049c146a45613d6dcac8f005bdad5e39a4150e73ddb59bb19d09a6d06648468.png",
+  "page": 80,
+  "headings": [
+   "那須烏山市 第3次総合計画",
+   "資料編",
+   "Ⅰ SDGsの17のゴール"
+  ],
+  "caption": "",
+  "before": [
+   "11",
+   "住み続けられる",
+   "まちづくりを"
+  ],
+  "after": [
+   "15",
+   "陸の豊かさも",
+   "守ろう"
+  ],
+  "inside": "13 ｜ 気候変動に ｜ 具体的な対策を"
+ }
+]

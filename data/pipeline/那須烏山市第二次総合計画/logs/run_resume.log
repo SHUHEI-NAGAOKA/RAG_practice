@@ -1,0 +1,7 @@
+[s05] 図の意味・文脈・数値一覧を追加（Claude CLI → ツール） … 開始（Claude CLI を使います）
+[s05] 図の意味・文脈・数値一覧を追加（Claude CLI → ツール） … 完了 1320.7秒 {"pictures": 182, "described": 182, "claude_calls": 46, "decorative": 138, "no_image": 0, "warnings": 19}
+[s06] 節の要約を本文の先頭に付ける（Claude CLI → ツール） … 開始（Claude CLI を使います）
+[s06] 節の要約を本文の先頭に付ける（Claude CLI → ツール） … 完了 576.4秒 {"sections": 595, "summarized": 595, "claude_calls": 24, "texts_updated": 3756, "warnings": 19}
+[s07] 文書 JSON → チャンク … 開始
+[s07] 文書 JSON → チャンク … 完了 9.8秒 {"input": "06_summary.json", "chunks": 1029, "max_tokens": 514, "rule_warnings": 12}
+記録: /Users/nagaokashuuhei/Desktop/claude_project/project_dir/RAG_practice/data/pipeline/那須烏山市第二次総合計画/logs/run_20261117_164117.json

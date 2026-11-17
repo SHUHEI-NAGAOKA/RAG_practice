@@ -1,0 +1,23 @@
+{
+  "results": [
+    {
+      "i": 0,
+      "op": "setText",
+      "ref": null,
+      "removed": 0
+    },
+    {
+      "i": 1,
+      "op": "addText",
+      "ref": "#/texts/5080",
+      "removed": 0
+    }
+  ],
+  "mapping": {},
+  "added": [
+    "#/texts/5080"
+  ],
+  "ops": 2,
+  "warnings_before": 19,
+  "warnings_after": 19
+}

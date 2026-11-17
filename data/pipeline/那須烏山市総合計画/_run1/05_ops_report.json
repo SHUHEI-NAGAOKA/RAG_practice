@@ -1,0 +1,661 @@
+{
+  "results": [
+    {
+      "i": 0,
+      "op": "addText",
+      "ref": "#/texts/3290",
+      "removed": 0
+    },
+    {
+      "i": 1,
+      "op": "addText",
+      "ref": "#/texts/3291",
+      "removed": 0
+    },
+    {
+      "i": 2,
+      "op": "addText",
+      "ref": "#/texts/3292",
+      "removed": 0
+    },
+    {
+      "i": 3,
+      "op": "addText",
+      "ref": "#/texts/3293",
+      "removed": 0
+    },
+    {
+      "i": 4,
+      "op": "addText",
+      "ref": "#/texts/3294",
+      "removed": 0
+    },
+    {
+      "i": 5,
+      "op": "addText",
+      "ref": "#/texts/3295",
+      "removed": 0
+    },
+    {
+      "i": 6,
+      "op": "addText",
+      "ref": "#/texts/3296",
+      "removed": 0
+    },
+    {
+      "i": 7,
+      "op": "addText",
+      "ref": "#/texts/3297",
+      "removed": 0
+    },
+    {
+      "i": 8,
+      "op": "addText",
+      "ref": "#/texts/3298",
+      "removed": 0
+    },
+    {
+      "i": 9,
+      "op": "addText",
+      "ref": "#/texts/3299",
+      "removed": 0
+    },
+    {
+      "i": 10,
+      "op": "addText",
+      "ref": "#/texts/3300",
+      "removed": 0
+    },
+    {
+      "i": 11,
+      "op": "addText",
+      "ref": "#/texts/3301",
+      "removed": 0
+    },
+    {
+      "i": 12,
+      "op": "addText",
+      "ref": "#/texts/3302",
+      "removed": 0
+    },
+    {
+      "i": 13,
+      "op": "addText",
+      "ref": "#/texts/3303",
+      "removed": 0
+    },
+    {
+      "i": 14,
+      "op": "addText",
+      "ref": "#/texts/3304",
+      "removed": 0
+    },
+    {
+      "i": 15,
+      "op": "addText",
+      "ref": "#/texts/3305",
+      "removed": 0
+    },
+    {
+      "i": 16,
+      "op": "addText",
+      "ref": "#/texts/3306",
+      "removed": 0
+    },
+    {
+      "i": 17,
+      "op": "addText",
+      "ref": "#/texts/3307",
+      "removed": 0
+    },
+    {
+      "i": 18,
+      "op": "addText",
+      "ref": "#/texts/3308",
+      "removed": 0
+    },
+    {
+      "i": 19,
+      "op": "addText",
+      "ref": "#/texts/3309",
+      "removed": 0
+    },
+    {
+      "i": 20,
+      "op": "addText",
+      "ref": "#/texts/3310",
+      "removed": 0
+    },
+    {
+      "i": 21,
+      "op": "addText",
+      "ref": "#/texts/3311",
+      "removed": 0
+    },
+    {
+      "i": 22,
+      "op": "addText",
+      "ref": "#/texts/3312",
+      "removed": 0
+    },
+    {
+      "i": 23,
+      "op": "addText",
+      "ref": "#/texts/3313",
+      "removed": 0
+    },
+    {
+      "i": 24,
+      "op": "addText",
+      "ref": "#/texts/3314",
+      "removed": 0
+    },
+    {
+      "i": 25,
+      "op": "addText",
+      "ref": "#/texts/3315",
+      "removed": 0
+    },
+    {
+      "i": 26,
+      "op": "addText",
+      "ref": "#/texts/3316",
+      "removed": 0
+    },
+    {
+      "i": 27,
+      "op": "addText",
+      "ref": "#/texts/3317",
+      "removed": 0
+    },
+    {
+      "i": 28,
+      "op": "addText",
+      "ref": "#/texts/3318",
+      "removed": 0
+    },
+    {
+      "i": 29,
+      "op": "addText",
+      "ref": "#/texts/3319",
+      "removed": 0
+    },
+    {
+      "i": 30,
+      "op": "addText",
+      "ref": "#/texts/3320",
+      "removed": 0
+    },
+    {
+      "i": 31,
+      "op": "addText",
+      "ref": "#/texts/3321",
+      "removed": 0
+    },
+    {
+      "i": 32,
+      "op": "addText",
+      "ref": "#/texts/3322",
+      "removed": 0
+    },
+    {
+      "i": 33,
+      "op": "addText",
+      "ref": "#/texts/3323",
+      "removed": 0
+    },
+    {
+      "i": 34,
+      "op": "addText",
+      "ref": "#/texts/3324",
+      "removed": 0
+    },
+    {
+      "i": 35,
+      "op": "addText",
+      "ref": "#/texts/3325",
+      "removed": 0
+    },
+    {
+      "i": 36,
+      "op": "addText",
+      "ref": "#/texts/3326",
+      "removed": 0
+    },
+    {
+      "i": 37,
+      "op": "addText",
+      "ref": "#/texts/3327",
+      "removed": 0
+    },
+    {
+      "i": 38,
+      "op": "addText",
+      "ref": "#/texts/3328",
+      "removed": 0
+    },
+    {
+      "i": 39,
+      "op": "addText",
+      "ref": "#/texts/3329",
+      "removed": 0
+    },
+    {
+      "i": 40,
+      "op": "addText",
+      "ref": "#/texts/3330",
+      "removed": 0
+    },
+    {
+      "i": 41,
+      "op": "addText",
+      "ref": "#/texts/3331",
+      "removed": 0
+    },
+    {
+      "i": 42,
+      "op": "addText",
+      "ref": "#/texts/3332",
+      "removed": 0
+    },
+    {
+      "i": 43,
+      "op": "addText",
+      "ref": "#/texts/3333",
+      "removed": 0
+    },
+    {
+      "i": 44,
+      "op": "addText",
+      "ref": "#/texts/3334",
+      "removed": 0
+    },
+    {
+      "i": 45,
+      "op": "addText",
+      "ref": "#/texts/3335",
+      "removed": 0
+    },
+    {
+      "i": 46,
+      "op": "addText",
+      "ref": "#/texts/3336",
+      "removed": 0
+    },
+    {
+      "i": 47,
+      "op": "addText",
+      "ref": "#/texts/3337",
+      "removed": 0
+    },
+    {
+      "i": 48,
+      "op": "addText",
+      "ref": "#/texts/3338",
+      "removed": 0
+    },
+    {
+      "i": 49,
+      "op": "addText",
+      "ref": "#/texts/3339",
+      "removed": 0
+    },
+    {
+      "i": 50,
+      "op": "addText",
+      "ref": "#/texts/3340",
+      "removed": 0
+    },
+    {
+      "i": 51,
+      "op": "addText",
+      "ref": "#/texts/3341",
+      "removed": 0
+    },
+    {
+      "i": 52,
+      "op": "addText",
+      "ref": "#/texts/3342",
+      "removed": 0
+    },
+    {
+      "i": 53,
+      "op": "addText",
+      "ref": "#/texts/3343",
+      "removed": 0
+    },
+    {
+      "i": 54,
+      "op": "addText",
+      "ref": "#/texts/3344",
+      "removed": 0
+    },
+    {
+      "i": 55,
+      "op": "addText",
+      "ref": "#/texts/3345",
+      "removed": 0
+    },
+    {
+      "i": 56,
+      "op": "addText",
+      "ref": "#/texts/3346",
+      "removed": 0
+    },
+    {
+      "i": 57,
+      "op": "addText",
+      "ref": "#/texts/3347",
+      "removed": 0
+    },
+    {
+      "i": 58,
+      "op": "addText",
+      "ref": "#/texts/3348",
+      "removed": 0
+    },
+    {
+      "i": 59,
+      "op": "addText",
+      "ref": "#/texts/3349",
+      "removed": 0
+    },
+    {
+      "i": 60,
+      "op": "addText",
+      "ref": "#/texts/3350",
+      "removed": 0
+    },
+    {
+      "i": 61,
+      "op": "addText",
+      "ref": "#/texts/3351",
+      "removed": 0
+    },
+    {
+      "i": 62,
+      "op": "addText",
+      "ref": "#/texts/3352",
+      "removed": 0
+    },
+    {
+      "i": 63,
+      "op": "addText",
+      "ref": "#/texts/3353",
+      "removed": 0
+    },
+    {
+      "i": 64,
+      "op": "addText",
+      "ref": "#/texts/3354",
+      "removed": 0
+    },
+    {
+      "i": 65,
+      "op": "addText",
+      "ref": "#/texts/3355",
+      "removed": 0
+    },
+    {
+      "i": 66,
+      "op": "addText",
+      "ref": "#/texts/3356",
+      "removed": 0
+    },
+    {
+      "i": 67,
+      "op": "addText",
+      "ref": "#/texts/3357",
+      "removed": 0
+    },
+    {
+      "i": 68,
+      "op": "addText",
+      "ref": "#/texts/3358",
+      "removed": 0
+    },
+    {
+      "i": 69,
+      "op": "addText",
+      "ref": "#/texts/3359",
+      "removed": 0
+    },
+    {
+      "i": 70,
+      "op": "addText",
+      "ref": "#/texts/3360",
+      "removed": 0
+    },
+    {
+      "i": 71,
+      "op": "addText",
+      "ref": "#/texts/3361",
+      "removed": 0
+    },
+    {
+      "i": 72,
+      "op": "addText",
+      "ref": "#/texts/3362",
+      "removed": 0
+    },
+    {
+      "i": 73,
+      "op": "addText",
+      "ref": "#/texts/3363",
+      "removed": 0
+    },
+    {
+      "i": 74,
+      "op": "addText",
+      "ref": "#/texts/3364",
+      "removed": 0
+    },
+    {
+      "i": 75,
+      "op": "addText",
+      "ref": "#/texts/3365",
+      "removed": 0
+    },
+    {
+      "i": 76,
+      "op": "addText",
+      "ref": "#/texts/3366",
+      "removed": 0
+    },
+    {
+      "i": 77,
+      "op": "addText",
+      "ref": "#/texts/3367",
+      "removed": 0
+    },
+    {
+      "i": 78,
+      "op": "addText",
+      "ref": "#/texts/3368",
+      "removed": 0
+    },
+    {
+      "i": 79,
+      "op": "addText",
+      "ref": "#/texts/3369",
+      "removed": 0
+    },
+    {
+      "i": 80,
+      "op": "addText",
+      "ref": "#/texts/3370",
+      "removed": 0
+    },
+    {
+      "i": 81,
+      "op": "addText",
+      "ref": "#/texts/3371",
+      "removed": 0
+    },
+    {
+      "i": 82,
+      "op": "addText",
+      "ref": "#/texts/3372",
+      "removed": 0
+    },
+    {
+      "i": 83,
+      "op": "addText",
+      "ref": "#/texts/3373",
+      "removed": 0
+    },
+    {
+      "i": 84,
+      "op": "addText",
+      "ref": "#/texts/3374",
+      "removed": 0
+    },
+    {
+      "i": 85,
+      "op": "addText",
+      "ref": "#/texts/3375",
+      "removed": 0
+    },
+    {
+      "i": 86,
+      "op": "addText",
+      "ref": "#/texts/3376",
+      "removed": 0
+    },
+    {
+      "i": 87,
+      "op": "addText",
+      "ref": "#/texts/3377",
+      "removed": 0
+    },
+    {
+      "i": 88,
+      "op": "addText",
+      "ref": "#/texts/3378",
+      "removed": 0
+    },
+    {
+      "i": 89,
+      "op": "addText",
+      "ref": "#/texts/3379",
+      "removed": 0
+    },
+    {
+      "i": 90,
+      "op": "addText",
+      "ref": "#/texts/3380",
+      "removed": 0
+    },
+    {
+      "i": 91,
+      "op": "addText",
+      "ref": "#/texts/3381",
+      "removed": 0
+    },
+    {
+      "i": 92,
+      "op": "addText",
+      "ref": "#/texts/3382",
+      "removed": 0
+    }
+  ],
+  "mapping": {},
+  "added": [
+    "#/texts/3290",
+    "#/texts/3291",
+    "#/texts/3292",
+    "#/texts/3293",
+    "#/texts/3294",
+    "#/texts/3295",
+    "#/texts/3296",
+    "#/texts/3297",
+    "#/texts/3298",
+    "#/texts/3299",
+    "#/texts/3300",
+    "#/texts/3301",
+    "#/texts/3302",
+    "#/texts/3303",
+    "#/texts/3304",
+    "#/texts/3305",
+    "#/texts/3306",
+    "#/texts/3307",
+    "#/texts/3308",
+    "#/texts/3309",
+    "#/texts/3310",
+    "#/texts/3311",
+    "#/texts/3312",
+    "#/texts/3313",
+    "#/texts/3314",
+    "#/texts/3315",
+    "#/texts/3316",
+    "#/texts/3317",
+    "#/texts/3318",
+    "#/texts/3319",
+    "#/texts/3320",
+    "#/texts/3321",
+    "#/texts/3322",
+    "#/texts/3323",
+    "#/texts/3324",
+    "#/texts/3325",
+    "#/texts/3326",
+    "#/texts/3327",
+    "#/texts/3328",
+    "#/texts/3329",
+    "#/texts/3330",
+    "#/texts/3331",
+    "#/texts/3332",
+    "#/texts/3333",
+    "#/texts/3334",
+    "#/texts/3335",
+    "#/texts/3336",
+    "#/texts/3337",
+    "#/texts/3338",
+    "#/texts/3339",
+    "#/texts/3340",
+    "#/texts/3341",
+    "#/texts/3342",
+    "#/texts/3343",
+    "#/texts/3344",
+    "#/texts/3345",
+    "#/texts/3346",
+    "#/texts/3347",
+    "#/texts/3348",
+    "#/texts/3349",
+    "#/texts/3350",
+    "#/texts/3351",
+    "#/texts/3352",
+    "#/texts/3353",
+    "#/texts/3354",
+    "#/texts/3355",
+    "#/texts/3356",
+    "#/texts/3357",
+    "#/texts/3358",
+    "#/texts/3359",
+    "#/texts/3360",
+    "#/texts/3361",
+    "#/texts/3362",
+    "#/texts/3363",
+    "#/texts/3364",
+    "#/texts/3365",
+    "#/texts/3366",
+    "#/texts/3367",
+    "#/texts/3368",
+    "#/texts/3369",
+    "#/texts/3370",
+    "#/texts/3371",
+    "#/texts/3372",
+    "#/texts/3373",
+    "#/texts/3374",
+    "#/texts/3375",
+    "#/texts/3376",
+    "#/texts/3377",
+    "#/texts/3378",
+    "#/texts/3379",
+    "#/texts/3380",
+    "#/texts/3381",
+    "#/texts/3382"
+  ],
+  "ops": 93,
+  "warnings_before": 8,
+  "warnings_after": 8
+}

@@ -1,0 +1,29 @@
+[
+ {
+  "step": "s05",
+  "seconds": 1320.7,
+  "pictures": 182,
+  "described": 182,
+  "claude_calls": 46,
+  "decorative": 138,
+  "no_image": 0,
+  "warnings": 19
+ },
+ {
+  "step": "s06",
+  "seconds": 576.4,
+  "sections": 595,
+  "summarized": 595,
+  "claude_calls": 24,
+  "texts_updated": 3756,
+  "warnings": 19
+ },
+ {
+  "step": "s07",
+  "seconds": 9.8,
+  "input": "06_summary.json",
+  "chunks": 1029,
+  "max_tokens": 514,
+  "rule_warnings": 12
+ }
+]

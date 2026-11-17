@@ -49,11 +49,26 @@
 - 要素の削除・新規グループ作成は未実装（GOAL の「の実現に向けて」は text に変えたため本文に重複して残る）
 - テストは jsdom 上の操作。実ブラウザでの目視確認は未実施
 
+## 追加（2026-11-16）: 要素の追加・合体・削除
+- core.js: `addText`（直後に兄弟 / 子として追加、prov は隣の要素から引き継ぎ）、
+  `mergeTexts`（並び順で先頭の要素へ本文・orig・prov をまとめ、子は先頭へ移す）、
+  `deleteItems`（子孫ごと / 子は親へ繰り上げ）。削除・合体は配列の番号を詰め、文書中の全 `$ref` を書き換える。
+  操作後に検証エラーが増えたら元に戻す。CLI の操作名は `addText` / `merge` / `delete`
+- index.html: 「要素の追加」「合体・削除」欄と「元に戻す」（追加・合体・削除を最大20回）
+- テスト: core 36/36、docling 36/36、GUI 24/24、GUI 出力の docling 24/24 PASS（check_outputs.py に `absent` 検証を追加）
+- 利用: 図の説明 30件を図の直後に追加 → `data/edited/那須烏山市総合計画のコピー_figures.json`（作業: `data/edited/figure_work/`）
+
+## 追加（2026-11-17）: CLI の ref 付け替え
+- cli.js: 操作リストの ref を「操作前の番号」で書けるようにした（削除・合体で詰まった番号を RefMapper が付け替え、追加した要素は "@new:n"）。`--report` で結果を JSON 出力
+- パイプライン ingest/ がこの CLI で操作を適用する（ingest/doc_tool.py）
+- テスト: cli_tests.js 5/5
+
 ## 再実行コマンド
 ```
 node tools/doc_editor/test/core_tests.js
 .venv/bin/python tools/doc_editor/test/check_outputs.py
 node tools/doc_editor/test/ui_tests.js
 .venv/bin/python tools/doc_editor/test/check_outputs.py data/edited/ui_tests/manifest.json
-.venv/bin/python src/validate_doc.py "data/edited/那須烏山市総合計画のコピー_edited.json" --chunk
+node tools/doc_editor/test/cli_tests.js        # 操作リストの ref の付け替え（2026-11-17 追加）
+# 旧 src/validate_doc.py は legacy/src/ に移動。チャンク化はパイプラインの ingest/steps/s07_chunk.py
 ```（読み込み・ツリー・JSON 表示・書き出し → ラベル → 移動・選択 → バリュー編集の順で配線）

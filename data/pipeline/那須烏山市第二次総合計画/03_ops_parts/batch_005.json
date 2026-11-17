@@ -1,0 +1,836 @@
+{
+ "ops": [
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3170",
+   "label": "section_header",
+   "level": 4
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3171",
+   "label": "section_header",
+   "level": 5
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3172",
+   "label": "section_header",
+   "level": 6
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3174",
+   "label": "section_header",
+   "level": 6
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3176",
+   "label": "section_header",
+   "level": 6
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3177",
+   "label": "section_header",
+   "level": 4
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3178",
+   "label": "section_header",
+   "level": 5
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3179",
+   "label": "section_header",
+   "level": 6
+  },
+  {
+   "op": "merge",
+   "refs": [
+    "#/texts/3180",
+    "#/texts/3181"
+   ],
+   "sep": ""
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3185",
+   "label": "section_header",
+   "level": 6
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3187",
+   "label": "section_header",
+   "level": 6
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3188",
+   "label": "section_header",
+   "level": 5
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3189",
+   "label": "section_header",
+   "level": 6
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3191",
+   "label": "section_header",
+   "level": 6
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3194",
+   "label": "section_header",
+   "level": 6
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3195",
+   "label": "section_header",
+   "level": 5
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3196",
+   "label": "section_header",
+   "level": 6
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3198",
+   "label": "section_header",
+   "level": 6
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3200",
+   "label": "section_header",
+   "level": 6
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3204",
+   "label": "text"
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3205",
+   "label": "section_header",
+   "level": 2
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3206",
+   "label": "text"
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3210",
+   "label": "text"
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3215",
+   "label": "text"
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3219",
+   "label": "text"
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3226",
+   "label": "section_header",
+   "level": 3
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3227",
+   "label": "section_header",
+   "level": 4
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3228",
+   "label": "section_header",
+   "level": 5
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3231",
+   "label": "section_header",
+   "level": 5
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3234",
+   "label": "section_header",
+   "level": 5
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3237",
+   "label": "section_header",
+   "level": 4
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3253",
+   "label": "section_header",
+   "level": 4
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3254",
+   "label": "section_header",
+   "level": 5
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3255",
+   "label": "section_header",
+   "level": 6
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3258",
+   "label": "section_header",
+   "level": 6
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3260",
+   "label": "section_header",
+   "level": 6
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3261",
+   "label": "section_header",
+   "level": 5
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3262",
+   "label": "section_header",
+   "level": 6
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3264",
+   "label": "section_header",
+   "level": 6
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3265",
+   "label": "section_header",
+   "level": 6
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3270",
+   "label": "section_header",
+   "level": 4
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3271",
+   "label": "section_header",
+   "level": 5
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3272",
+   "label": "section_header",
+   "level": 6
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3275",
+   "label": "section_header",
+   "level": 6
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3277",
+   "label": "section_header",
+   "level": 6
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3278",
+   "label": "section_header",
+   "level": 4
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3279",
+   "label": "section_header",
+   "level": 5
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3280",
+   "label": "section_header",
+   "level": 6
+  },
+  {
+   "op": "delete",
+   "ref": "#/texts/3284"
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3285",
+   "label": "section_header",
+   "level": 6
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3287",
+   "label": "section_header",
+   "level": 6
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3293",
+   "label": "section_header",
+   "level": 3
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3294",
+   "label": "section_header",
+   "level": 4
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3295",
+   "label": "section_header",
+   "level": 5
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3300",
+   "label": "section_header",
+   "level": 5
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3302",
+   "label": "section_header",
+   "level": 4
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3325",
+   "label": "section_header",
+   "level": 4
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3326",
+   "label": "section_header",
+   "level": 5
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3327",
+   "label": "section_header",
+   "level": 6
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3330",
+   "label": "section_header",
+   "level": 6
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3331",
+   "label": "section_header",
+   "level": 6
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3332",
+   "label": "section_header",
+   "level": 4
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3333",
+   "label": "section_header",
+   "level": 5
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3334",
+   "label": "section_header",
+   "level": 6
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3338",
+   "label": "section_header",
+   "level": 6
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3340",
+   "label": "section_header",
+   "level": 6
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3341",
+   "label": "section_header",
+   "level": 4
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3342",
+   "label": "section_header",
+   "level": 5
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3343",
+   "label": "section_header",
+   "level": 6
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3347",
+   "label": "section_header",
+   "level": 6
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3352",
+   "label": "section_header",
+   "level": 6
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3353",
+   "label": "section_header",
+   "level": 5
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3354",
+   "label": "section_header",
+   "level": 6
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3356",
+   "label": "section_header",
+   "level": 6
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3358",
+   "label": "section_header",
+   "level": 6
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3359",
+   "label": "section_header",
+   "level": 5
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3360",
+   "label": "section_header",
+   "level": 6
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3362",
+   "label": "section_header",
+   "level": 6
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3365",
+   "label": "section_header",
+   "level": 6
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3366",
+   "label": "section_header",
+   "level": 4
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3367",
+   "label": "section_header",
+   "level": 5
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3368",
+   "label": "section_header",
+   "level": 6
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3371",
+   "label": "section_header",
+   "level": 6
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3372",
+   "label": "section_header",
+   "level": 6
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3373",
+   "label": "section_header",
+   "level": 5
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3374",
+   "label": "section_header",
+   "level": 6
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3380",
+   "label": "section_header",
+   "level": 6
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3382",
+   "label": "section_header",
+   "level": 6
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3386",
+   "label": "section_header",
+   "level": 3
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3387",
+   "label": "section_header",
+   "level": 4
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3388",
+   "label": "section_header",
+   "level": 5
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3391",
+   "label": "section_header",
+   "level": 5
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3393",
+   "label": "section_header",
+   "level": 5
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3396",
+   "label": "section_header",
+   "level": 4
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3411",
+   "label": "section_header",
+   "level": 4
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3413",
+   "label": "section_header",
+   "level": 4
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3414",
+   "label": "section_header",
+   "level": 5
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3415",
+   "label": "section_header",
+   "level": 6
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3419",
+   "label": "section_header",
+   "level": 6
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3421",
+   "label": "section_header",
+   "level": 6
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3422",
+   "label": "section_header",
+   "level": 5
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3423",
+   "label": "section_header",
+   "level": 6
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3429",
+   "label": "section_header",
+   "level": 6
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3431",
+   "label": "section_header",
+   "level": 6
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3432",
+   "label": "section_header",
+   "level": 4
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3433",
+   "label": "section_header",
+   "level": 5
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3434",
+   "label": "section_header",
+   "level": 6
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3436",
+   "label": "section_header",
+   "level": 6
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3439",
+   "label": "section_header",
+   "level": 6
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3440",
+   "label": "section_header",
+   "level": 4
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3441",
+   "label": "section_header",
+   "level": 5
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3442",
+   "label": "section_header",
+   "level": 6
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3444",
+   "label": "section_header",
+   "level": 6
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3448",
+   "label": "section_header",
+   "level": 6
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3449",
+   "label": "section_header",
+   "level": 5
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3450",
+   "label": "section_header",
+   "level": 6
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3456",
+   "label": "section_header",
+   "level": 6
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3458",
+   "label": "section_header",
+   "level": 6
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3462",
+   "label": "section_header",
+   "level": 3
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3463",
+   "label": "section_header",
+   "level": 4
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3464",
+   "label": "section_header",
+   "level": 5
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3469",
+   "label": "section_header",
+   "level": 4
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3503",
+   "label": "section_header",
+   "level": 4
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3504",
+   "label": "section_header",
+   "level": 5
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3505",
+   "label": "section_header",
+   "level": 6
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3508",
+   "label": "section_header",
+   "level": 6
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3510",
+   "label": "section_header",
+   "level": 6
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3511",
+   "label": "section_header",
+   "level": 5
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3512",
+   "label": "section_header",
+   "level": 6
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3514",
+   "label": "section_header",
+   "level": 6
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3520",
+   "label": "section_header",
+   "level": 6
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3521",
+   "label": "section_header",
+   "level": 5
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3522",
+   "label": "section_header",
+   "level": 6
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3524",
+   "label": "section_header",
+   "level": 6
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3527",
+   "label": "section_header",
+   "level": 6
+  },
+  {
+   "op": "merge",
+   "refs": [
+    "#/texts/3528",
+    "#/texts/3529"
+   ],
+   "sep": ""
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3528",
+   "label": "section_header",
+   "level": 4
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3530",
+   "label": "section_header",
+   "level": 5
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/3531",
+   "label": "section_header",
+   "level": 6
+  }
+ ],
+ "notes": "- 3205「地域資源の魅力創出と 産業活力による…」は、Markdown の「基本目標Ⅲ」の見出し（L2）として扱った。本文に「基本目標Ⅲ」の文字は入っていない。\n- 3204「第２部…」と、p.113 の扉ページにある政策3-1〜3-4（3206/3210/3215/3219）は、目次的な繰り返しと見て text にした。\n- 3180 と 3181 は、1つの文が list_item と text に分かれていたので合体した。3528 と 3529 は合体して L4 の見出しにした。sep が \"\" なので「(2)」と「観光」の間に空白は入らない。\n- 3284「_」は意味のない記号なので削除した。\n- 次のものは判断がつかないため変えていない：p.115/120/127/132 の図の中の文字や list_item、3438、3446、内容が重なっている 3525/3526。"
+}

@@ -1,0 +1,11 @@
+[
+ {
+  "step": "s04",
+  "seconds": 2.2,
+  "input": "04_named.json",
+  "flatten_groups": 18,
+  "naming": 2,
+  "moves": 2914,
+  "warnings": 19
+ }
+]

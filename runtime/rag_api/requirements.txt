@@ -1,0 +1,6 @@
+# RAG API の依存（runtime 専用。パイプライン ingest/ の依存とは別）
+fastapi
+uvicorn
+sentence-transformers
+qdrant-client
+requests

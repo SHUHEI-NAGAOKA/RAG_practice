@@ -174,6 +174,46 @@
     </section>
 
     <section>
+      <h2>要素の追加</h2>
+      <div class="line">
+        <select id="addLabel" disabled></select>
+        <label>level <input id="addLevel" type="number" min="1" max="100" value="1" style="width:4.5em"></label>
+        <select id="addPos" disabled>
+          <option value="after">フォーカス要素の直後（兄弟）</option>
+          <option value="child">フォーカス要素の子（末尾）</option>
+        </select>
+      </div>
+      <textarea id="addText" disabled placeholder="新しい要素の本文"></textarea>
+      <div class="line">
+        <button id="btnAdd" disabled>要素を追加</button>
+        <span class="mono" style="color:var(--muted)">ページ位置は隣の要素から引き継ぎます</span>
+      </div>
+    </section>
+
+    <section>
+      <h2>合体・削除</h2>
+      <div class="line">
+        <label>つなぎ文字 <input id="mergeSep" class="mono" size="6" placeholder="なし"></label>
+        <label><input type="checkbox" id="mergeNewline"> 改行でつなぐ</label>
+        <button id="btnMerge" disabled>チェックした要素を合体</button>
+      </div>
+      <div class="line">
+        <span class="mono" style="color:var(--muted)">文書の並び順で先頭の要素にまとめます（本文を持つ要素のみ）</span>
+      </div>
+      <div class="line">
+        <label><input type="checkbox" id="delKeepChildren" checked> 子は残す（親へ繰り上げ）</label>
+      </div>
+      <div class="line">
+        <button id="btnDeleteFocus" disabled>フォーカス要素を削除</button>
+        <button id="btnDeleteChecked" disabled>チェックした要素を削除</button>
+        <button id="btnUndo" disabled>元に戻す</button>
+      </div>
+      <div class="line">
+        <span class="mono" style="color:var(--muted)">削除・合体すると後ろの要素の番号が詰まります（参照も自動で書き換え）</span>
+      </div>
+    </section>
+
+    <section>
       <h2>JSON（実際の記述・直接編集）</h2>
       <textarea id="jsonView" class="mono" spellcheck="false" disabled></textarea>
       <div class="line">
@@ -201,6 +241,7 @@
     checked: new Set(),
     expanded: new Set(["#/body"]),
     lastExport: null,
+    undo: [], // 追加・合体・削除の前の文書（シリアライズ済み）
   };
 
   // ==========================================
@@ -373,6 +414,14 @@
     set("jsonView", item && !isRoot);
     set("btnJson", item && !isRoot);
     set("btnJsonReset", item && !isRoot);
+    set("addLabel", !!item);
+    set("addPos", !!item);
+    set("addText", !!item);
+    set("btnAdd", !!item);
+    set("btnMerge", state.checked.size >= 2);
+    set("btnDeleteFocus", item && !isRoot);
+    set("btnDeleteChecked", hasChecked);
+    set("btnUndo", loaded && state.undo.length > 0);
   }
 
   // 編集後の再描画（移動した要素が見えるよう親を展開）
@@ -398,6 +447,7 @@
     state.focus = null;
     state.checked.clear();
     state.expanded = new Set(["#/body"]);
+    state.undo = [];
     $("fileName").textContent = state.name;
     $("outName").value = state.name.replace(/\.json$/i, "") + "_edited.json";
     if (!C.canRaw) log("このブラウザは大きな整数の桁保持に未対応です（origin.binary_hash が変わる可能性があります）", "warn");
@@ -558,6 +608,89 @@
     afterEdit();
   });
   $("btnJsonReset").addEventListener("click", renderDetail);
+
+  // ==========================================
+  // 追加・合体・削除
+  // ==========================================
+  // 追加用のラベル候補（本文を持つ要素のラベル）
+  for (const l of C.labelOptions("#/texts/0")) {
+    const o = document.createElement("option");
+    o.value = l;
+    o.textContent = l;
+    $("addLabel").appendChild(o);
+  }
+
+  function snapshot() {
+    state.undo.push(C.serialize(state.doc));
+    if (state.undo.length > 20) state.undo.shift();
+  }
+
+  // 番号が詰まった後に、フォーカス・展開状態を新しい番号に付け替える
+  function remap(map, removed) {
+    const gone = new Set(removed || []);
+    const conv = (r) => (C.ROOTS.includes(r) ? r : gone.has(r) ? null : (map && map.get(r)) || r);
+    state.focus = state.focus ? conv(state.focus) : null;
+    state.expanded = new Set([...state.expanded].map(conv).filter(Boolean));
+    state.checked.clear();
+  }
+
+  $("btnAdd").addEventListener("click", () => {
+    const label = $("addLabel").value;
+    const args = {
+      label,
+      level: label === "section_header" ? Number($("addLevel").value) : undefined,
+      text: $("addText").value,
+    };
+    if ($("addPos").value === "after") args.after = state.focus;
+    else args.parent = state.focus;
+    snapshot();
+    const res = C.addText(state.doc, args);
+    if (!report(res, `${res.ref} を追加（${args.after ? args.after + " の直後" : args.parent + " の子"}）`)) {
+      state.undo.pop();
+      return;
+    }
+    $("addText").value = "";
+    state.focus = res.ref;
+    afterEdit([res.ref]);
+  });
+
+  $("btnMerge").addEventListener("click", () => {
+    const refs = [...state.checked];
+    const sep = $("mergeNewline").checked ? "\n" : $("mergeSep").value;
+    snapshot();
+    const res = C.mergeTexts(state.doc, { refs, sep });
+    if (!report(res, `${refs.length} 件を ${res.ref} に合体`)) {
+      state.undo.pop();
+      return;
+    }
+    remap(res.map, res.removed);
+    state.focus = res.ref;
+    afterEdit([res.ref]);
+  });
+
+  function doDelete(refs) {
+    const keepChildren = $("delKeepChildren").checked;
+    snapshot();
+    const res = C.deleteItems(state.doc, { refs, keepChildren });
+    if (!report(res, `${res.removed ? res.removed.length : 0} 件を削除（${keepChildren ? "子は親へ繰り上げ" : "子孫ごと"}）`)) {
+      state.undo.pop();
+      return;
+    }
+    remap(res.map, res.removed);
+    afterEdit();
+  }
+  $("btnDeleteFocus").addEventListener("click", () => doDelete([state.focus]));
+  $("btnDeleteChecked").addEventListener("click", () => doDelete([...state.checked]));
+
+  $("btnUndo").addEventListener("click", () => {
+    const prev = state.undo.pop();
+    if (!prev) return;
+    state.doc = C.parse(prev);
+    state.checked.clear();
+    if (state.focus && !C.getItem(state.doc, state.focus)) state.focus = null;
+    log("直前の追加・合体・削除を元に戻しました", "ok");
+    afterEdit();
+  });
 
   // テスト・外部からの操作用
   window.DocEditor = { state, loadText, renderTree, setFocus };

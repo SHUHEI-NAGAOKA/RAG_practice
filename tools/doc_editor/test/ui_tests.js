@@ -95,7 +95,7 @@ async function test(name, desc, fn) {
     const file = path.join(OUT, `${name}.json`);
     ui.export(file);
     const v = ui.C.validate(ui.doc());
-    manifest.push({ name: "UI_" + name, file, expect: extra.expect || [], expectDoc: extra.expectDoc || [] });
+    manifest.push({ name: "UI_" + name, file, expect: extra.expect || [], expectDoc: extra.expectDoc || [], absent: extra.absent || [] });
     results.push(["PASS", name, desc, `警告${v.warnings.length}`]);
     ui.w.close();
   } catch (e) {
@@ -273,6 +273,126 @@ async function test(name, desc, fn) {
     assert.strictEqual(ui.C.childRefs(d, "#/pictures/7").length, 0);
     assert.ok(ui.C.validate(d).ok);
     return { expect: ["【UI全機能】"] };
+  });
+
+  // ---------- 追加・合体・削除 ----------
+  await test("U16_add_after", "フォーカス要素の直後に本文を追加（追加した要素にフォーカスが移る）", (ui) => {
+    const n = ui.doc().texts.length;
+    ui.focus("#/pictures/5");
+    ui.set("addLabel", "text");
+    ui.set("addPos", "after");
+    ui.set("addText", "【UI追加-図の説明】");
+    ui.click("btnAdd");
+    const ref = `#/texts/${n}`;
+    assert.strictEqual(ui.w.DocEditor.state.focus, ref, ui.lastLog());
+    const b = ui.kids("#/body");
+    assert.strictEqual(b[b.indexOf("#/pictures/5") + 1], ref);
+    assert.ok(ui.row(ref), "追加した行がツリーに表示されていません");
+    assert.strictEqual(ui.$("addText").value, "");
+    return { expect: ["【UI追加-図の説明】"] };
+  });
+
+  await test("U17_add_child_header", "フォーカス要素の子として見出し（L3）を追加 → 空の本文は拒否", (ui) => {
+    ui.focus("#/groups/169");
+    ui.set("addPos", "child");
+    ui.set("addText", "");
+    ui.click("btnAdd");
+    assert.match(ui.lastLog(), /失敗.*本文/);
+    assert.strictEqual(ui.$("btnUndo").disabled, true, "失敗した操作が元に戻す履歴に残っています");
+    ui.set("addLabel", "section_header");
+    ui.set("addLevel", "3");
+    ui.set("addText", "【UI追加見出し】");
+    ui.click("btnAdd");
+    const k = ui.kids("#/groups/169");
+    const it = ui.C.getItem(ui.doc(), k[k.length - 1]);
+    assert.ok(it.label === "section_header" && it.level === 3 && it.text === "【UI追加見出し】", ui.lastLog());
+  });
+
+  await test("U18_merge_checked", "2件をチェック → 合体（つなぎ文字なし）→ 番号が詰まる", (ui) => {
+    const t6 = ui.C.getItem(ui.doc(), "#/texts/6").text;
+    const t7 = ui.C.getItem(ui.doc(), "#/texts/7").text;
+    const n = ui.doc().texts.length;
+    ui.tick("#/texts/7");
+    assert.strictEqual(ui.$("btnMerge").disabled, true, "1件だけで合体ボタンが押せます");
+    ui.tick("#/texts/6");
+    ui.click("btnMerge");
+    assert.strictEqual(ui.C.getItem(ui.doc(), "#/texts/6").text, t6 + t7, ui.lastLog());
+    assert.strictEqual(ui.doc().texts.length, n - 1);
+    assert.strictEqual(ui.w.DocEditor.state.focus, "#/texts/6");
+    assert.strictEqual(ui.$("checkCount").textContent, "0");
+    return { expectDoc: [{ ref: "#/texts/6", label: "section_header", text: t6 + t7, parent: "#/body" }] };
+  });
+
+  await test("U19_merge_newline", "改行でつなぐ合体（本文を持たない要素が混ざると拒否）", (ui) => {
+    ui.tick("#/texts/4");
+    ui.tick("#/groups/0");
+    ui.click("btnMerge");
+    assert.match(ui.lastLog(), /失敗.*合体できません/);
+    ui.untick("#/groups/0");
+    ui.tick("#/texts/5");
+    ui.$("mergeNewline").checked = true;
+    const t4 = ui.C.getItem(ui.doc(), "#/texts/4").text;
+    const t5 = ui.C.getItem(ui.doc(), "#/texts/5").text;
+    ui.click("btnMerge");
+    assert.strictEqual(ui.C.getItem(ui.doc(), "#/texts/4").text, t4 + "\n" + t5, ui.lastLog());
+  });
+
+  await test("U20_delete_focus_keep", "フォーカス要素を削除（子は残す）→ 子が同じ位置に繰り上がる", (ui) => {
+    const picKids = ui.kids("#/pictures/5").map((r) => ui.C.getItem(ui.doc(), r).text);
+    const idx = ui.kids("#/body").indexOf("#/pictures/5");
+    const np = ui.doc().pictures.length;
+    ui.focus("#/pictures/5");
+    ui.$("delKeepChildren").checked = true;
+    ui.click("btnDeleteFocus");
+    assert.strictEqual(ui.doc().pictures.length, np - 1, ui.lastLog());
+    const b = ui.kids("#/body");
+    assert.deepStrictEqual(b.slice(idx, idx + picKids.length).map((r) => ui.C.getItem(ui.doc(), r).text), picKids);
+    assert.strictEqual(ui.w.DocEditor.state.focus, null);
+  });
+
+  await test("U21_delete_checked_subtree", "チェックした要素を子孫ごと削除", (ui) => {
+    const nt = ui.doc().texts.length;
+    ui.tick("#/groups/169");
+    ui.$("delKeepChildren").checked = false;
+    ui.click("btnDeleteChecked");
+    assert.ok(ui.doc().texts.length < nt, ui.lastLog());
+    assert.ok(ui.C.validate(ui.doc()).ok);
+    return { absent: ["①市内事業経営者、まちづくり団体等との意見交換会"] };
+  });
+
+  await test("U22_undo", "削除 → 合体 → 元に戻す（2回）で元の文書に戻る", (ui) => {
+    const before = ui.C.serialize(ui.doc());
+    ui.focus("#/texts/2697");
+    ui.click("btnDeleteFocus");
+    ui.tick("#/texts/4"); ui.tick("#/texts/5");
+    ui.click("btnMerge");
+    assert.notStrictEqual(ui.C.serialize(ui.doc()), before);
+    ui.click("btnUndo");
+    ui.click("btnUndo");
+    assert.strictEqual(ui.C.serialize(ui.doc()), before);
+    assert.strictEqual(ui.$("btnUndo").disabled, true);
+  });
+
+  await test("U23_add_merge_delete_mix", "追加 → 合体 → 削除 → ラベル → 移動を1つの文書で使用", (ui) => {
+    ui.focus("#/pictures/5");
+    ui.set("addLabel", "text"); ui.set("addPos", "after");
+    ui.set("addText", "【UI組合せ1】"); ui.click("btnAdd");
+    const a = ui.w.DocEditor.state.focus;
+    ui.set("addText", "【UI組合せ2】"); ui.click("btnAdd");
+    const b = ui.w.DocEditor.state.focus;
+    ui.$("mergeNewline").checked = false; ui.set("mergeSep", " / ");
+    ui.tick(a); ui.tick(b); ui.click("btnMerge");
+    ui.$("delKeepChildren").checked = true;
+    ui.focus("#/texts/2698"); ui.click("btnDeleteFocus");
+    // 削除で後ろの番号が詰まるので、合体した要素の現在の番号を本文から探す
+    const mi = ui.doc().texts.findIndex((t) => t.text === "【UI組合せ1】 / 【UI組合せ2】");
+    assert.ok(mi >= 0, "合体した要素が見つかりません");
+    const merged = `#/texts/${mi}`;
+    ui.focus("#/texts/2696"); ui.label("text"); ui.click("btnLabelFocus");
+    ui.target("#/body", 0); ui.focus(merged); ui.click("btnMoveFocus");
+    assert.strictEqual(ui.C.getItem(ui.doc(), ui.kids("#/body")[0]).text, "【UI組合せ1】 / 【UI組合せ2】", ui.lastLog());
+    assert.ok(ui.C.validate(ui.doc()).ok);
+    return { expect: ["【UI組合せ1】 / 【UI組合せ2】"], absent: ["③タウンミーティング"] };
   });
 
   // ==========================================

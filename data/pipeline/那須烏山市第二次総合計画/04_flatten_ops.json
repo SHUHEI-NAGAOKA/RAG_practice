@@ -1,0 +1,182 @@
+[
+ {
+  "op": "move",
+  "refs": [
+   "#/texts/4971"
+  ],
+  "target": "#/body",
+  "index": 2772
+ },
+ {
+  "op": "move",
+  "refs": [
+   "#/texts/4923",
+   "#/texts/4924"
+  ],
+  "target": "#/body",
+  "index": 2735
+ },
+ {
+  "op": "move",
+  "refs": [
+   "#/texts/4391"
+  ],
+  "target": "#/body",
+  "index": 2545
+ },
+ {
+  "op": "move",
+  "refs": [
+   "#/texts/4344",
+   "#/texts/4345",
+   "#/texts/4346",
+   "#/texts/4347",
+   "#/texts/4348",
+   "#/texts/4349",
+   "#/texts/4350"
+  ],
+  "target": "#/body",
+  "index": 2537
+ },
+ {
+  "op": "move",
+  "refs": [
+   "#/texts/4106"
+  ],
+  "target": "#/body",
+  "index": 2301
+ },
+ {
+  "op": "move",
+  "refs": [
+   "#/texts/3924"
+  ],
+  "target": "#/body",
+  "index": 2120
+ },
+ {
+  "op": "move",
+  "refs": [
+   "#/texts/3837"
+  ],
+  "target": "#/body",
+  "index": 2053
+ },
+ {
+  "op": "move",
+  "refs": [
+   "#/texts/2980"
+  ],
+  "target": "#/body",
+  "index": 1178
+ },
+ {
+  "op": "move",
+  "refs": [
+   "#/texts/2758"
+  ],
+  "target": "#/body",
+  "index": 977
+ },
+ {
+  "op": "move",
+  "refs": [
+   "#/texts/2462"
+  ],
+  "target": "#/body",
+  "index": 781
+ },
+ {
+  "op": "move",
+  "refs": [
+   "#/texts/1622",
+   "#/texts/1623",
+   "#/texts/1624"
+  ],
+  "target": "#/body",
+  "index": 463
+ },
+ {
+  "op": "move",
+  "refs": [
+   "#/texts/1522"
+  ],
+  "target": "#/body",
+  "index": 386
+ },
+ {
+  "op": "move",
+  "refs": [
+   "#/texts/1520"
+  ],
+  "target": "#/body",
+  "index": 384
+ },
+ {
+  "op": "move",
+  "refs": [
+   "#/texts/1518"
+  ],
+  "target": "#/body",
+  "index": 382
+ },
+ {
+  "op": "move",
+  "refs": [
+   "#/texts/1516"
+  ],
+  "target": "#/body",
+  "index": 380
+ },
+ {
+  "op": "move",
+  "refs": [
+   "#/texts/1281",
+   "#/texts/1282",
+   "#/texts/1283",
+   "#/texts/1284"
+  ],
+  "target": "#/body",
+  "index": 281
+ },
+ {
+  "op": "move",
+  "refs": [
+   "#/texts/1276",
+   "#/texts/1277"
+  ],
+  "target": "#/body",
+  "index": 277
+ },
+ {
+  "op": "move",
+  "refs": [
+   "#/texts/1258"
+  ],
+  "target": "#/body",
+  "index": 262
+ },
+ {
+  "op": "delete",
+  "refs": [
+   "#/groups/37",
+   "#/groups/45",
+   "#/groups/47",
+   "#/groups/60",
+   "#/groups/61",
+   "#/groups/62",
+   "#/groups/63",
+   "#/groups/73",
+   "#/groups/137",
+   "#/groups/174",
+   "#/groups/209",
+   "#/groups/362",
+   "#/groups/373",
+   "#/groups/406",
+   "#/groups/444",
+   "#/groups/445",
+   "#/groups/474",
+   "#/groups/481"
+  ]
+ }
+]

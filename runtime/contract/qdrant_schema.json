@@ -1,0 +1,48 @@
+{
+  "description": "パイプライン（ingest/、書き込み側）と RAG 実行環境（runtime/、読み取り側）の約束。正本はこのファイル。ingest/qdrant_schema.json は写しで、tests/test_contract.py で一致を確認する。",
+  "version": 1,
+  "embedding": {
+    "model": "cl-nagoya/ruri-v3-310m",
+    "dimension": 768,
+    "distance": "Cosine",
+    "normalize": true,
+    "document_prefix": "検索文書: ",
+    "query_prefix": "検索クエリ: "
+  },
+  "heading_sep": " > ",
+  "collections": {
+    "chunks": {
+      "name": "rag_ruri_v3_310m",
+      "vectors": true,
+      "point_id": "uuid5(NAMESPACE_URL, '<document_id>:<chunk_id>')",
+      "payload_indexes": {"heading_paths": "keyword"},
+      "payload": {
+        "chunk_id": "str: chunk_0001 の形。文書順に並ぶ",
+        "document_id": "str: DoclingDocument の name",
+        "text": "str: チャンクの本文（LLM に渡す）",
+        "headings": "list[str]: 文書タイトルからこのチャンクまでの見出しの経路",
+        "heading_paths": "list[str]: headings を先頭から1段ずつ heading_sep でつないだもの（見出しの範囲の絞り込み用）",
+        "embedding_text": "str: 見出し＋本文（ベクトル化した文字列。document_prefix は含まない）",
+        "source_refs": "list[str]: チャンクの元になった文書要素の self_ref",
+        "page_numbers": "list[int]",
+        "token_count": "int",
+        "parent_id": "str|null"
+      }
+    },
+    "doc_items": {
+      "name": "rag_doc_items",
+      "vectors": false,
+      "point_id": "uuid5(NAMESPACE_URL, '<document_id>:<self_ref>')",
+      "payload_indexes": {"self_ref": "keyword", "document_id": "keyword"},
+      "payload": {
+        "document_id": "str: chunks の document_id と同じ",
+        "self_ref": "str: #/texts/12 など（#/body を含む）",
+        "label": "str: section_header / text / list_item / picture / table など",
+        "text": "str: 本文（表はセルを | でつないだ行）",
+        "level": "int|null: section_header の階層",
+        "parent_ref": "str|null",
+        "children_refs": "list[str]"
+      }
+    }
+  }
+}

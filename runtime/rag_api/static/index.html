@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RAG 質問応答</title>
+<!-- 見た目: css/style.css / 動き: js/main.js から各モジュールを読み込む -->
+<link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+<header>
+  <div class="inner">
+    <h1>RAG 質問応答</h1>
+    <label>モード
+      <select id="mode">
+        <option value="levels">階層を選んで回答（/levels → /subtopics → /answer）</option>
+        <option value="ask">回答生成（/ask）</option>
+        <option value="search">検索のみ（/search）</option>
+      </select>
+    </label>
+    <label>top_k <input id="topk" type="number" min="1" max="10" value="3"></label>
+    <label id="evalToggleLabel"><input type="checkbox" id="evalToggle"> 評価モード</label>
+  </div>
+</header>
+
+<!-- 評価モード: テストの質問を1問ずつ自分で選んで回答し、結果を記録する（js/eval_mode.js） -->
+<div id="evalBar">
+  <div class="inner">
+    <label>記録名 <input type="text" id="evalRun"></label>
+    <button type="button" class="sub" id="evalNewRun">新しい記録を始める</button>
+    <span id="evalProgress" class="count"></span>
+    <select id="evalSelect"></select>
+    <button type="button" id="evalStart">この質問で開始</button>
+    <button type="button" class="sub" id="evalSkip">この質問をスキップ</button>
+    <div id="evalQuestion"></div>
+  </div>
+</div>
+
+<!-- やり取りの表示欄（質問・候補・回答が上から順に積まれる） -->
+<main id="scroller">
+  <div id="log">
+    <p class="empty" id="empty">質問を入力してください。</p>
+  </div>
+</main>
+
+<!-- 質問の入力欄（js/question_input.js） -->
+<footer>
+  <div class="inner">
+    <form id="form">
+      <textarea id="q" rows="1" placeholder="質問を入力"></textarea>
+      <button id="send" type="submit">送信</button>
+    </form>
+    <div class="hint">Enter で送信 / Shift+Enter で改行</div>
+  </div>
+</footer>
+
+<script type="module" src="/static/js/main.js"></script>
+</body>
+</html>

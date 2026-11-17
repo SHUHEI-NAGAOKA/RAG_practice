@@ -14,3 +14,7 @@ node_modules/
 data/edited/tests/
 data/edited/ui_tests/
 data/edited/step1_roundtrip.json
+
+# パイプラインの試し実行・確認用の出力（再実行で作り直せる）
+data/pipeline/sample_check/
+data/pipeline/verify_*/

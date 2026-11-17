@@ -1,0 +1,56 @@
+[
+ {
+  "step": "s02",
+  "seconds": 545.4,
+  "pages": 122,
+  "claude_calls": 9,
+  "headings": 281
+ },
+ {
+  "step": "s03",
+  "seconds": 307.4,
+  "items": 1742,
+  "claude_calls": 5,
+  "ops": 577,
+  "rejected": 0,
+  "setLabel": 565,
+  "setText": 0,
+  "merge": 11,
+  "delete": 1,
+  "warnings": 8
+ },
+ {
+  "step": "s04",
+  "seconds": 0.2,
+  "input": "03_structured.json",
+  "moves": 1419,
+  "warnings": 8
+ },
+ {
+  "step": "s05",
+  "seconds": 0.2,
+  "pictures": 93,
+  "described": 93,
+  "claude_calls": 0,
+  "decorative": 62,
+  "no_image": 0,
+  "warnings": 8
+ },
+ {
+  "step": "s06",
+  "seconds": 301.1,
+  "sections": 278,
+  "summarized": 278,
+  "claude_calls": 12,
+  "texts_updated": 2620,
+  "warnings": 8
+ },
+ {
+  "step": "s07",
+  "seconds": 9.2,
+  "input": "06_summary.json",
+  "chunks": 540,
+  "max_tokens": 514,
+  "rule_warnings": 8
+ }
+]

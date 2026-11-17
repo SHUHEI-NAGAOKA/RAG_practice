@@ -1,0 +1,569 @@
+{
+ "ops": [
+  {
+   "op": "setLabel",
+   "ref": "#/texts/0",
+   "label": "title"
+  },
+  {
+   "op": "merge",
+   "refs": [
+    "#/texts/6",
+    "#/texts/7"
+   ],
+   "sep": ""
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/6",
+   "label": "section_header",
+   "level": 1
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/16",
+   "label": "text"
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/19",
+   "label": "text"
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/20",
+   "label": "text"
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/21",
+   "label": "text"
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/31",
+   "label": "text"
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/33",
+   "label": "text"
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/40",
+   "label": "text"
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/44",
+   "label": "text"
+  },
+  {
+   "op": "merge",
+   "refs": [
+    "#/texts/55",
+    "#/texts/56"
+   ],
+   "sep": ""
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/55",
+   "label": "section_header",
+   "level": 1
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/59",
+   "label": "text"
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/60",
+   "label": "section_header",
+   "level": 2
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/61",
+   "label": "section_header",
+   "level": 3
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/65",
+   "label": "section_header",
+   "level": 3
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/67",
+   "label": "section_header",
+   "level": 4
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/69",
+   "label": "section_header",
+   "level": 4
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/71",
+   "label": "section_header",
+   "level": 4
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/75",
+   "label": "section_header",
+   "level": 3
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/76",
+   "label": "section_header",
+   "level": 4
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/79",
+   "label": "section_header",
+   "level": 4
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/82",
+   "label": "section_header",
+   "level": 4
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/84",
+   "label": "section_header",
+   "level": 4
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/92",
+   "label": "text"
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/128",
+   "label": "section_header",
+   "level": 3
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/129",
+   "label": "section_header",
+   "level": 4
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/131",
+   "label": "section_header",
+   "level": 4
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/135",
+   "label": "section_header",
+   "level": 4
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/142",
+   "label": "section_header",
+   "level": 3
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/143",
+   "label": "section_header",
+   "level": 4
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/145",
+   "label": "section_header",
+   "level": 4
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/148",
+   "label": "section_header",
+   "level": 4
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/151",
+   "label": "section_header",
+   "level": 4
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/154",
+   "label": "section_header",
+   "level": 4
+  },
+  {
+   "op": "merge",
+   "refs": [
+    "#/texts/155",
+    "#/texts/158"
+   ],
+   "sep": ""
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/159",
+   "label": "section_header",
+   "level": 4
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/161",
+   "label": "section_header",
+   "level": 4
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/164",
+   "label": "section_header",
+   "level": 4
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/170",
+   "label": "section_header",
+   "level": 4
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/171",
+   "label": "section_header",
+   "level": 5
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/173",
+   "label": "text"
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/438",
+   "label": "section_header",
+   "level": 5
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/441",
+   "label": "text"
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/481",
+   "label": "section_header",
+   "level": 5
+  },
+  {
+   "op": "merge",
+   "refs": [
+    "#/texts/483",
+    "#/texts/486"
+   ],
+   "sep": ""
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/487",
+   "label": "text"
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/521",
+   "label": "section_header",
+   "level": 5
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/526",
+   "label": "text"
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/611",
+   "label": "section_header",
+   "level": 5
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/672",
+   "label": "section_header",
+   "level": 5
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/732",
+   "label": "section_header",
+   "level": 3
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/733",
+   "label": "section_header",
+   "level": 4
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/735",
+   "label": "text"
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/736",
+   "label": "text"
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/737",
+   "label": "text"
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/740",
+   "label": "text"
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/745",
+   "label": "text"
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/823",
+   "label": "section_header",
+   "level": 4
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/825",
+   "label": "text"
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/826",
+   "label": "text"
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/829",
+   "label": "text"
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/830",
+   "label": "text"
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/834",
+   "label": "text"
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/835",
+   "label": "text"
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/843",
+   "label": "section_header",
+   "level": 4
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/861",
+   "label": "section_header",
+   "level": 4
+  },
+  {
+   "op": "merge",
+   "refs": [
+    "#/texts/866",
+    "#/texts/867"
+   ],
+   "sep": ""
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/870",
+   "label": "text"
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/875",
+   "label": "text"
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/887",
+   "label": "section_header",
+   "level": 2
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/888",
+   "label": "section_header",
+   "level": 3
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/890",
+   "label": "text"
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/891",
+   "label": "section_header",
+   "level": 3
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/894",
+   "label": "section_header",
+   "level": 4
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/896",
+   "label": "text"
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/907",
+   "label": "section_header",
+   "level": 5
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/909",
+   "label": "text"
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/923",
+   "label": "text"
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/962",
+   "label": "section_header",
+   "level": 4
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/964",
+   "label": "text"
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/967",
+   "label": "text"
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/968",
+   "label": "text"
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/970",
+   "label": "text"
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/1055",
+   "label": "section_header",
+   "level": 5
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/1057",
+   "label": "section_header",
+   "level": 5
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/1060",
+   "label": "text"
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/1112",
+   "label": "section_header",
+   "level": 4
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/1115",
+   "label": "text"
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/1118",
+   "label": "text"
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/1121",
+   "label": "text"
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/1126",
+   "label": "section_header",
+   "level": 5
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/1128",
+   "label": "text"
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/1130",
+   "label": "text"
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/1131",
+   "label": "text"
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/1133",
+   "label": "text"
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/1135",
+   "label": "text"
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/1361",
+   "label": "section_header",
+   "level": 5
+  },
+  {
+   "op": "setLabel",
+   "ref": "#/texts/1504",
+   "label": "text"
+  }
+ ],
+ "notes": "・p.16〜30 の見出しは 02_outline.md に無い（outline 作成時の抜け。31〜35行目に「Ⅱ．基本構想／２ 人口ビジョン／（３）人口の将来展望」の文脈だけ残っている）。番号付き見出し（（２）〜（６）産業系、６ 市民の声、１ まちづくりの基本理念、（１）（２）、②③など）は前後の構造から階層を推定して付けた。■・【】・◇・図表タイトルなどは、outline がある p.31 の扱いに合わせて text にした。\n・#/texts/55+56 と #/texts/6+7 は sep=\"\" の指定どおりにまとめたため、「第１部本市の将来像〔基本構想〕」のように間の空白が無くなる。\n・p.10 にもう一度出てくる「第１部 本市の将来像〔基本構想〕」（#/texts/59）は重複とみなして text にした。\n・#/texts/1361 は「③第3次総合計画の人口フレ」で途中で切れている（outline では「…人口フレーム」）。足りない文字を足す操作は無いので、文字はそのままにした。\n・表紙の「令和」「年度」「L4607E」など（#/texts/1〜5）は、意味があるか判断できないので残した。点線の目次は表（document_index）の中だけなので、操作していない。"
+}

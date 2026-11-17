@@ -398,12 +398,199 @@
     return ok();
   }
 
+  // ==========================================
+  // 6. 要素の追加・削除・合体
+  // ==========================================
+
+  // 文書の並び順（body → furniture を深さ優先でたどった順）での位置
+  function readingOrder(doc) {
+    const order = new Map();
+    let n = 0;
+    for (const r of ROOTS) {
+      for (const d of descendants(doc, r)) order.set(d, n++);
+    }
+    return order;
+  }
+
+  const isRawJSON = (o) => typeof JSON.isRawJSON === "function" && JSON.isRawJSON(o);
+
+  // 削除した要素を配列から取り除き、残った要素の番号を詰め直す。
+  // 文書中のすべての {"$ref": ...}（parent / children / captions など）を新しい番号に書き換え、
+  // 削除した要素への参照は配列から取り除く。戻り値: 旧ref → 新ref の対応表
+  function removeAndRenumber(doc, removed) {
+    const map = new Map();
+    for (const arr of ARRAYS) {
+      if (!Array.isArray(doc[arr])) continue;
+      const kept = [];
+      doc[arr].forEach((it, i) => {
+        const old = `#/${arr}/${i}`;
+        if (removed.has(old)) return;
+        const neu = `#/${arr}/${kept.length}`;
+        map.set(old, neu);
+        it.self_ref = neu;
+        kept.push(it);
+      });
+      doc[arr] = kept;
+    }
+    const isDeadRef = (v) => v && typeof v === "object" && typeof v.$ref === "string" && removed.has(v.$ref);
+    (function walk(o) {
+      if (!o || typeof o !== "object" || isRawJSON(o)) return;
+      if (Array.isArray(o)) {
+        for (let i = o.length - 1; i >= 0; i--) {
+          if (isDeadRef(o[i])) o.splice(i, 1);
+          else walk(o[i]);
+        }
+        return;
+      }
+      if (typeof o.$ref === "string" && map.has(o.$ref)) o.$ref = map.get(o.$ref);
+      for (const k of Object.keys(o)) walk(o[k]);
+    })(doc);
+    return map;
+  }
+
+  // 操作を試し、検証エラーが増えたら文書を元に戻す（削除・合体は変更範囲が広いため）
+  function guarded(doc, fn) {
+    const before = validate(doc).errors.length;
+    const backup = serialize(doc);
+    const res = fn();
+    if (!res.ok) return res;
+    const after = validate(doc);
+    if (after.errors.length > before) {
+      const restored = parse(backup);
+      for (const k of Object.keys(doc)) delete doc[k];
+      Object.assign(doc, restored);
+      return fail(`操作後にエラーが発生するため取り消しました: ${after.errors[after.errors.length - 1]}`);
+    }
+    return res;
+  }
+
+  // 要素を削除する。keepChildren=true なら子は削除する要素の位置に残す（親へ繰り上げ）、
+  // false なら子孫ごと削除する。
+  function deleteItems(doc, { refs, keepChildren }) {
+    if (!refs || !refs.length) return fail("削除する要素が選択されていません");
+    for (const r of refs) {
+      if (ROOTS.includes(r)) return fail(`${r} は削除できません`);
+      if (!getItem(doc, r)) return fail(`${r} が存在しません`);
+    }
+    return guarded(doc, () => {
+      const removed = new Set();
+      if (keepChildren) {
+        // 深い要素から順に処理し、子を自分の親の同じ位置へ繰り上げる
+        const order = refs.slice().sort((a, b) => ancestors(doc, b).length - ancestors(doc, a).length);
+        for (const r of order) {
+          const p = parentRef(doc, r);
+          const idx = childRefs(doc, p).indexOf(r);
+          const kids = childRefs(doc, r);
+          if (kids.length) moveItems(doc, { refs: kids, target: p, index: idx + 1 });
+          removed.add(r);
+        }
+      } else {
+        for (const r of topmost(doc, refs)) {
+          removed.add(r);
+          descendants(doc, r).forEach((d) => removed.add(d));
+        }
+      }
+      for (const r of removed) {
+        const p = getItem(doc, parentRef(doc, r));
+        if (p && Array.isArray(p.children)) p.children = p.children.filter((c) => c.$ref !== r);
+      }
+      const map = removeAndRenumber(doc, removed);
+      return { ok: true, removed: [...removed], map };
+    });
+  }
+
+  // 本文を持つ要素（texts）を新しく作る。
+  //   after を指定 → その要素の直後（同じ親）に置く
+  //   parent を指定 → その要素の子として index の位置（未指定なら末尾）に置く
+  // prov（ページ位置）は provFrom（未指定なら after / 親）の要素から引き継ぐ（ページ番号をチャンクに残すため）
+  function addText(doc, { after, parent, index, label, level, text, orig, provFrom }) {
+    label = label || "text";
+    if (typeof text !== "string" || !text.length) return fail("本文を入力してください");
+    if (!labelOptions("#/texts/0").includes(label)) return fail(`ラベル "${label}" は本文の要素には使えません`);
+    if (level !== undefined && !(Number.isInteger(level) && level >= 1 && level <= 100)) {
+      return fail("level は 1〜100 の整数で指定してください");
+    }
+    let target, pos;
+    if (after) {
+      if (!getItem(doc, after) || ROOTS.includes(after)) return fail(`${after} の直後には追加できません`);
+      target = parentRef(doc, after);
+      pos = childRefs(doc, target).indexOf(after) + 1;
+    } else {
+      if (!getItem(doc, parent)) return fail(`追加先 ${parent} が存在しません`);
+      target = parent;
+      const n = childRefs(doc, target).length;
+      pos = Number.isInteger(index) ? Math.max(0, Math.min(index, n)) : n;
+    }
+    const src = getItem(doc, provFrom || after || target);
+    const prov = (src && Array.isArray(src.prov) ? src.prov.slice(0, 1) : []).map((p) => ({
+      page_no: p.page_no,
+      bbox: Object.assign({}, p.bbox),
+      charspan: [0, (orig === undefined ? text : orig).length],
+    }));
+
+    if (!Array.isArray(doc.texts)) doc.texts = [];
+    const ref = `#/texts/${doc.texts.length}`;
+    const item = {
+      self_ref: ref,
+      parent: { $ref: target },
+      children: [],
+      content_layer: (getItem(doc, target) && getItem(doc, target).content_layer) || (target === "#/furniture" ? "furniture" : "body"),
+      label: "text",
+      prov,
+      orig: orig === undefined ? text : orig,
+      text,
+    };
+    doc.texts.push(item);
+    applyLabel(doc, ref, label, level);
+    const tgt = getItem(doc, target);
+    if (!Array.isArray(tgt.children)) tgt.children = [];
+    tgt.children.splice(pos, 0, { $ref: ref });
+    return { ok: true, ref };
+  }
+
+  // 本文を持つ要素（texts）を、文書の並び順で先頭の要素に1つにまとめる。
+  // 本文・orig は sep でつなぎ、prov（ページ位置）も合わせる。
+  // まとめられる側の子要素は先頭の要素の子（末尾）に移し、まとめられる側は削除する。
+  function mergeTexts(doc, { refs, sep }) {
+    sep = sep === undefined ? "" : sep;
+    const uniq = [...new Set(refs || [])];
+    if (uniq.length < 2) return fail("合体するには 2 件以上を選んでください");
+    for (const r of uniq) {
+      if (arrayOf(r) !== "texts" || !getItem(doc, r)) return fail(`${r} は本文を持つ要素ではないため合体できません`);
+    }
+    const order = readingOrder(doc);
+    const sorted = uniq.slice().sort((a, b) => order.get(a) - order.get(b));
+    for (const r of sorted.slice(1)) {
+      if (isDescendant(doc, sorted[0], r)) return fail(`${sorted[0]} は ${r} の子孫なので合体できません`);
+    }
+    const head = sorted[0];
+    return guarded(doc, () => {
+      const h = getItem(doc, head);
+      for (const r of sorted.slice(1)) {
+        const it = getItem(doc, r);
+        h.text = h.text + sep + it.text;
+        h.orig = h.orig + sep + it.orig;
+        h.prov = (h.prov || []).concat(it.prov || []);
+        const kids = childRefs(doc, r).filter((k) => !sorted.includes(k));
+        if (kids.length) moveItems(doc, { refs: kids, target: head });
+      }
+      // 合体される要素どうしが親子の場合も、残った子は先頭の要素へ移してから削除する
+      const rest = sorted.slice(1);
+      const res = deleteItems(doc, { refs: rest, keepChildren: true });
+      if (!res.ok) return res;
+      return { ok: true, ref: res.map.get(head) || head, map: res.map, removed: res.removed };
+    });
+  }
+
   // CLI・テストから名前で呼ぶための一覧
   const OPS = {
     setLabel: (doc, o) => setLabels(doc, { refs: o.refs || [o.ref], label: o.label, level: o.level }),
     move: (doc, o) => moveItems(doc, { refs: o.refs || [o.ref], target: o.target, index: o.index }),
     setText: (doc, o) => setText(doc, o),
     updateItem: (doc, o) => updateItem(doc, o),
+    addText: (doc, o) => addText(doc, o),
+    merge: (doc, o) => mergeTexts(doc, o),
+    delete: (doc, o) => deleteItems(doc, { refs: o.refs || [o.ref], keepChildren: !!o.keepChildren }),
   };
 
   return {
@@ -411,7 +598,8 @@
     parse, serialize,
     getItem, arrayOf, childRefs, parentRef, allRefs, describe,
     validate,
-    ancestors, isDescendant, descendants, topmost,
-    labelOptions, setLabels, moveItems, setText, updateItem, OPS,
+    ancestors, isDescendant, descendants, topmost, readingOrder,
+    labelOptions, setLabels, moveItems, setText, updateItem,
+    addText, mergeTexts, deleteItems, OPS,
   };
 });

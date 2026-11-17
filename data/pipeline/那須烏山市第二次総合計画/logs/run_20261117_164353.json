@@ -1,0 +1,10 @@
+[
+ {
+  "step": "s08",
+  "seconds": 131.5,
+  "qdrant": "http://localhost:6333",
+  "rag_ruri_v3_310m": 1569,
+  "rag_doc_items": 10044,
+  "doc": "06_summary.json"
+ }
+]
