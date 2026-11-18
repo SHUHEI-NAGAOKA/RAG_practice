@@ -28,6 +28,7 @@
       "point_id": "uuid5(NAMESPACE_URL, '<document_id>:<chunk_id>')",
       "payload_indexes": {
         "heading_paths": "keyword",
+        "document_id": "keyword",
         "embedding_text": {
           "type": "text",
           "tokenizer": "multilingual",

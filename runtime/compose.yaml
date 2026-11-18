@@ -24,7 +24,8 @@ services:
 
   # ローカル LLM（3B・7B の両方を入れておき、rag-api の LLM_MODEL で選ぶ）
   ollama:
-    image: ollama/ollama:latest
+    # 版を固定する（タグとダイジェスト。0.40.16 で動作確認済み）
+    image: ollama/ollama:0.40.16@sha256:910d0d8107b538fb0894e63163eb195de0cc7aefcbc666dc62d3b18f71124592
     container_name: rag-ollama
     ports:
       - "127.0.0.1:${OLLAMA_PORT:-11434}:11434"
@@ -34,8 +35,10 @@ services:
 
   # RAG API（FastAPI ＋ 画面）
   rag-api:
+    # ビルドの範囲は runtime/（contract/ をイメージに入れるため。送る範囲は .dockerignore で絞る）
     build:
-      context: ./rag_api
+      context: .
+      dockerfile: rag_api/Dockerfile
     container_name: rag-api
     ports:
       - "127.0.0.1:${API_PORT:-8000}:8000"
@@ -45,10 +48,7 @@ services:
       # 3B / 7B の切り替え（.env の LLM_MODEL=qwen2.5:3b / qwen2.5:7b）
       LLM_MODEL: ${LLM_MODEL:-qwen2.5:3b}
       NUM_CTX: ${NUM_CTX:-8192}
-      # Qdrant のコレクションと Embedding（contract/qdrant_schema.json と同じ値）
-      COLLECTION_NAME: rag_ruri_v3_310m
-      DOC_ITEMS_COLLECTION: rag_doc_items
-      EMBEDDING_MODEL: cl-nagoya/ruri-v3-310m
+      # コレクション名・Embedding モデルは contract/qdrant_schema.json から読む（ここには書かない）
       # 検索方式: dense（ベクトル）/ bm25（全文索引）/ hybrid（両方を RRF で統合）
       SEARCH_MODE: ${SEARCH_MODE:-dense}
       HYBRID_PREFETCH: ${HYBRID_PREFETCH:-30}

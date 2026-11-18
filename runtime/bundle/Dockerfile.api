@@ -1,0 +1,11 @@
+# 持ち出し用 RAG API: rag_api のイメージに、質問の Embedding モデル（Ruri v3）のキャッシュを入れる
+# 入力: BASE（build.sh が runtime/rag_api/Dockerfile からビルドしたイメージ）
+#       build/huggingface/（build.sh が開発機の Hugging Face キャッシュのボリュームから写す）
+# HF_HUB_OFFLINE=1: 起動時にネットへ取りに行かず、イメージの中のモデルだけを使う
+ARG BASE
+FROM ${BASE}
+COPY huggingface/ /models/huggingface/
+ENV HF_HOME=/models/huggingface \
+    HF_HUB_OFFLINE=1 \
+    TRANSFORMERS_OFFLINE=1 \
+    EVAL_ENABLED=false

@@ -1,0 +1,45 @@
+# 持ち出し用の RAG 実行環境（Qdrant のデータ・LLM・Embedding モデル入りのイメージで動く）
+# ビルドはしない。build.sh で作ったイメージ（rag-bundle/*:<BUNDLE_TAG>）をそのまま使う
+#
+# 使い方（このファイルのあるフォルダで）:
+#   docker load -i images.tar      # 初回のみ（export.sh で作った tar）
+#   docker compose up -d
+#   画面: http://localhost:8000
+# データはイメージの中にあり、ボリュームは使わない（down → up で常に同じ状態から始まる）
+# 公開するのは RAG API だけで、このマシンからだけ見られる（127.0.0.1）。Qdrant・Ollama は内部のみ
+
+name: rag_bundle
+
+services:
+  qdrant:
+    image: rag-bundle/qdrant:${BUNDLE_TAG:?BUNDLE_TAG を .env に書いてください}
+    container_name: rag-bundle-qdrant
+    restart: unless-stopped
+
+  ollama:
+    image: rag-bundle/ollama:${BUNDLE_TAG:?BUNDLE_TAG を .env に書いてください}
+    container_name: rag-bundle-ollama
+    restart: unless-stopped
+
+  rag-api:
+    image: rag-bundle/api:${BUNDLE_TAG:?BUNDLE_TAG を .env に書いてください}
+    container_name: rag-bundle-api
+    ports:
+      - "127.0.0.1:${API_PORT:-8000}:8000"
+    environment:
+      QDRANT_URL: http://qdrant:6333
+      OLLAMA_URL: http://ollama:11434
+      # イメージに入れたモデルだけが使える（既定は qwen2.5:3b）
+      LLM_MODEL: ${LLM_MODEL:-qwen2.5:3b}
+      NUM_CTX: ${NUM_CTX:-8192}
+      # 検索方式: dense（ベクトル）/ bm25（全文索引）/ hybrid（両方を RRF で統合）
+      SEARCH_MODE: ${SEARCH_MODE:-dense}
+      HYBRID_PREFETCH: ${HYBRID_PREFETCH:-30}
+      SUMMARY_DEDUP: ${SUMMARY_DEDUP:-true}
+      SUMMARY_DEDUP_CHARS: ${SUMMARY_DEDUP_CHARS:-10}
+      # 評価モードは使わない
+      EVAL_ENABLED: "false"
+    depends_on:
+      - qdrant
+      - ollama
+    restart: unless-stopped

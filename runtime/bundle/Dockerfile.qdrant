@@ -1,0 +1,5 @@
+# 持ち出し用 Qdrant: 登録済みのデータ（storage）をイメージに入れる
+# 入力: build/qdrant_storage/（build.sh が開発機の Qdrant のボリュームから写す）
+# 起動するたびにイメージの中のデータから始まる（固定のデータ。登録はしない前提）
+FROM qdrant/qdrant:v1.20.1@sha256:d18c8e5061be3eaea2f53fbee1f0bf0382dc59cbb9b7112e41ffcc937ec14220
+COPY qdrant_storage/ /qdrant/storage/

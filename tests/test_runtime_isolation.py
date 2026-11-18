@@ -23,6 +23,9 @@ def problems() -> list[str]:
     for p in RUNTIME.rglob("*"):
         if not p.is_file() or "snapshots" in p.parts or p.name == ".env" or "__pycache__" in p.parts:
             continue
+        # bundle/build・bundle/dist はデータ・モデルの写し（大きい生成物）なので見ない
+        if "bundle" in p.parts and ({"build", "dist"} & set(p.parts)):
+            continue
         rel = p.relative_to(ROOT)
         text = p.read_text(encoding="utf-8", errors="ignore")
         if p.suffix == ".py" and FORBIDDEN_IMPORTS.search(text):

@@ -4,6 +4,8 @@
   chunks    : チャンク（ベクトルあり）。点の ID は uuid5("<document_id>:<chunk_id>")
   doc_items : 文書要素（ベクトルなし）。点の ID は uuid5("<document_id>:<self_ref>")
 同じ ID で登録し直すと上書きになる（--recreate ならコレクションごと作り直す）。
+登録し直したとき、その文書の今回の登録に無い点（チャンク数が減った分など）は delete_stale で消す。
+  他の文書の点には触れない（document_id で絞る）。
 索引（payload index）は既存のコレクションにも足す（ensure_indexes）。点やベクトルは変えない。
   例: chunks の embedding_text は全文索引（multilingual の分かち書き・BM25 の採点）。Qdrant 1.20 以降
 """
@@ -92,8 +94,24 @@ def chunk_payload(r: dict) -> dict:
     }
 
 
-def upsert_chunks(client: QdrantClient, name: str, records: list[dict], vectors) -> int:
-    """入力: クライアント・コレクション名・チャンク・ベクトル / 出力: 登録後の件数"""
+def delete_stale(client: QdrantClient, name: str, document_id: str, keep_ids: list[str]) -> int:
+    """その文書の点のうち、今回登録した ID 以外を消す（登録の後に呼ぶので、検索できない時間が無い）。
+
+    入力: クライアント・コレクション名・文書ID・今回登録した点の ID
+    出力: 消した件数"""
+    stale = models.Filter(
+        must=[models.FieldCondition(key="document_id", match=models.MatchValue(value=document_id))],
+        must_not=[models.HasIdCondition(has_id=keep_ids)],
+    )
+    n = client.count(name, count_filter=stale, exact=True).count
+    if n:
+        client.delete(name, points_selector=models.FilterSelector(filter=stale), wait=True)
+    return n
+
+
+def upsert_chunks(client: QdrantClient, name: str, records: list[dict], vectors) -> tuple[int, int]:
+    """入力: クライアント・コレクション名・チャンク・ベクトル
+    出力: (登録後の件数, 消した古い点の件数)"""
     points = [
         models.PointStruct(
             id=str(uuid.uuid5(uuid.NAMESPACE_URL, f"{r['document_id']}:{r['chunk_id']}")),
@@ -103,7 +121,8 @@ def upsert_chunks(client: QdrantClient, name: str, records: list[dict], vectors)
     ]
     for i in range(0, len(points), BATCH):
         client.upsert(name, points=points[i:i + BATCH], wait=True)
-    return client.count(name, exact=True).count
+    removed = delete_stale(client, name, records[0]["document_id"], [p.id for p in points])
+    return client.count(name, exact=True).count, removed
 
 
 def doc_item_payloads(doc: dict, document_id: str) -> list[dict]:
@@ -122,12 +141,14 @@ def doc_item_payloads(doc: dict, document_id: str) -> list[dict]:
     } for it in items]
 
 
-def upsert_doc_items(client: QdrantClient, name: str, doc: dict, document_id: str) -> int:
-    """入力: クライアント・コレクション名・文書・文書ID / 出力: 登録後の件数"""
+def upsert_doc_items(client: QdrantClient, name: str, doc: dict, document_id: str) -> tuple[int, int]:
+    """入力: クライアント・コレクション名・文書・文書ID
+    出力: (登録後の件数, 消した古い点の件数)"""
     points = [
         models.PointStruct(id=str(uuid.uuid5(uuid.NAMESPACE_URL, f"{p['document_id']}:{p['self_ref']}")), vector={}, payload=p)
         for p in doc_item_payloads(doc, document_id)
     ]
     for i in range(0, len(points), BATCH):
         client.upsert(name, points=points[i:i + BATCH], wait=True)
-    return client.count(name, exact=True).count
+    removed = delete_stale(client, name, document_id, [p.id for p in points])
+    return client.count(name, exact=True).count, removed

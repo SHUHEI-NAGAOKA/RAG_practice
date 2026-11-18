@@ -1,14 +1,29 @@
-"""環境変数から RAG API の設定を読む。
+"""環境変数と Qdrant の約束（contract）から RAG API の設定を読む。
 
 入力: 環境変数（runtime/compose.yaml と runtime/.env で指定）
+      contract/qdrant_schema.json（コレクション名・Embedding・区切り・BM25 の項目。正本）
 出力: settings（Settings のインスタンス。ほかのモジュールはここから設定を読む）
 
 このファイル以外では os.getenv を使わない（設定の出どころを1か所にする）。
+Qdrant の形に関わる値は約束ファイルからだけ読む（compose・コードに同じ値を書かない）。
 """
 
+import json
 import os
 from dataclasses import dataclass, field
 from pathlib import Path
+
+
+def _contract_path() -> Path:
+    """約束ファイルの場所。イメージ内は /app/contract、開発機では runtime/contract"""
+    here = Path(__file__).resolve()
+    for p in (here.parents[1] / "contract", here.parents[2] / "contract"):
+        if (p / "qdrant_schema.json").exists():
+            return p / "qdrant_schema.json"
+    raise FileNotFoundError("contract/qdrant_schema.json が見つかりません")
+
+
+CONTRACT = json.loads(_contract_path().read_text(encoding="utf-8"))
 
 
 def _bool(name: str, default: bool) -> bool:
@@ -30,17 +45,17 @@ class Settings:
     num_ctx: int = int(os.getenv("NUM_CTX", "8192"))  # LLM のコンテキスト長（トークン）
     ollama_timeout: int = int(os.getenv("OLLAMA_TIMEOUT", "600"))  # CPU 推論のため長め（秒）
 
-    # --- Qdrant のコレクションと Embedding（contract/qdrant_schema.json と同じ値にする）---
-    chunks_collection: str = os.getenv("COLLECTION_NAME", "rag_ruri_v3_310m")
-    doc_items_collection: str = os.getenv("DOC_ITEMS_COLLECTION", "rag_doc_items")
-    embedding_model: str = os.getenv("EMBEDDING_MODEL", "cl-nagoya/ruri-v3-310m")
-    query_prefix: str = "検索クエリ: "  # 登録側の「検索文書: 」と対になる Ruri v3 の接頭辞
-    heading_sep: str = " > "  # payload の heading_paths の区切り
+    # --- Qdrant のコレクションと Embedding（約束ファイルから読む）---
+    chunks_collection: str = CONTRACT["collections"]["chunks"]["name"]
+    doc_items_collection: str = CONTRACT["collections"]["doc_items"]["name"]
+    embedding_model: str = CONTRACT["embedding"]["model"]
+    query_prefix: str = CONTRACT["embedding"]["query_prefix"]  # 登録側の「検索文書: 」と対になる Ruri v3 の接頭辞
+    heading_sep: str = CONTRACT["heading_sep"]  # payload の heading_paths の区切り
 
-    # --- 検索方式（contract/qdrant_schema.json の search と同じ値にする）---
+    # --- 検索方式 ---
     # dense=Ruri のベクトル / bm25=全文索引の BM25（Qdrant が分かち書き）/ hybrid=両方を RRF で統合
     search_mode: str = os.getenv("SEARCH_MODE", "dense")
-    bm25_field: str = "embedding_text"  # 全文索引（BM25）を付けた payload の項目
+    bm25_field: str = CONTRACT["search"]["bm25_field"]  # 全文索引（BM25）を付けた payload の項目
     hybrid_prefetch: int = int(os.getenv("HYBRID_PREFETCH", "30"))  # hybrid で dense・BM25 からそれぞれ取る候補数
 
     # --- 階層を選んで回答するフローの設定 ---
@@ -53,8 +68,8 @@ class Settings:
     summary_dedup: bool = _bool("SUMMARY_DEDUP", True)
     summary_dedup_chars: int = int(os.getenv("SUMMARY_DEDUP_CHARS", "10"))
 
-    # --- 評価モード（本番では EVAL_ENABLED=false にして無効化する）---
-    eval_enabled: bool = _bool("EVAL_ENABLED", True)
+    # --- 評価モード（既定は無効。開発機では .env で EVAL_ENABLED=true にする）---
+    eval_enabled: bool = _bool("EVAL_ENABLED", False)
     eval_dir: Path = Path(os.getenv("EVAL_DIR", "/app/eval"))
     eval_testset: str = os.getenv("EVAL_TESTSET", "testset_v2.jsonl")
 

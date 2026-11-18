@@ -1,0 +1,7 @@
+# rag-api のビルドの範囲は runtime/。イメージに必要なものだけを送る（.env・スナップショット・バンドルの作業物は送らない）
+*
+!contract/
+!rag_api/requirements.txt
+!rag_api/app/
+!rag_api/static/
+**/__pycache__

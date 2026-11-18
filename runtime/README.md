@@ -6,9 +6,11 @@ Qdrant に登録済みの文書を使って質問に答える環境。**この�
 ## 構成
 ```
 runtime/
-├─ compose.yaml            # qdrant / ollama / rag-api
+├─ compose.yaml            # qdrant / ollama / rag-api（開発用。イメージの版は固定）
 ├─ .env.example            # 設定の見本（cp .env.example .env）
-├─ contract/qdrant_schema.json  # Qdrant のコレクションの約束（登録側と同じ形であること）
+├─ .dockerignore           # rag-api のビルドに送るもの（contract/・rag_api/ だけ）
+├─ contract/qdrant_schema.json  # Qdrant の約束（正本）。rag-api の config.py がここからコレクション名・Embedding などを読む
+├─ bundle/                 # 持ち出し用（データ・モデル入りのイメージ）。詳しくは bundle/README.md
 ├─ ollama/pull_models.sh   # LLM のモデルを入れる
 ├─ qdrant/
 │  ├─ inspect.sh           # コレクションの件数・設定・索引を確認
@@ -76,7 +78,9 @@ curl -s localhost:8000/health  # search_mode を確認
 - /search は `{"mode": "hybrid", "paths": [[...]]}` で方式と見出しの範囲を1回ごとに指定できる（比較用）
 
 ## データ（Qdrant）の受け渡し
-登録はパイプラインが行う。本番への渡し方は2通り:
+登録はパイプラインが行う。本番への渡し方は3通り:
+0. **（おすすめ）データ・モデル入りのイメージごと持ち出す**: `./bundle/build.sh` → `./bundle/export.sh <TAG>`。
+   Qdrant のデータ・qwen2.5:3b・Ruri v3 が入り、持ち出し先はネット無しで `./start.sh` だけで動く（`bundle/README.md`）
 1. パイプラインから本番の Qdrant に直接登録する（`--qdrant-url` を指定）
 2. 開発機でスナップショットを作り、本番で復元する
    ```bash

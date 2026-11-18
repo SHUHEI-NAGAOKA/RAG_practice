@@ -4,7 +4,8 @@
 出力: Qdrant の2つのコレクション（名前と形は ingest/qdrant_schema.json の約束どおり）
   chunks    : チャンク＋ベクトル（RAG 実行側が検索する）
   doc_items : 文書の全要素（RAG 実行側が親の節をたどる）
-cfg.recreate なら、登録の前にコレクションを作り直す（古い文書のチャンクが残らない）。
+登録の後、この文書の今回の登録に無い古い点（チャンク数・要素数が減った分）を消す（他の文書は残る）。
+cfg.recreate なら、登録の前にコレクションを作り直す（他の文書も含めて全部消える）。
 """
 
 import json
@@ -48,12 +49,13 @@ def run(cfg: PipelineConfig) -> dict:
 
     client = qw.connect(cfg.qdrant_url)
     chunks_name = qw.ensure_collection(client, "chunks", cfg.recreate)
-    n_chunks = qw.upsert_chunks(client, chunks_name, records, vectors)
+    n_chunks, stale_chunks = qw.upsert_chunks(client, chunks_name, records, vectors)
 
     doc_path = final_doc(cfg)
     doc = dio.load(doc_path)
     document_id = records[0]["document_id"]  # チャンクと同じ文書ID（DoclingDocument の name）
     items_name = qw.ensure_collection(client, "doc_items", cfg.recreate)
-    n_items = qw.upsert_doc_items(client, items_name, doc, document_id)
+    n_items, stale_items = qw.upsert_doc_items(client, items_name, doc, document_id)
     client.close()
-    return {"qdrant": cfg.qdrant_url, chunks_name: n_chunks, items_name: n_items, "doc": doc_path.name}
+    return {"qdrant": cfg.qdrant_url, chunks_name: n_chunks, items_name: n_items, "doc": doc_path.name,
+            "deleted_stale": {chunks_name: stale_chunks, items_name: stale_items}}

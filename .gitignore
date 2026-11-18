@@ -18,3 +18,7 @@ data/edited/step1_roundtrip.json
 # パイプラインの試し実行・確認用の出力（再実行で作り直せる）
 data/pipeline/sample_check/
 data/pipeline/verify_*/
+
+# 持ち出し用バンドルの作業物と成果物（build.sh・export.sh で作り直せる。データ・モデルを含み大きい）
+runtime/bundle/build/
+runtime/bundle/dist/

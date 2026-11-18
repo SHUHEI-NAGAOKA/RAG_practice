@@ -1,0 +1,4 @@
+# 持ち出し用 Ollama: LLM のモデル（既定は qwen2.5:3b だけ）をイメージに入れる
+# 入力: build/ollama_models/（build.sh が開発機の Ollama のボリュームから、指定したモデルの分だけ写す）
+FROM ollama/ollama:0.40.16@sha256:910d0d8107b538fb0894e63163eb195de0cc7aefcbc666dc62d3b18f71124592
+COPY ollama_models/ /root/.ollama/models/

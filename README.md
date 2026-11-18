@@ -11,7 +11,9 @@
 
 両者の約束（Qdrant のコレクション名・payload の形・Embedding）は
 `runtime/contract/qdrant_schema.json`（正本）と `ingest/qdrant_schema.json`（写し）に書き、
-`tests/test_contract.py` で食い違いを確かめる。
+`tests/test_contract.py` で食い違いを確かめる。runtime の rag-api は正本をイメージに入れて読む（値を compose・コードに重ねて書かない）。
+
+持ち出すときは `runtime/bundle/`（Qdrant のデータ・LLM・Embedding モデル入りのイメージ）を使う。手順は `runtime/bundle/README.md`。
 
 ```
 ingest/（書き込み） ──▶ Qdrant ◀── runtime/（読み取り）
