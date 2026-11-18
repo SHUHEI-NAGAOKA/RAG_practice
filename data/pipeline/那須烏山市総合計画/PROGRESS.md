@@ -1,11 +1,11 @@
 # パイプラインの進捗: 那須烏山市総合計画
 
-- 更新: 2026-11-17 23:47:14
+- 更新: 2026-11-18 21:59:36
 - 入力: data/input/那須烏山市総合計画.pdf
 
 | 工程 | 状態 | 開始 | 終了 | 秒 | 結果 |
 |---|---|---|---|---|---|
-| s08 Embedding → Qdrant 登録 | 完了 | 23:47:14 | 23:47:14 | 0.3 | {"qdrant": "http://localhost:6333", "index_only": true, "created": {"rag_ruri_v3_310m": ["embedding_text"], "rag_doc_items": []}} |
+| s08 Embedding → Qdrant 登録 | 完了 | 21:59:35 | 21:59:36 | 0.2 | {"qdrant": "http://localhost:6333", "index_only": true, "created": {"rag_ruri_v3_310m": ["document_id"], "rag_doc_items": []}} |
 
 ## 再開のしかた
 止まった工程から、次のコマンドで続ける（済んだ工程は出力があるので飛ばされる。
