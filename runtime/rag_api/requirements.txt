@@ -2,5 +2,5 @@
 fastapi
 uvicorn
 sentence-transformers
-qdrant-client
+qdrant-client>=1.20  # 全文索引の BM25（TextQuery）と prefetch + RRF を使う
 requests

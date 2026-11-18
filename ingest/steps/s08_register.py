@@ -25,7 +25,22 @@ def outputs(cfg: PipelineConfig) -> list[Path]:
     return []  # 出力はファイルではなく Qdrant なので、毎回実行する
 
 
+def add_indexes(cfg: PipelineConfig) -> dict:
+    """--index-only: 既存のコレクションに、約束にある索引のうち無いものだけを足す
+    （Embedding・登録はしない。点とベクトルは変えない）。例: BM25 の全文索引を後から足す"""
+    from ..embedding import schema
+    client = qw.connect(cfg.qdrant_url)
+    made = {}
+    for key, spec in schema()["collections"].items():
+        if client.collection_exists(spec["name"]):
+            made[spec["name"]] = qw.ensure_indexes(client, spec["name"], spec["payload_indexes"])
+    client.close()
+    return {"qdrant": cfg.qdrant_url, "index_only": True, "created": made}
+
+
 def run(cfg: PipelineConfig) -> dict:
+    if cfg.index_only:
+        return add_indexes(cfg)
     records = [json.loads(l) for l in cfg.path("07_chunks.jsonl").read_text(encoding="utf-8").splitlines() if l.strip()]
     if not records:
         raise ValueError("チャンクがありません（s07 を先に実行してください）")

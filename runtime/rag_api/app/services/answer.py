@@ -5,11 +5,13 @@
   - それ以上 → 選んだ範囲で質問に近い上位 settings.top_chunks（5）個
                 ＋ 選んだ話題の節の本文（文書要素のコレクションから集める）               mode="top5+json"
 資料の合計の長さは、LLM のコンテキスト長に収まるように切り詰める（文字数≒トークン数で近似）。
+渡す前に、重なった【要約】をまとめる（context_format.dedupe_summaries。SUMMARY_DEDUP で切り替え）。
 """
 
 from qdrant_client import QdrantClient
 
 from ..config import settings
+from ..context_format import dedupe_summaries
 from ..embedding import QueryEmbedder
 from ..llm import chat
 from ..prompts import ANSWER_SYSTEM
@@ -86,6 +88,8 @@ def answer(embedder: QueryEmbedder, client: QdrantClient, question: str, paths: 
     if mode == "top5+json":
         more, sections = section_blocks(client, paths, budget - used)
         blocks += more
+    if settings.summary_dedup:  # 重なった【要約】を「【要約S1と同じ】」にまとめる
+        blocks = dedupe_summaries(blocks, settings.summary_dedup_chars)
 
     content, tokens = chat(ANSWER_SYSTEM, f"【資料】\n{chr(10).join(blocks)}\n\n【質問】\n{question}")
     return AnswerResponse(

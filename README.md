@@ -75,6 +75,7 @@ RAG_practice/
 `--doc-title "那須烏山市 第2次総合計画"`・`--doc-note "…"`（s04 で文書タイトルを書き換え、直後に説明文を足す。複数の文書を区別する）
 
 - 複数の文書を登録するときは、2つ目以降の s08 に **`--recreate` を付けない**（付けると既に登録した文書が消える）
+- `--only s08 --index-only`: 登録はせず、既存のコレクションに約束の索引（BM25 の全文索引など）だけを足す
 - 進捗は `data/pipeline/<文書名>/PROGRESS.md` に工程ごとに書かれる。止まったらそこにある再開コマンドで続ける（`--force` は付けない）
 - 登録済みの文書: 那須烏山市総合計画（第3次）・那須烏山市第二次総合計画（3ファイルを結合した230ページ）
 
@@ -93,6 +94,8 @@ docker compose up -d --build
 2. `.venv/bin/python evaluation/eval_ragas.py sheet data/eval/results/<記録名>` で判定用の資料を作る
 3. Claude Code（会話の中）が判定して `judgments.jsonl` を書く
 4. `.venv/bin/python evaluation/eval_ragas.py score data/eval/results/<記録名> --compare <比べる記録>`
+
+検索方式（dense / bm25 / hybrid）だけを LLM なしで比べる: `.venv/bin/python evaluation/compare_search.py`（正解の見出しは `data/eval/search_gold_v3.json`）
 
 ## テスト
 ```bash

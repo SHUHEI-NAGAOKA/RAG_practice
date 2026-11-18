@@ -1,6 +1,7 @@
 {
   "description": "パイプライン（ingest/、書き込み側）と RAG 実行環境（runtime/、読み取り側）の約束。正本はこのファイル。ingest/qdrant_schema.json は写しで、tests/test_contract.py で一致を確認する。",
-  "version": 1,
+  "version": 2,
+  "qdrant_min_version": "1.20.0",
   "embedding": {
     "model": "cl-nagoya/ruri-v3-310m",
     "dimension": 768,
@@ -10,12 +11,30 @@
     "query_prefix": "検索クエリ: "
   },
   "heading_sep": " > ",
+  "search": {
+    "description": "runtime の検索方式。dense=Ruri のベクトル、bm25=embedding_text の全文索引（Qdrant が分かち書き・BM25）、hybrid=両方を prefetch して RRF で統合",
+    "modes": [
+      "dense",
+      "bm25",
+      "hybrid"
+    ],
+    "bm25_field": "embedding_text",
+    "fusion": "rrf"
+  },
   "collections": {
     "chunks": {
       "name": "rag_ruri_v3_310m",
       "vectors": true,
       "point_id": "uuid5(NAMESPACE_URL, '<document_id>:<chunk_id>')",
-      "payload_indexes": {"heading_paths": "keyword"},
+      "payload_indexes": {
+        "heading_paths": "keyword",
+        "embedding_text": {
+          "type": "text",
+          "tokenizer": "multilingual",
+          "lowercase": true,
+          "scoring": "bm25"
+        }
+      },
       "payload": {
         "chunk_id": "str: chunk_0001 の形。文書順に並ぶ",
         "document_id": "str: DoclingDocument の name",
@@ -33,7 +52,10 @@
       "name": "rag_doc_items",
       "vectors": false,
       "point_id": "uuid5(NAMESPACE_URL, '<document_id>:<self_ref>')",
-      "payload_indexes": {"self_ref": "keyword", "document_id": "keyword"},
+      "payload_indexes": {
+        "self_ref": "keyword",
+        "document_id": "keyword"
+      },
       "payload": {
         "document_id": "str: chunks の document_id と同じ",
         "self_ref": "str: #/texts/12 など（#/body を含む）",

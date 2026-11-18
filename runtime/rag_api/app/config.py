@@ -37,12 +37,21 @@ class Settings:
     query_prefix: str = "検索クエリ: "  # 登録側の「検索文書: 」と対になる Ruri v3 の接頭辞
     heading_sep: str = " > "  # payload の heading_paths の区切り
 
+    # --- 検索方式（contract/qdrant_schema.json の search と同じ値にする）---
+    # dense=Ruri のベクトル / bm25=全文索引の BM25（Qdrant が分かち書き）/ hybrid=両方を RRF で統合
+    search_mode: str = os.getenv("SEARCH_MODE", "dense")
+    bm25_field: str = "embedding_text"  # 全文索引（BM25）を付けた payload の項目
+    hybrid_prefetch: int = int(os.getenv("HYBRID_PREFETCH", "30"))  # hybrid で dense・BM25 からそれぞれ取る候補数
+
     # --- 階層を選んで回答するフローの設定 ---
     levels_page: int = 10  # /levels で1回に見るチャンク数
     many_chunks: int = 6  # 選んだ範囲のチャンクがこれ以上なら「上位＋節の本文」で回答
     top_chunks: int = 5  # その場合に使う上位チャンク数
     reserve_output: int = 1024  # 回答用に空けておくトークン
     prompt_margin: int = 300  # 見出し・区切りなどの余白
+    # LLM に渡す資料の【要約】の重なりをまとめる（先頭 summary_dedup_chars 文字が同じ要約は「【要約S1と同じ】」にする）
+    summary_dedup: bool = _bool("SUMMARY_DEDUP", True)
+    summary_dedup_chars: int = int(os.getenv("SUMMARY_DEDUP_CHARS", "10"))
 
     # --- 評価モード（本番では EVAL_ENABLED=false にして無効化する）---
     eval_enabled: bool = _bool("EVAL_ENABLED", True)

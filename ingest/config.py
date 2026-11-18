@@ -24,6 +24,7 @@ class PipelineConfig:
     qdrant_url: str = "http://localhost:6333"  # 本番へ直接登録するときは本番の URL
     force: bool = False  # 出力が既にあっても作り直す（Claude CLI の結果も作り直す）
     recreate: bool = False  # s08: Qdrant のコレクションを消してから登録し直す
+    index_only: bool = False  # s08: 登録はせず、既存のコレクションに約束の索引（BM25 の全文索引など）だけを足す
 
     # --- 任意の工程のオン・オフ ---
     enable_nest: bool = True  # s04 入れ子化

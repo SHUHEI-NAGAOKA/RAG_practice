@@ -8,6 +8,7 @@
     --force                  出力が既にあっても作り直す（Claude CLI の結果も）
     --qdrant-url URL         登録先（本番へ直接登録するとき）
     --recreate               s08 で Qdrant のコレクションを作り直す
+    --index-only             s08 で登録はせず、既存のコレクションに約束の索引だけを足す（BM25 の全文索引など）
     --no-nest / --no-summaries   任意の工程を使わない
     --sample-pages N など     少量で試す（Claude CLI の利用量を抑える）
     --claude-model sonnet    Claude CLI のモデル
@@ -40,6 +41,7 @@ def parse_args() -> tuple[PipelineConfig, argparse.Namespace]:
     ap.add_argument("--force", action="store_true")
     ap.add_argument("--qdrant-url", default="http://localhost:6333")
     ap.add_argument("--recreate", action="store_true")
+    ap.add_argument("--index-only", action="store_true")
     ap.add_argument("--no-nest", action="store_true")
     ap.add_argument("--no-summaries", action="store_true")
     ap.add_argument("--claude-model", default=None)
@@ -49,7 +51,7 @@ def parse_args() -> tuple[PipelineConfig, argparse.Namespace]:
         ap.add_argument(f"--sample-{k}", type=int, default=0)
     a = ap.parse_args()
     cfg = PipelineConfig(
-        pdf=a.pdf, name=a.name, force=a.force, qdrant_url=a.qdrant_url, recreate=a.recreate,
+        pdf=a.pdf, name=a.name, force=a.force, qdrant_url=a.qdrant_url, recreate=a.recreate, index_only=a.index_only,
         enable_nest=not a.no_nest, enable_summaries=not a.no_summaries,
         sample_pages=a.sample_pages, sample_items=a.sample_items,
         sample_figures=a.sample_figures, sample_sections=a.sample_sections,

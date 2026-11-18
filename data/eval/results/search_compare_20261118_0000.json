@@ -1,0 +1,831 @@
+{
+ "gold": "/Users/nagaokashuuhei/Desktop/claude_project/project_dir/RAG_practice/data/eval/search_gold_v3.json",
+ "k": 10,
+ "all": {
+  "dense": {
+   "hit@5": 0.857,
+   "hit@10": 1.0,
+   "all@10": 0.818,
+   "MRR": 0.733
+  },
+  "bm25": {
+   "hit@5": 0.714,
+   "hit@10": 0.857,
+   "all@10": 0.636,
+   "MRR": 0.513
+  },
+  "hybrid": {
+   "hit@5": 0.893,
+   "hit@10": 0.964,
+   "all@10": 0.818,
+   "MRR": 0.731
+  }
+ },
+ "by_type": {
+  "compare": {
+   "dense": {
+    "hit@5": 0.833,
+    "hit@10": 1.0,
+    "all@10": 0.667,
+    "MRR": 0.663
+   },
+   "bm25": {
+    "hit@5": 0.5,
+    "hit@10": 0.667,
+    "all@10": 0.667,
+    "MRR": 0.524
+   },
+   "hybrid": {
+    "hit@5": 1.0,
+    "hit@10": 1.0,
+    "all@10": 0.667,
+    "MRR": 0.672
+   }
+  },
+  "figure2": {
+   "dense": {
+    "hit@5": 1.0,
+    "hit@10": 1.0,
+    "all@10": null,
+    "MRR": 1.0
+   },
+   "bm25": {
+    "hit@5": 1.0,
+    "hit@10": 1.0,
+    "all@10": null,
+    "MRR": 0.611
+   },
+   "hybrid": {
+    "hit@5": 1.0,
+    "hit@10": 1.0,
+    "all@10": null,
+    "MRR": 1.0
+   }
+  },
+  "figure3": {
+   "dense": {
+    "hit@5": 1.0,
+    "hit@10": 1.0,
+    "all@10": null,
+    "MRR": 1.0
+   },
+   "bm25": {
+    "hit@5": 1.0,
+    "hit@10": 1.0,
+    "all@10": null,
+    "MRR": 1.0
+   },
+   "hybrid": {
+    "hit@5": 1.0,
+    "hit@10": 1.0,
+    "all@10": null,
+    "MRR": 1.0
+   }
+  },
+  "multi": {
+   "dense": {
+    "hit@5": 0.5,
+    "hit@10": 1.0,
+    "all@10": 1.0,
+    "MRR": 0.562
+   },
+   "bm25": {
+    "hit@5": 0.0,
+    "hit@10": 0.5,
+    "all@10": 0.0,
+    "MRR": 0.056
+   },
+   "hybrid": {
+    "hit@5": 0.5,
+    "hit@10": 0.5,
+    "all@10": 1.0,
+    "MRR": 0.5
+   }
+  },
+  "second": {
+   "dense": {
+    "hit@5": 0.8,
+    "hit@10": 1.0,
+    "all@10": 1.0,
+    "MRR": 0.66
+   },
+   "bm25": {
+    "hit@5": 0.7,
+    "hit@10": 0.9,
+    "all@10": 0.5,
+    "MRR": 0.353
+   },
+   "hybrid": {
+    "hit@5": 0.8,
+    "hit@10": 1.0,
+    "all@10": 1.0,
+    "MRR": 0.611
+   }
+  },
+  "third": {
+   "dense": {
+    "hit@5": 1.0,
+    "hit@10": 1.0,
+    "all@10": 1.0,
+    "MRR": 0.708
+   },
+   "bm25": {
+    "hit@5": 1.0,
+    "hit@10": 1.0,
+    "all@10": 1.0,
+    "MRR": 0.688
+   },
+   "hybrid": {
+    "hit@5": 1.0,
+    "hit@10": 1.0,
+    "all@10": 1.0,
+    "MRR": 0.833
+   }
+  }
+ },
+ "rows": [
+  {
+   "id": "a01",
+   "type": "second",
+   "question": "第2次総合計画で掲げた5年後の目指すべき将来像は何ですか？",
+   "dense": {
+    "first": 1,
+    "each": [
+     true
+    ]
+   },
+   "bm25": {
+    "first": 3,
+    "each": [
+     true
+    ]
+   },
+   "hybrid": {
+    "first": 2,
+    "each": [
+     true
+    ]
+   }
+  },
+  {
+   "id": "a02",
+   "type": "second",
+   "question": "第2次総合計画の計画期間はいつからいつまでですか？",
+   "dense": {
+    "first": 2,
+    "each": [
+     true
+    ]
+   },
+   "bm25": {
+    "first": 3,
+    "each": [
+     true
+    ]
+   },
+   "hybrid": {
+    "first": 1,
+    "each": [
+     true
+    ]
+   }
+  },
+  {
+   "id": "a03",
+   "type": "second",
+   "question": "第2次総合計画のまちづくりの基本理念は何ですか？",
+   "dense": {
+    "first": 2,
+    "each": [
+     true
+    ]
+   },
+   "bm25": {
+    "first": 3,
+    "each": [
+     true
+    ]
+   },
+   "hybrid": {
+    "first": 2,
+    "each": [
+     true
+    ]
+   }
+  },
+  {
+   "id": "a04",
+   "type": "second",
+   "question": "第2次総合計画では将来人口の目標をどう設定していますか？",
+   "dense": {
+    "first": 3,
+    "each": [
+     true
+    ]
+   },
+   "bm25": {
+    "first": null,
+    "each": [
+     false
+    ]
+   },
+   "hybrid": {
+    "first": 6,
+    "each": [
+     true
+    ]
+   }
+  },
+  {
+   "id": "a05",
+   "type": "second",
+   "question": "第2次総合計画が将来像の実現に向けて掲げた3つの大きな柱は何ですか？",
+   "dense": {
+    "first": 10,
+    "each": [
+     true
+    ]
+   },
+   "bm25": {
+    "first": 6,
+    "each": [
+     true
+    ]
+   },
+   "hybrid": {
+    "first": 9,
+    "each": [
+     true
+    ]
+   }
+  },
+  {
+   "id": "a06",
+   "type": "second",
+   "question": "第2次総合計画の策定にあたって、市民や関係者の意見はどのように反映されましたか？",
+   "dense": {
+    "first": 6,
+    "each": [
+     true
+    ]
+   },
+   "bm25": {
+    "first": 2,
+    "each": [
+     true
+    ]
+   },
+   "hybrid": {
+    "first": 3,
+    "each": [
+     true
+    ]
+   }
+  },
+  {
+   "id": "a07",
+   "type": "second",
+   "question": "第2次総合計画の基本計画は、いくつの政策や重点施策で構成されていますか？",
+   "dense": {
+    "first": 1,
+    "each": [
+     true
+    ]
+   },
+   "bm25": {
+    "first": 9,
+    "each": [
+     true
+    ]
+   },
+   "hybrid": {
+    "first": 2,
+    "each": [
+     true
+    ]
+   }
+  },
+  {
+   "id": "a08",
+   "type": "second",
+   "question": "第2次総合計画では、観光振興のためのニューツーリズムの推進としてどんな取り組みをしますか？",
+   "dense": {
+    "first": 1,
+    "each": [
+     true,
+     true
+    ]
+   },
+   "bm25": {
+    "first": 2,
+    "each": [
+     true,
+     true
+    ]
+   },
+   "hybrid": {
+    "first": 1,
+    "each": [
+     true,
+     true
+    ]
+   }
+  },
+  {
+   "id": "a09",
+   "type": "second",
+   "question": "第2次総合計画では、烏山の山あげ行事についてどんな取り組みをしますか？",
+   "dense": {
+    "first": 1,
+    "each": [
+     true,
+     true
+    ]
+   },
+   "bm25": {
+    "first": 4,
+    "each": [
+     true,
+     false
+    ]
+   },
+   "hybrid": {
+    "first": 1,
+    "each": [
+     true,
+     true
+    ]
+   }
+  },
+  {
+   "id": "a10",
+   "type": "second",
+   "question": "第2次総合計画の公共施設等総合管理計画では、公共施設を維持するのにどれくらい財源が不足するとしていますか？",
+   "dense": {
+    "first": 1,
+    "each": [
+     true
+    ]
+   },
+   "bm25": {
+    "first": 1,
+    "each": [
+     true
+    ]
+   },
+   "hybrid": {
+    "first": 1,
+    "each": [
+     true
+    ]
+   }
+  },
+  {
+   "id": "g01",
+   "type": "figure2",
+   "question": "第2次総合計画によると、平成27年の総人口は何人で、過去に最も多かったのはいつですか？",
+   "dense": {
+    "first": 1,
+    "each": [
+     true
+    ]
+   },
+   "bm25": {
+    "first": 3,
+    "each": [
+     true
+    ]
+   },
+   "hybrid": {
+    "first": 1,
+    "each": [
+     true
+    ]
+   }
+  },
+  {
+   "id": "g02",
+   "type": "figure2",
+   "question": "第2次総合計画の資料で、観光入込数が最も多かった年と最も少なかった年はいつですか？",
+   "dense": {
+    "first": 1,
+    "each": [
+     true
+    ]
+   },
+   "bm25": {
+    "first": 2,
+    "each": [
+     true
+    ]
+   },
+   "hybrid": {
+    "first": 1,
+    "each": [
+     true
+    ]
+   }
+  },
+  {
+   "id": "g03",
+   "type": "figure2",
+   "question": "第2次総合計画にある市の合計特殊出生率（ベイズ推定値）はどのように推移していますか？",
+   "dense": {
+    "first": 1,
+    "each": [
+     true
+    ]
+   },
+   "bm25": {
+    "first": 1,
+    "each": [
+     true
+    ]
+   },
+   "hybrid": {
+    "first": 1,
+    "each": [
+     true
+    ]
+   }
+  },
+  {
+   "id": "t01",
+   "type": "third",
+   "question": "第3次総合計画の計画期間はいつからいつまでですか？",
+   "dense": {
+    "first": 2,
+    "each": [
+     true
+    ]
+   },
+   "bm25": {
+    "first": 4,
+    "each": [
+     true
+    ]
+   },
+   "hybrid": {
+    "first": 1,
+    "each": [
+     true
+    ]
+   }
+  },
+  {
+   "id": "t02",
+   "type": "third",
+   "question": "第3次総合計画で市が目指す5年後のまちの将来像は何ですか？",
+   "dense": {
+    "first": 1,
+    "each": [
+     true,
+     true
+    ]
+   },
+   "bm25": {
+    "first": 1,
+    "each": [
+     true,
+     true
+    ]
+   },
+   "hybrid": {
+    "first": 1,
+    "each": [
+     true,
+     true
+    ]
+   }
+  },
+  {
+   "id": "t03",
+   "type": "third",
+   "question": "第3次総合計画では、JR烏山線の存続に向けてどんな取り組みをしますか？",
+   "dense": {
+    "first": 3,
+    "each": [
+     true,
+     true
+    ]
+   },
+   "bm25": {
+    "first": 2,
+    "each": [
+     true,
+     true
+    ]
+   },
+   "hybrid": {
+    "first": 3,
+    "each": [
+     true,
+     true
+    ]
+   }
+  },
+  {
+   "id": "t04",
+   "type": "third",
+   "question": "第3次総合計画の将来都市構造では、市はいくつのゾーンに分けられていますか？",
+   "dense": {
+    "first": 1,
+    "each": [
+     true
+    ]
+   },
+   "bm25": {
+    "first": 1,
+    "each": [
+     true
+    ]
+   },
+   "hybrid": {
+    "first": 1,
+    "each": [
+     true
+    ]
+   }
+  },
+  {
+   "id": "t05",
+   "type": "figure3",
+   "question": "第3次総合計画によると、観光入込数はコロナ禍の令和2年にどれくらい減りましたか？",
+   "dense": {
+    "first": 1,
+    "each": [
+     true
+    ]
+   },
+   "bm25": {
+    "first": 1,
+    "each": [
+     true
+    ]
+   },
+   "hybrid": {
+    "first": 1,
+    "each": [
+     true
+    ]
+   }
+  },
+  {
+   "id": "t06",
+   "type": "figure3",
+   "question": "第3次総合計画の推計では、65歳以上の人口はいつ頃ピークになりますか？",
+   "dense": {
+    "first": 1,
+    "each": [
+     true
+    ]
+   },
+   "bm25": {
+    "first": 1,
+    "each": [
+     true
+    ]
+   },
+   "hybrid": {
+    "first": 1,
+    "each": [
+     true
+    ]
+   }
+  },
+  {
+   "id": "t07",
+   "type": "figure3",
+   "question": "第3次総合計画によると、国と比べて就業者の比率が特に高い産業は何ですか？",
+   "dense": {
+    "first": 1,
+    "each": [
+     true
+    ]
+   },
+   "bm25": {
+    "first": 1,
+    "each": [
+     true
+    ]
+   },
+   "hybrid": {
+    "first": 1,
+    "each": [
+     true
+    ]
+   }
+  },
+  {
+   "id": "c01",
+   "type": "compare",
+   "question": "第2次総合計画と第3次総合計画では、5年後の目指すべき将来像はどう違いますか？",
+   "dense": {
+    "first": 7,
+    "each": [
+     true,
+     true
+    ]
+   },
+   "bm25": {
+    "first": 1,
+    "each": [
+     true,
+     true
+    ]
+   },
+   "hybrid": {
+    "first": 1,
+    "each": [
+     true,
+     true
+    ]
+   }
+  },
+  {
+   "id": "c02",
+   "type": "compare",
+   "question": "第2次総合計画と第3次総合計画の計画期間はそれぞれいつですか？",
+   "dense": {
+    "first": 2,
+    "each": [
+     true,
+     true
+    ]
+   },
+   "bm25": {
+    "first": 7,
+    "each": [
+     true,
+     true
+    ]
+   },
+   "hybrid": {
+    "first": 3,
+    "each": [
+     true,
+     true
+    ]
+   }
+  },
+  {
+   "id": "c03",
+   "type": "compare",
+   "question": "まちづくりの基本理念は、第2次総合計画と第3次総合計画でどう変わりましたか？",
+   "dense": {
+    "first": 1,
+    "each": [
+     true,
+     true
+    ]
+   },
+   "bm25": {
+    "first": 1,
+    "each": [
+     true,
+     true
+    ]
+   },
+   "hybrid": {
+    "first": 1,
+    "each": [
+     true,
+     true
+    ]
+   }
+  },
+  {
+   "id": "c04",
+   "type": "compare",
+   "question": "2060年の目標人口は、第2次総合計画と第3次総合計画でどう違いますか？",
+   "dense": {
+    "first": 1,
+    "each": [
+     true,
+     false
+    ]
+   },
+   "bm25": {
+    "first": null,
+    "each": [
+     false,
+     false
+    ]
+   },
+   "hybrid": {
+    "first": 2,
+    "each": [
+     true,
+     false
+    ]
+   }
+  },
+  {
+   "id": "c05",
+   "type": "compare",
+   "question": "観光入込数について、第2次総合計画と第3次総合計画に載っている最新の年の数値はそれぞれいくつですか？",
+   "dense": {
+    "first": 1,
+    "each": [
+     true,
+     true
+    ]
+   },
+   "bm25": {
+    "first": 1,
+    "each": [
+     true,
+     true
+    ]
+   },
+   "hybrid": {
+    "first": 1,
+    "each": [
+     true,
+     true
+    ]
+   }
+  },
+  {
+   "id": "c06",
+   "type": "compare",
+   "question": "政策の実現に向けて掲げた3つの柱（基本姿勢）は、第2次総合計画と第3次総合計画でどう違いますか？",
+   "dense": {
+    "first": 3,
+    "each": [
+     false,
+     true,
+     false,
+     true
+    ]
+   },
+   "bm25": {
+    "first": null,
+    "each": [
+     false,
+     false,
+     false,
+     false
+    ]
+   },
+   "hybrid": {
+    "first": 5,
+    "each": [
+     false,
+     true,
+     false,
+     false
+    ]
+   }
+  },
+  {
+   "id": "m01",
+   "type": "multi",
+   "question": "第2次総合計画の5つの基本目標は何ですか？",
+   "dense": {
+    "first": 8,
+    "each": [
+     true
+    ]
+   },
+   "bm25": {
+    "first": null,
+    "each": [
+     false
+    ]
+   },
+   "hybrid": {
+    "first": null,
+    "each": [
+     false
+    ]
+   }
+  },
+  {
+   "id": "m02",
+   "type": "multi",
+   "question": "第2次総合計画の将来都市構造では、どんなゾーンと拠点エリアがありますか？",
+   "dense": {
+    "first": 1,
+    "each": [
+     true,
+     true
+    ]
+   },
+   "bm25": {
+    "first": 9,
+    "each": [
+     false,
+     true
+    ]
+   },
+   "hybrid": {
+    "first": 1,
+    "each": [
+     true,
+     true
+    ]
+   }
+  }
+ ]
+}

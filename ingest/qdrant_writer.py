@@ -4,6 +4,8 @@
   chunks    : チャンク（ベクトルあり）。点の ID は uuid5("<document_id>:<chunk_id>")
   doc_items : 文書要素（ベクトルなし）。点の ID は uuid5("<document_id>:<self_ref>")
 同じ ID で登録し直すと上書きになる（--recreate ならコレクションごと作り直す）。
+索引（payload index）は既存のコレクションにも足す（ensure_indexes）。点やベクトルは変えない。
+  例: chunks の embedding_text は全文索引（multilingual の分かち書き・BM25 の採点）。Qdrant 1.20 以降
 """
 
 import uuid
@@ -41,9 +43,36 @@ def ensure_collection(client: QdrantClient, key: str, recreate: bool) -> str:
         else:
             vectors = {}
         client.create_collection(collection_name=name, vectors_config=vectors)
-        for field, kind in spec["payload_indexes"].items():
-            client.create_payload_index(name, field, getattr(models.PayloadSchemaType, kind.upper()))
+    ensure_indexes(client, name, spec["payload_indexes"])
     return name
+
+
+def index_schema(kind):
+    """入力: 約束の索引の指定（"keyword" などの文字列、または全文索引の dict）
+    出力: create_payload_index に渡す field_schema"""
+    if isinstance(kind, str):
+        return getattr(models.PayloadSchemaType, kind.upper())
+    if kind.get("type") != "text":
+        raise ValueError(f"約束の索引の種類に対応していません: {kind}")
+    return models.TextIndexParams(
+        type=models.TextIndexType.TEXT,
+        tokenizer=getattr(models.TokenizerType, kind.get("tokenizer", "word").upper()),
+        lowercase=kind.get("lowercase", True),
+        scoring=models.TextScoringParams(type=models.TextScoringType.BM25) if kind.get("scoring") == "bm25" else None,
+    )
+
+
+def ensure_indexes(client: QdrantClient, name: str, indexes: dict) -> list[str]:
+    """入力: クライアント・コレクション名・約束の payload_indexes
+    出力: 新しく作った索引の項目名（既にある索引は作らない。点・ベクトルは変えない）"""
+    existing = client.get_collection(name).payload_schema or {}
+    made = []
+    for field, kind in indexes.items():
+        if field in existing:
+            continue
+        client.create_payload_index(name, field, field_schema=index_schema(kind), wait=True)
+        made.append(field)
+    return made
 
 
 def chunk_payload(r: dict) -> dict:

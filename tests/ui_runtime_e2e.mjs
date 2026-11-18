@@ -41,8 +41,8 @@ try {
   check(/_manual_qwen2-5-/.test($("evalRun").value), "記録名にモデル名が入る", $("evalRun").value);
   check($("evalSelect").options.length === 30, "質問30問が並ぶ", String($("evalSelect").options.length));
 
-  // ① 質問を送る（q01 で開始）→ 話題のボタン
-  $("evalSelect").value = "q01";
+  // ① 質問を送る（質問集の先頭で開始。testset により id が違うので決め打ちしない）→ 話題のボタン
+  $("evalSelect").value = $("evalSelect").options[0].value;
   $("evalStart").click();
   const topic = await waitFor(() => document.querySelector(".topics .topic"), "① の話題");
   check(true, "① LLM の話題が表示される", topic.textContent.slice(0, 30));

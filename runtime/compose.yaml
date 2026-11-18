@@ -13,7 +13,8 @@ name: rag_practice
 services:
   # ベクトルデータベース（チャンクと文書要素。登録はパイプラインが行う）
   qdrant:
-    image: qdrant/qdrant:latest
+    # 版を固定する（BM25 の全文索引は 1.20 以降。contract の qdrant_min_version）
+    image: qdrant/qdrant:v1.20.1
     container_name: rag-qdrant
     ports:
       - "127.0.0.1:${QDRANT_PORT:-6333}:6333"
@@ -48,6 +49,12 @@ services:
       COLLECTION_NAME: rag_ruri_v3_310m
       DOC_ITEMS_COLLECTION: rag_doc_items
       EMBEDDING_MODEL: cl-nagoya/ruri-v3-310m
+      # 検索方式: dense（ベクトル）/ bm25（全文索引）/ hybrid（両方を RRF で統合）
+      SEARCH_MODE: ${SEARCH_MODE:-dense}
+      HYBRID_PREFETCH: ${HYBRID_PREFETCH:-30}
+      # LLM に渡す資料の重なった【要約】をまとめる（先頭 N 文字が同じなら「【要約S1と同じ】」）
+      SUMMARY_DEDUP: ${SUMMARY_DEDUP:-true}
+      SUMMARY_DEDUP_CHARS: ${SUMMARY_DEDUP_CHARS:-10}
       HF_HOME: /models/huggingface
       # 評価モード（本番では EVAL_ENABLED=false）
       EVAL_ENABLED: ${EVAL_ENABLED:-false}

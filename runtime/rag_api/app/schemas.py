@@ -3,6 +3,8 @@
 画面（static/js/api.js）とやり取りする JSON の形はすべてここで決まる。
 """
 
+from typing import Literal
+
 from pydantic import BaseModel, Field
 
 
@@ -29,6 +31,8 @@ class Source(BaseModel):
 class QuestionRequest(BaseModel):
     question: str = Field(..., min_length=1, description="質問文")
     top_k: int = Field(5, ge=1, le=20, description="取得するチャンク数")
+    mode: Literal["dense", "bm25", "hybrid"] | None = Field(None, description="検索方式 dense / bm25 / hybrid（省略時は SEARCH_MODE）")
+    paths: list[list[str]] | None = Field(None, description="この見出しの配下だけを検索する（③と同じ絞り込み。省略時は全体）")
 
 
 class SearchResponse(BaseModel):

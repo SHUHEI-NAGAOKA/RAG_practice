@@ -20,7 +20,7 @@ def problems() -> list[str]:
     found = []
     master = json.loads(MASTER.read_text(encoding="utf-8"))
     copy = json.loads(COPY.read_text(encoding="utf-8"))
-    for k in ("version", "embedding", "heading_sep", "collections"):
+    for k in ("version", "qdrant_min_version", "embedding", "heading_sep", "search", "collections"):
         if master.get(k) != copy.get(k):
             found.append(f"約束ファイルの {k} が runtime と ingest で違います")
 
@@ -43,6 +43,24 @@ def problems() -> list[str]:
         found.append("runtime の query_prefix が約束と違います")
     if not re.search(re.escape(f'heading_sep: str = "{master["heading_sep"]}"'), config):
         found.append("runtime の heading_sep が約束と違います")
+
+    # 検索方式（BM25 の全文索引）: runtime の項目名・方式名・compose の設定・Qdrant の版
+    search = master["search"]
+    if f'bm25_field: str = "{search["bm25_field"]}"' not in config:
+        found.append("runtime の bm25_field が約束と違います")
+    idx = cols["chunks"]["payload_indexes"].get(search["bm25_field"])
+    if not (isinstance(idx, dict) and idx.get("type") == "text" and idx.get("scoring") == "bm25"):
+        found.append(f"約束の chunks に {search['bm25_field']} の全文索引（BM25）がありません")
+    chunks_py = (ROOT / "runtime/rag_api/app/qdrant_store/chunks.py").read_text(encoding="utf-8")
+    m = re.search(r"MODES = \(([^)]*)\)", chunks_py)
+    if not m or re.findall(r"[\"']([^\"']+)[\"']", m.group(1)) != search["modes"]:
+        found.append("runtime の検索方式（MODES）が約束の search.modes と違います")
+    if "SEARCH_MODE" not in compose:
+        found.append("runtime/compose.yaml に SEARCH_MODE がありません")
+    m = re.search(r"image: qdrant/qdrant:v?([\d.]+)", compose)
+    want = tuple(int(x) for x in master["qdrant_min_version"].split("."))
+    if not m or tuple(int(x) for x in m.group(1).split(".")) < want:
+        found.append(f"runtime/compose.yaml の Qdrant の版を {master['qdrant_min_version']} 以上に固定してください")
     return found
 
 

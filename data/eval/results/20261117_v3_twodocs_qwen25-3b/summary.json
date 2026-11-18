@@ -1,0 +1,55 @@
+{
+  "judge": "Claude Code（会話内で判定・API 不使用）",
+  "embedding": "cl-nagoya/ruri-v3-310m",
+  "questions": 30,
+  "mean": {
+    "faithfulness": 0.794,
+    "answer_relevancy": 0.847,
+    "llm_context_precision_with_reference": 0.81,
+    "context_recall": 0.899
+  },
+  "mean_by_type": {
+    "second": {
+      "faithfulness": 0.927,
+      "answer_relevancy": 0.913,
+      "llm_context_precision_with_reference": 0.759,
+      "context_recall": 0.95
+    },
+    "figure2": {
+      "faithfulness": 0.667,
+      "answer_relevancy": 0.888,
+      "llm_context_precision_with_reference": 1.0,
+      "context_recall": 1.0
+    },
+    "third": {
+      "faithfulness": 0.875,
+      "answer_relevancy": 0.909,
+      "llm_context_precision_with_reference": 1.0,
+      "context_recall": 0.875
+    },
+    "figure3": {
+      "faithfulness": 0.722,
+      "answer_relevancy": 0.893,
+      "llm_context_precision_with_reference": 0.807,
+      "context_recall": 1.0
+    },
+    "compare": {
+      "faithfulness": 0.514,
+      "answer_relevancy": 0.925,
+      "llm_context_precision_with_reference": 0.883,
+      "context_recall": 0.75
+    },
+    "multi": {
+      "faithfulness": 0.9,
+      "answer_relevancy": 0.882,
+      "llm_context_precision_with_reference": 1.0,
+      "context_recall": 0.733
+    },
+    "unanswerable": {
+      "faithfulness": 1.0,
+      "answer_relevancy": 0.0,
+      "llm_context_precision_with_reference": 0.0,
+      "context_recall": 1.0
+    }
+  }
+}

@@ -60,6 +60,21 @@ docker compose up -d rag-api
 ```
 使うモデルは `pull_models.sh` で先に入れておく。
 
+## 検索方式（dense / bm25 / hybrid）の切り替え
+`.env` の `SEARCH_MODE` で、①（/levels）・③（/answer の上位チャンク）・/search・/ask の検索方式を選ぶ。
+| 値 | 内容 |
+|---|---|
+| dense（既定） | Ruri v3 のベクトルで検索（これまでと同じ） |
+| bm25 | `embedding_text` の全文索引で BM25 検索。日本語の分かち書きは Qdrant（multilingual）が行うので、runtime に形態素解析器は要らない |
+| hybrid | dense と BM25 をそれぞれ `HYBRID_PREFETCH` 件ずつ取り、順位を RRF で統合する。③の見出しの範囲は両方に付ける |
+```bash
+docker compose up -d rag-api   # .env を書き換えた後
+curl -s localhost:8000/health  # search_mode を確認
+```
+- BM25 の全文索引は Qdrant 1.20 以降の機能（compose で `qdrant/qdrant:v1.20.1` に固定）。索引はパイプラインが作る
+  （既存のコレクションに足すとき: `.venv/bin/python -m ingest.run --pdf <任意のPDF> --only s08 --index-only`）
+- /search は `{"mode": "hybrid", "paths": [[...]]}` で方式と見出しの範囲を1回ごとに指定できる（比較用）
+
 ## データ（Qdrant）の受け渡し
 登録はパイプラインが行う。本番への渡し方は2通り:
 1. パイプラインから本番の Qdrant に直接登録する（`--qdrant-url` を指定）
@@ -77,8 +92,8 @@ docker compose up -d rag-api
 ## API
 | URL | 入力 | 出力 |
 |---|---|---|
-| GET /health | - | 動作状況・使用中の LLM・評価モードの有無 |
-| POST /search | {question, top_k} | 類似チャンク |
+| GET /health | - | 動作状況・使用中の LLM・検索方式・評価モードの有無 |
+| POST /search | {question, top_k, mode?, paths?} | 順位の高いチャンク（方式・範囲を指定可） |
 | POST /ask | {question, top_k} | 類似チャンクを根拠にした回答 |
 | POST /levels | {question, offset} | ① LLM が作った話題・見出しの経路（10件ずつ） |
 | POST /subtopics | {paths} | ② 選んだ範囲の1段下の話題 |
@@ -90,6 +105,9 @@ docker compose up -d rag-api
 |---|---|---|
 | LLM_MODEL | 使う LLM | qwen2.5:3b |
 | NUM_CTX | LLM のコンテキスト長 | 8192 |
+| SEARCH_MODE | 検索方式 dense / bm25 / hybrid | dense |
+| HYBRID_PREFETCH | hybrid で各方式から取る候補数 | 30 |
+| SUMMARY_DEDUP / SUMMARY_DEDUP_CHARS | LLM に渡す資料の【要約】の重なりをまとめる（先頭 N 文字が同じ要約は「【要約S1と同じ】」） | true / 10 |
 | EVAL_ENABLED | 評価モード | false |
 | EVAL_HOST_DIR / EVAL_TESTSET | 評価の質問集と記録の場所 | ./eval / testset_v2.jsonl |
 | API_PORT / QDRANT_PORT / OLLAMA_PORT | ホスト側のポート | 8000 / 6333 / 11434 |

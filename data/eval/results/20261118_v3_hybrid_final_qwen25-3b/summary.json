@@ -1,0 +1,85 @@
+{
+  "judge": "Claude Code（会話内で判定・API 不使用）",
+  "embedding": "cl-nagoya/ruri-v3-310m",
+  "questions": 30,
+  "mean": {
+    "faithfulness": 0.836,
+    "answer_relevancy": 0.847,
+    "llm_context_precision_with_reference": 0.827,
+    "context_recall": 0.922
+  },
+  "mean_by_type": {
+    "second": {
+      "faithfulness": 0.825,
+      "answer_relevancy": 0.907,
+      "llm_context_precision_with_reference": 0.871,
+      "context_recall": 0.95
+    },
+    "figure2": {
+      "faithfulness": 0.667,
+      "answer_relevancy": 0.88,
+      "llm_context_precision_with_reference": 1.0,
+      "context_recall": 1.0
+    },
+    "third": {
+      "faithfulness": 0.917,
+      "answer_relevancy": 0.924,
+      "llm_context_precision_with_reference": 1.0,
+      "context_recall": 0.875
+    },
+    "figure3": {
+      "faithfulness": 0.722,
+      "answer_relevancy": 0.885,
+      "llm_context_precision_with_reference": 0.803,
+      "context_recall": 1.0
+    },
+    "compare": {
+      "faithfulness": 0.833,
+      "answer_relevancy": 0.929,
+      "llm_context_precision_with_reference": 0.894,
+      "context_recall": 0.833
+    },
+    "multi": {
+      "faithfulness": 1.0,
+      "answer_relevancy": 0.891,
+      "llm_context_precision_with_reference": 0.662,
+      "context_recall": 0.833
+    },
+    "unanswerable": {
+      "faithfulness": 1.0,
+      "answer_relevancy": 0.0,
+      "llm_context_precision_with_reference": 0.0,
+      "context_recall": 1.0
+    }
+  },
+  "compare": {
+    "run": "20261118_v3_hybrid_qwen25-3b",
+    "共通の問題": 30,
+    "指標": {
+      "faithfulness": {
+        "今回": 0.836,
+        "比較先": 0.777,
+        "差": 0.059,
+        "問題数": 30
+      },
+      "answer_relevancy": {
+        "今回": 0.847,
+        "比較先": 0.847,
+        "差": 0.0,
+        "問題数": 30
+      },
+      "llm_context_precision_with_reference": {
+        "今回": 0.827,
+        "比較先": 0.827,
+        "差": 0.0,
+        "問題数": 30
+      },
+      "context_recall": {
+        "今回": 0.922,
+        "比較先": 0.922,
+        "差": 0.0,
+        "問題数": 30
+      }
+    }
+  }
+}

@@ -1,0 +1,14 @@
+[
+ {
+  "step": "s08",
+  "seconds": 0.3,
+  "qdrant": "http://localhost:6333",
+  "index_only": true,
+  "created": {
+   "rag_ruri_v3_310m": [
+    "embedding_text"
+   ],
+   "rag_doc_items": []
+  }
+ }
+]

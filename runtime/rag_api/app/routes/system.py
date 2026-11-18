@@ -16,5 +16,6 @@ def index():
 
 @router.get("/health")
 def health():
-    """入力: なし / 出力: 動作中であることと、使っている LLM のモデル名"""
-    return {"status": "ok", "llm_model": settings.llm_model, "eval_enabled": settings.eval_enabled}
+    """入力: なし / 出力: 動作中であることと、使っている LLM のモデル名・検索方式"""
+    return {"status": "ok", "llm_model": settings.llm_model, "search_mode": settings.search_mode,
+            "eval_enabled": settings.eval_enabled}
